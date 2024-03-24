@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">EatEz</string>
+
+    <string name="ob_title1">Welcome to EatEz</string>
+    <string name="ob_title2">Explore Culinary Delights</string>
+    <string name="ob_title3">Join EatEz for Foodie Fun!</string>
+
+    <string name="ob_desc1">Find, rate, and share your favorite foods worldwide. Your culinary journey starts here!</string>
+    <string name="ob_desc2">Dive into a world of flavors, connect with foodies, and share your food experiences effortlessly.</string>
+    <string name="ob_desc3">Explore the best eateries, share your food adventures, and connect with fellow food enthusiasts on EatEz!</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+</resources>
