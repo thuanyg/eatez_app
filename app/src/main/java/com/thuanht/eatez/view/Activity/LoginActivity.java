@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import android.os.Bundle;
+import android.view.WindowManager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.thuanht.eatez.Adapter.LoginAdapter;
@@ -26,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
         binding.tabLayout.addTab(binding.tabLayout.newTab());
         binding.tabLayout.addTab(binding.tabLayout.newTab());
         binding.tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        binding.tabLayout.setTabIndicatorAnimationMode(TabLayout.INDICATOR_ANIMATION_MODE_ELASTIC);
+        binding.tabLayout.setTabIndicatorAnimationMode(TabLayout.INDICATOR_ANIMATION_MODE_LINEAR);
         binding.tabLayout.setTabMode(TabLayout.MODE_FIXED);
         LoginAdapter adapter = new LoginAdapter(getSupportFragmentManager(), this, binding.tabLayout.getTabCount());
         binding.viewPager.setAdapter(adapter);
@@ -35,6 +36,8 @@ public class LoginActivity extends AppCompatActivity {
         binding.tabLayout.setupWithViewPager(binding.viewPager);
         binding.tabLayout.getTabAt(0).setText("Sign In");
         binding.tabLayout.getTabAt(1).setText("Sign Up");
+
+        // Customize Google + Facebook
 
     }
 }

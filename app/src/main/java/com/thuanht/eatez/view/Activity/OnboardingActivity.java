@@ -43,17 +43,16 @@ public class OnboardingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try {
-            Thread.sleep(1000);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(500);
+//        } catch (Exception e){
+//            e.printStackTrace();
+//        }
         SplashScreen.installSplashScreen(this);
         setContentView(R.layout.activity_onboarding);
 
 
         Intent intent = new Intent(this, GetStartedActivity.class);
-
         boolean isFirstInstall = LocalDataManager.getInstance().checkIsFirstInstall();
 
         if (!isFirstInstall) {
