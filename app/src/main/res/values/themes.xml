@@ -1,8 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.EatEz" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.EatEz" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/shimmer_color</item>
+        <item name="colorPrimaryDark">@color/gray</item>
+        <item name="colorAccent">@color/pure_light_blue</item>
     </style>
 
     <style name="Theme.EatEz" parent="Base.Theme.EatEz" />

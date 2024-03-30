@@ -47,8 +47,9 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation ("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.61")
     implementation("com.etebarian:meow-bottom-navigation:1.0.2")
-    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
-    implementation ("com.makeramen:roundedimageview:2.3.0")
-    implementation ("com.facebook.shimmer:shimmer:0.5.0")
-    implementation ("de.hdodenhof:circleimageview:3.1.0")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
+    implementation("com.makeramen:roundedimageview:2.3.0")
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
+    implementation("de.hdodenhof:circleimageview:3.1.0")
+    implementation("com.github.amarjain07:StickyScrollView:1.0.2")
 }

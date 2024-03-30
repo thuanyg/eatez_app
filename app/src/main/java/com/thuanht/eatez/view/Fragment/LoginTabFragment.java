@@ -2,9 +2,11 @@ package com.thuanht.eatez.view.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +22,7 @@ import com.thuanht.eatez.R;
 
 public class LoginTabFragment extends Fragment {
     private FragmentLoginTabBinding binding;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -27,7 +30,7 @@ public class LoginTabFragment extends Fragment {
         binding.setLifecycleOwner(this);
 
         // Lấy viewModel từ LoginActivity
-        LoginViewModel loginViewModel = ((LoginActivity)requireActivity()).binding.getLoginViewModel();
+        LoginViewModel loginViewModel = ((LoginActivity) requireActivity()).binding.getLoginViewModel();
         binding.setLoginViewModel(loginViewModel);
 
         // Quan sát LiveData để nhận thông báo lỗi email
@@ -46,8 +49,19 @@ public class LoginTabFragment extends Fragment {
         });
 
         binding.btnLogin.setOnClickListener(v -> {
-            if(loginViewModel.validateData()){
+            if (loginViewModel.validateData()) {
                 Intent intent = new Intent(getContext(), HomeActivity.class);
+                // Hiển thị ProgressBar
+                ProgressBar progressBar = getActivity().findViewById(R.id.progress_login);
+                progressBar.setVisibility(View.VISIBLE);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Ẩn ProgressBar sau 2 giây
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }, 2000); // Đặt độ trễ là 2000 milliseconds (2 giây)
+
                 startActivity(intent);
                 getActivity().finish();
             }
