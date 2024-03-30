@@ -1,4 +1,4 @@
-package com.thuanht.eatez.view;
+package com.thuanht.eatez.view.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 

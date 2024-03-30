@@ -1,4 +1,4 @@
-package com.thuanht.eatez.view;
+package com.thuanht.eatez.view.Fragment;
 
 import android.os.Bundle;
 

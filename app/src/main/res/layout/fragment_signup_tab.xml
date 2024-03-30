@@ -40,7 +40,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintWidth_percent="0.9"
         app:layout_constraintTop_toBottomOf="@+id/textInputNameLayout"
-        app:startIconDrawable="@drawable/ic_email_black">
+        app:startIconDrawable="@drawable/email">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtEmail"
             android:layout_width="match_parent"
@@ -61,7 +61,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputEmailLayout"
         app:layout_constraintWidth_percent="0.9"
-        app:startIconDrawable="@drawable/ic_lock_black">
+        app:startIconDrawable="@drawable/lock">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtPassword"
@@ -83,7 +83,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputPasswordLayout"
         app:layout_constraintWidth_percent="0.9"
-        app:startIconDrawable="@drawable/ic_lock_black">
+        app:startIconDrawable="@drawable/lock">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtRePassword"

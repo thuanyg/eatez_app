@@ -7,8 +7,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.thuanht.eatez.view.LoginTabFragment;
-import com.thuanht.eatez.view.SignUpTabFragment;
+import com.thuanht.eatez.view.Fragment.LoginTabFragment;
+import com.thuanht.eatez.view.Fragment.SignUpTabFragment;
 
 public class LoginAdapter extends FragmentPagerAdapter {
     private Context context;

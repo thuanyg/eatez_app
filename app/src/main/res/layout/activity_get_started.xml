@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".view.GetStartedActivity">
+    android:fitsSystemWindows="true"
+    tools:context=".view.Activity.GetStartedActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-package com.thuanht.eatez.view;
+package com.thuanht.eatez.view.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,16 +12,18 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.thuanht.eatez.databinding.FragmentLoginTabBinding;
+import com.thuanht.eatez.view.Activity.HomeActivity;
+import com.thuanht.eatez.view.Activity.LoginActivity;
 import com.thuanht.eatez.viewModel.LoginViewModel;
 import com.thuanht.eatez.R;
-import com.thuanht.eatez.databinding.LoginTabFragmentBinding;
 
 public class LoginTabFragment extends Fragment {
-    private LoginTabFragmentBinding binding;
+    private FragmentLoginTabBinding binding;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.login_tab_fragment, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login_tab, container, false);
         binding.setLifecycleOwner(this);
 
         // Lấy viewModel từ LoginActivity

@@ -1,4 +1,4 @@
-package com.thuanht.eatez.view;
+package com.thuanht.eatez.view.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.splashscreen.SplashScreen;
@@ -85,7 +85,7 @@ public class OnboardingActivity extends AppCompatActivity {
 
             LocalDataManager.getInstance().setValueForFirstInstall(true);
         } else {
-            Intent i = new Intent(this, LoginActivity.class);
+            Intent i = new Intent(this, HomeActivity.class);
             startActivity(i);
             finish();
         }

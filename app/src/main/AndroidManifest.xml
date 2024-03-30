@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
-        android:name=".App.MyApplication"
+        android:name=".app.MyApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -14,20 +14,27 @@
         android:theme="@style/Theme.EatEz"
         tools:targetApi="31">
         <activity
-            android:name=".view.HomeActivity"
+            android:name=".view.Activity.SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".view.LoginActivity"
+            android:name=".view.Activity.SettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.Activity.HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.Activity.LoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.EatEz.Fullscreen" />
+            android:theme="@style/Theme.EatEz.Fullscreen"
+            android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".view.GetStartedActivity"
+            android:name=".view.Activity.GetStartedActivity"
             android:exported="false" />
         <activity
-            android:name=".view.OnboardingActivity"
+            android:name=".view.Activity.OnboardingActivity"
             android:exported="true"
             android:theme="@style/Theme.App.SplashScreen">
             <intent-filter>

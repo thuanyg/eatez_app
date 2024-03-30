@@ -1,7 +1,9 @@
 <resources>
 
     <style name="Widget.Theme.EatEz.ActionBar.Fullscreen" parent="Widget.AppCompat.ActionBar">
-        <item name="android:background">@color/black_overlay</item>
+<!--        <item name="android:background">@color/black_overlay</item>-->
+        <item name="android:windowActionBarOverlay">false</item>
+        <item name="android:windowBackground">@null</item>
     </style>
 
     <style name="Widget.Theme.EatEz.ButtonBar.Fullscreen" parent="">

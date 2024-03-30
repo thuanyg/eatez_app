@@ -1,4 +1,4 @@
-package com.thuanht.eatez.view;
+package com.thuanht.eatez.view.Fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,7 +15,7 @@ public class SignUpTabFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.signup_tab_fragment, container, false);
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_signup_tab, container, false);
         return view;
     }
 }

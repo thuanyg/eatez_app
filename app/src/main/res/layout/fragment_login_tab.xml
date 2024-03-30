@@ -25,14 +25,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.9"
-        app:startIconDrawable="@drawable/ic_email_black">
+        app:startIconDrawable="@drawable/email">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:text="@={LoginViewModel.email}" />
+            android:lines="1"
+            android:text="thuanht@gmail.com" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -47,14 +48,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintWidth_percent="0.9"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
-        app:startIconDrawable="@drawable/ic_lock_black">
+        app:startIconDrawable="@drawable/lock">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:lines="1"
-            android:text="@={LoginViewModel.password}" />
+            android:maxLines="1"
+            android:text="2003" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView

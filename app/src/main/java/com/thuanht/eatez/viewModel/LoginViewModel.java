@@ -59,16 +59,15 @@ public class LoginViewModel extends BaseObservable{
         email = getEmail() == null ? "" : getEmail();
 //        Toast.makeText(context, "email[" + getEmail() + "]", Toast.LENGTH_SHORT).show();
         emailError.setValue(null);
-        boolean flag = true;
         if(TextUtils.isEmpty(email)){
             emailError.setValue("Email cannot be empty");
-            flag = false;
+            return false;
         }
         if(!email.matches(EMAIL_PATTERN)){
             emailError.setValue("Email is Invalid.");
-            flag = false;
+            return false;
         }
-        return flag;
+        return true;
     }
 
 

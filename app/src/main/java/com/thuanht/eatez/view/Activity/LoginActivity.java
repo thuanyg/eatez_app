@@ -1,10 +1,9 @@
-package com.thuanht.eatez.view;
+package com.thuanht.eatez.view.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import android.os.Bundle;
-import android.view.WindowManager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.thuanht.eatez.Adapter.LoginAdapter;
@@ -14,7 +13,7 @@ import com.thuanht.eatez.databinding.ActivityLoginBinding;
 
 
 public class LoginActivity extends AppCompatActivity {
-    ActivityLoginBinding binding;
+    public ActivityLoginBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
