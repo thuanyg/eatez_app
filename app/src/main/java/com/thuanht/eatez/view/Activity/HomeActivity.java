@@ -1,38 +1,36 @@
 package com.thuanht.eatez.view.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.view.OnApplyWindowInsetsListener;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowInsetsController;
-import android.view.WindowManager;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
+import com.thuanht.eatez.Adapter.FragmentHomeAdapter;
 import com.thuanht.eatez.R;
 import com.thuanht.eatez.databinding.ActivityHomeBinding;
+import com.thuanht.eatez.databinding.FragmentFavoriteBinding;
+import com.thuanht.eatez.model.Post;
 import com.thuanht.eatez.view.Fragment.FavoriteFragment;
+import com.thuanht.eatez.view.Fragment.FeatureFragment;
 import com.thuanht.eatez.view.Fragment.HomeFragment;
 import com.thuanht.eatez.view.Fragment.NotificationFragment;
-import com.thuanht.eatez.view.Fragment.SettingFragment;
 
 import java.util.ArrayDeque;
-import java.util.Stack;
+import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class HomeActivity extends AppCompatActivity {
     ActivityHomeBinding binding;
     private int previousSelectedItemId = R.id.nav_home;
+
+    HomeFragment homefragment = new HomeFragment();
+    FavoriteFragment favoriteFragment = new FavoriteFragment();
+    NotificationFragment notificationFragment = new NotificationFragment();
 
     ArrayDeque<Integer> deque = new ArrayDeque<>(4);
 
@@ -42,13 +40,45 @@ public class HomeActivity extends AppCompatActivity {
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initUI();
+        eventHandler();
+    }
+
+    public void eventHandler(){
+        binding.swipeRefreshHome.setOnRefreshListener(() -> {
+            HomeFragment containingFragment = (HomeFragment) getSupportFragmentManager().findFragmentById(R.id.frame_layout);
+            ViewPager2 viewPager = containingFragment.getView().findViewById(R.id.viewPager_Home);
+            FragmentHomeAdapter homeAdapter = (FragmentHomeAdapter) viewPager.getAdapter();
+            if (homeAdapter != null) {
+                FeatureFragment featureFragment = homeAdapter.getFeatureFragment();
+                if (featureFragment != null) {
+                    // Sử dụng Executor để quản lý luồng
+                    featureFragment.getShimmerFrameLayout().startShimmer();
+                    featureFragment.getShimmerFrameLayout().setVisibility(View.VISIBLE);
+                    featureFragment.getRecyclerView().setVisibility(View.INVISIBLE);
+                    Executor executor = Executors.newSingleThreadExecutor();
+                    executor.execute(() -> {
+                        try {
+                            Thread.sleep(800);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        List<Post> list = featureFragment.fetchData();
+                        runOnUiThread(() -> {
+                            binding.swipeRefreshHome.setRefreshing(false);
+                            featureFragment.applyChanges(list);
+                            featureFragment.getShimmerFrameLayout().stopShimmer();
+                            featureFragment.getShimmerFrameLayout().setVisibility(View.GONE);
+                            featureFragment.getRecyclerView().setVisibility(View.VISIBLE);
+                        });
+                    });
+
+                }
+            }
+        });
+
     }
 
     private void initUI() {
-        HomeFragment homefragment = new HomeFragment();
-        FavoriteFragment favoriteFragment = new FavoriteFragment();
-        NotificationFragment notificationFragment = new NotificationFragment();
-        SettingFragment settingFragment = new SettingFragment();
         loadFragment(homefragment);
         binding.bottomNav.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
@@ -85,5 +115,11 @@ public class HomeActivity extends AppCompatActivity {
                 .commit();
     }
 
-
+//    @Override
+//    public void onBackPressed() {
+//            if(FavoriteFragment.current != null){
+//                favoriteFragment.replaceTabSelected(FavoriteFragment.current, FavoriteFragment.selected);
+//            }
+//            super.onBackPressed();
+//    }
 }

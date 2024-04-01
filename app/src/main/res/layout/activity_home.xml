@@ -4,30 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context=".view.Activity.HomeActivity">
 
+
     <!-- FrameLayout for Fragment -->
-    <FrameLayout
-        android:id="@+id/frame_layout"
+    <!--SwipeContent-->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshHome"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottom_nav"
-        android:layout_alignParentTop="true"
-        android:background="@color/light_green" />
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:id="@+id/frame_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/bottom_nav"
+            android:layout_alignParentTop="true" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <!-- Bottom nav bar-->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
-        android:background="@color/white"
-        app:itemRippleColor="@color/pure_light_blue"
-        app:itemPaddingBottom="5dp"
-        app:labelVisibilityMode="labeled"
         android:layout_width="match_parent"
-        android:layout_alignParentBottom="true"
         android:layout_height="60dp"
-        app:menu="@menu/bottom_nav_menu"/>
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        app:itemHorizontalTranslationEnabled="true"
+        app:itemPaddingBottom="5dp"
+        app:itemRippleColor="#7FBAD5"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/bottom_nav_menu" />
 
 </RelativeLayout>
