@@ -1,0 +1,15 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <!-- Shadow Overflow -->
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="#55000000"
+                android:centerColor="#00000000"
+                android:endColor="#00000000"
+                android:angle="90" />
+            <padding
+                android:top="8dp"
+                android:bottom="16dp" /> <!-- Điều chỉnh độ rộng của hiệu ứng bóng -->
+        </shape>
+    </item>
+</layer-list>

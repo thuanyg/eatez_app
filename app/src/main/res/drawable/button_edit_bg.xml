@@ -1,0 +1,14 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="8dp" /> <!-- Độ cong của góc -->
+            <solid android:color="@color/gray_overlay" /> <!-- Màu nền khi nút được nhấn -->
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="8dp" /> <!-- Độ cong của góc -->
+            <solid android:color="@color/button_color" /> <!-- Màu nền mặc định -->
+        </shape>
+    </item>
+</selector>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    tools:context=".view.Fragment.HomeFragment">
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout_home_sticky"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:animateLayoutChanges="true"
+        android:paddingBottom="5dp"
+        android:backgroundTint="@color/white"
+        app:tabIndicatorColor="@color/pure_light_blue"
+        app:tabMode="fixed"
+        app:tabIndicatorHeight="5dp"
+        app:tabSelectedTextColor="@color/pure_light_blue" />
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="@color/white"
+        android:layout_below="@id/tabLayout_home_sticky"
+        android:orientation="vertical">
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/nestedScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="8dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <!-- TopActionBar-->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.appcompat.widget.Toolbar
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="8dp"
+                            android:background="@color/white"
+                            app:layout_scrollFlags="scroll|enterAlways">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_gravity="start"
+                                    android:drawableStart="@drawable/ic_menu" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    android:drawableStart="@drawable/location_on"
+                                    android:drawablePadding="5dp"
+                                    android:fontFamily="@font/barlow"
+                                    android:gravity="center"
+                                    android:text="55 Giai Phong"
+                                    android:textAlignment="center"
+                                    android:textSize="14sp" />
+
+                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_gravity="end"
+                                    android:layout_marginEnd="15dp"
+                                    android:src="@drawable/onboarding_img_2"
+                                    app:civ_border_color="@color/pure_light_blue"
+                                    app:civ_border_overlay="false"
+                                    app:civ_border_width="1dp" />
+
+                            </RelativeLayout>
+                        </androidx.appcompat.widget.Toolbar>
+
+                    </RelativeLayout>
+                    <!--Search-->
+                    <EditText
+                        android:id="@+id/btnToSearch"
+                        android:layout_width="match_parent"
+                        android:layout_height="42dp"
+                        android:layout_marginHorizontal="0dp"
+                        android:background="@drawable/edit_text_background"
+                        android:clickable="true"
+                        android:drawableStart="@drawable/search"
+                        android:drawablePadding="10dp"
+                        android:editable="false"
+                        android:focusableInTouchMode="true"
+                        android:fontFamily="@font/barlow"
+                        android:hint="Search Food, Drink, ..."
+                        android:paddingHorizontal="8dp"
+                        android:textSize="14sp" />
+                    <!--Slider-->
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/viewPagerSliderHome"
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp"
+                        android:layout_marginVertical="10dp"
+                        android:clipChildren="false"
+                        android:clipToPadding="false" />
+                    <!--Category-->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/barlow_semibold"
+                        android:text="Category"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcvCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clipToPadding="false" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="10dp"
+                        android:fontFamily="@font/barlow_semibold"
+                        android:text="Posts"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tabLayout_home"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/edit_text_background"
+                        android:backgroundTint="@color/light_green"
+                        app:tabIndicator="@color/white"
+                        app:tabIndicatorColor="@color/white"
+                        app:tabSelectedTextColor="@color/pure_light_blue" />
+
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/viewPager_Home"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+
+    </LinearLayout>
+</LinearLayout>
