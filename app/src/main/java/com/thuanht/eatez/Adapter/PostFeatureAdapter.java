@@ -1,5 +1,6 @@
 package com.thuanht.eatez.Adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.thuanht.eatez.R;
 import com.thuanht.eatez.interfaceEvent.onClickItemListener;
 import com.thuanht.eatez.model.Post;
@@ -23,11 +25,14 @@ import java.util.Locale;
 public class PostFeatureAdapter extends RecyclerView.Adapter<PostFeatureAdapter.MyViewHolder>{
 
     private List<Post> postList;
+
+    private Context context;
     private final onClickItemListener<Post> itemListener;
 
-    public PostFeatureAdapter(List<Post> postList, onClickItemListener<Post> listener) {
+    public PostFeatureAdapter(Context context, List<Post> postList, onClickItemListener<Post> listener) {
         this.postList = postList;
         this.itemListener = listener;
+        this.context = context;
     }
 
     @NonNull
@@ -54,6 +59,11 @@ public class PostFeatureAdapter extends RecyclerView.Adapter<PostFeatureAdapter.
             e.printStackTrace();
         }
         holder.tvDate.setText(formattedDate);
+
+        Glide.with(context)
+                .load(p.getThumbnailImage())
+                .into(holder.imageView);
+
         holder.layout.setOnClickListener(v -> itemListener.onClick(postList.get(position)));
     }
 
@@ -68,9 +78,11 @@ public class PostFeatureAdapter extends RecyclerView.Adapter<PostFeatureAdapter.
         private final TextView tvDesc;
         private final TextView tvDate;
 
+        private final ImageView imageView;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            ImageView image = itemView.findViewById(R.id.imagePost);
+            imageView = itemView.findViewById(R.id.imagePost);
             tvTitle = itemView.findViewById(R.id.titlePost);
             tvDesc = itemView.findViewById(R.id.descPost);
             tvDate = itemView.findViewById(R.id.date);

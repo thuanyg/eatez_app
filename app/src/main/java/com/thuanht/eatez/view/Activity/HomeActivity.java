@@ -17,20 +17,12 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import com.thuanht.eatez.Adapter.FragmentHomeAdapter;
 import com.thuanht.eatez.R;
 import com.thuanht.eatez.databinding.ActivityHomeBinding;
-import com.thuanht.eatez.databinding.FragmentFavoriteBinding;
-import com.thuanht.eatez.model.Post;
 import com.thuanht.eatez.permission.LocationPermission;
 import com.thuanht.eatez.untils.NetworkUtils;
 import com.thuanht.eatez.view.Fragment.FavoriteFragment;
-import com.thuanht.eatez.view.Fragment.FeatureFragment;
 import com.thuanht.eatez.view.Fragment.HomeFragment;
 import com.thuanht.eatez.view.Fragment.NotificationFragment;
-
 import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 public class HomeActivity extends AppCompatActivity {
     ActivityHomeBinding binding;
@@ -57,56 +49,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void eventHandler() {
-//        binding.swipeRefreshHome.setOnRefreshListener(() -> {
-//            Fragment containingFragment = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
-//
-//            if(containingFragment instanceof HomeFragment && containingFragment != null){
-//                ViewPager2 viewPager = containingFragment.getView().findViewById(R.id.viewPager_Home);
-//                FragmentHomeAdapter homeAdapter = (FragmentHomeAdapter) viewPager.getAdapter();
-//                if (homeAdapter != null) {
-//                    FeatureFragment featureFragment = homeAdapter.getFeatureFragment();
-//                    if (featureFragment != null) {
-//                        // Sử dụng Executor để quản lý luồng
-//                        featureFragment.getShimmerFrameLayout().startShimmer();
-//                        featureFragment.getShimmerFrameLayout().setVisibility(View.VISIBLE);
-//                        featureFragment.getRecyclerView().setVisibility(View.INVISIBLE);
-//                        Executor executor = Executors.newSingleThreadExecutor();
-//                        List<Post> newData = new ArrayList<>();
-//                        executor.execute(() -> {
-//                            try {
-//                                Thread.sleep(2000);
-//                            } catch (InterruptedException e) {
-//                                e.printStackTrace();
-//                            }
-//                            featureFragment.callApiGetPosts(new FeatureFragment.ApiCallback() {
-//                                @Override
-//                                public void onDataLoaded(List<Post> posts) {
-//                                    // Áp dụng các thay đổi giao diện
-//                                    runOnUiThread(() -> {
-//                                        featureFragment.applyChanges(posts);
-//                                        binding.swipeRefreshHome.setRefreshing(false);
-//                                        featureFragment.getShimmerFrameLayout().stopShimmer();
-//                                        featureFragment.getShimmerFrameLayout().setVisibility(View.GONE);
-//                                        featureFragment.getRecyclerView().setVisibility(View.VISIBLE);
-//                                    });
-//                                }
-//
-//                                @Override
-//                                public void onFailure(String errorMessage) {
-//                                    // Xử lý lỗi
-//                                    runOnUiThread(() -> Toast.makeText(HomeActivity.this, "Something wrong!", Toast.LENGTH_SHORT).show());
-//                                }
-//                            });
-//                        });
-//
-//                    }
-//                }
-//            }
-//
-//
-//
-//        });
-
         binding.swipeRefreshHome.setOnRefreshListener(() -> {
             Fragment containingFragment = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
             if (containingFragment instanceof HomeFragment && containingFragment != null) {

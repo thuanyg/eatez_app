@@ -59,7 +59,7 @@ public class FeatureFragment extends Fragment {
     public void callApiGetPosts() {
         binding.shimmerHome.startShimmer();
         featureViewModel.getPosts().observe(requireActivity(), list -> {
-            adapter = new PostFeatureAdapter(list, p -> {
+            adapter = new PostFeatureAdapter(requireContext(), list, p -> {
                 goToPostDetailActivity(p);
             });
             binding.rcvFeatures.setAdapter(adapter);
