@@ -1,27 +1,18 @@
 package com.thuanht.eatez.Adapter;
 
 import android.content.Context;
-import android.media.FaceDetector;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.makeramen.roundedimageview.RoundedImageView;
-import com.thuanht.eatez.R;
+import com.thuanht.eatez.databinding.ItemDishesFavouriteBinding;
 import com.thuanht.eatez.model.Favourite;
-
 import java.util.List;
-
-import kotlin.jvm.internal.Lambda;
 
 public class DishesFavouriteAdapter extends RecyclerView.Adapter<DishesFavouriteAdapter.MyViewHolder>{
 
-    private List<Favourite> favouriteList;
-    private Context context;
+    private final List<Favourite> favouriteList;
+    private final Context context;
 
     public DishesFavouriteAdapter(List<Favourite> favouriteList, Context context) {
         this.favouriteList = favouriteList;
@@ -31,15 +22,15 @@ public class DishesFavouriteAdapter extends RecyclerView.Adapter<DishesFavourite
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dishes_favourite, parent, false);
-        return new MyViewHolder(view);
+        ItemDishesFavouriteBinding binding = ItemDishesFavouriteBinding.inflate(LayoutInflater.from(context), parent, false);
+        return new MyViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Favourite fv = favouriteList.get(position);
 //        holder.imageView.setImageResource(fv.);
-        holder.tvTitle.setText(fv.getTitle());
+        holder.binding.tvTitleDishFavourite.setText(fv.getTitle());
     }
 
     @Override
@@ -47,13 +38,11 @@ public class DishesFavouriteAdapter extends RecyclerView.Adapter<DishesFavourite
         return favouriteList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
-        TextView tvTitle;
-        RoundedImageView imageView;
-        public MyViewHolder(@NonNull View itemView) {
-            super(itemView);
-            tvTitle = itemView.findViewById(R.id.tvTitleDishFavourite);
-            imageView = itemView.findViewById(R.id.imageViewDishesFavourite);
+    public static class MyViewHolder extends RecyclerView.ViewHolder{
+        private final ItemDishesFavouriteBinding binding;
+        public MyViewHolder(@NonNull ItemDishesFavouriteBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 

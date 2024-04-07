@@ -21,4 +21,5 @@
     <color name="success_dialog">#198754</color>
     <color name="gray_overlay">#4BCCCCCC</color>
     <color name="shimmer_color">#BFBDBD</color>
+    <color name="gray_text">#FF918F8F</color>
 </resources>

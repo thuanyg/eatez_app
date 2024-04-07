@@ -1,15 +1,19 @@
 package com.thuanht.eatez.model;
 
-public class Category {
-    private int id;
-    private int imageID;
-    private String imageRes, categoryName;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
-    public Category(int id, int imageID, String imageRes, String categoryName) {
+public class Category {
+    @SerializedName("cid")
+    @Expose
+    private int id;
+    private String cname;
+    private String cimage;
+
+    public Category(int id, String cname, String cimage) {
         this.id = id;
-        this.imageID = imageID;
-        this.imageRes = imageRes;
-        this.categoryName = categoryName;
+        this.cname = cname;
+        this.cimage = cimage;
     }
 
     public int getId() {
@@ -20,27 +24,19 @@ public class Category {
         this.id = id;
     }
 
-    public int getImageID() {
-        return imageID;
+    public String getCname() {
+        return cname;
     }
 
-    public void setImageID(int imageID) {
-        this.imageID = imageID;
+    public void setCname(String cname) {
+        this.cname = cname;
     }
 
-    public String getImageRes() {
-        return imageRes;
+    public String getCimage() {
+        return cimage;
     }
 
-    public void setImageRes(String imageRes) {
-        this.imageRes = imageRes;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setCimage(String cimage) {
+        this.cimage = cimage;
     }
 }

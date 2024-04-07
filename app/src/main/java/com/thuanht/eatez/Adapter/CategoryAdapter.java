@@ -2,22 +2,20 @@ package com.thuanht.eatez.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.thuanht.eatez.R;
+import com.thuanht.eatez.databinding.ItemCategoryBinding;
 import com.thuanht.eatez.model.Category;
 
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyViewHolder> {
-    private List<Category> categoryList;
-    private Context context;
+    private final List<Category> categoryList;
+    private final Context context;
 
     public CategoryAdapter(List<Category> categoryList, Context context) {
         this.categoryList = categoryList;
@@ -27,15 +25,23 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category, parent, false);
-        return new MyViewHolder(view);
+        ItemCategoryBinding itemCategoryBinding = ItemCategoryBinding.inflate(LayoutInflater.from(context), parent, false);
+        return new MyViewHolder(itemCategoryBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Category category = categoryList.get(position);
-        holder.imageView.setImageResource(category.getImageID());
-        holder.categoryName.setText(category.getCategoryName());
+        if (categoryList != null && position < categoryList.size()) {
+            Category category = categoryList.get(position);
+            if (category != null) {
+                String urlImage = category.getCimage();
+                Glide.with(context)
+                        .load(urlImage)
+                        .placeholder(R.drawable.placeholder_image)
+                        .into(holder.itemCategoryBinding.imageViewCategory);
+                holder.itemCategoryBinding.tvCategoryName.setText(category.getCname());
+            }
+        }
     }
 
     @Override
@@ -43,13 +49,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
         return categoryList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
-        private ImageView imageView;
-        private TextView  categoryName;
-        public MyViewHolder(@NonNull View itemView) {
-            super(itemView);
-            imageView = itemView.findViewById(R.id.imageViewCategory);
-            categoryName = itemView.findViewById(R.id.tvCategoryName);
+    public static class MyViewHolder extends RecyclerView.ViewHolder{
+        private final ItemCategoryBinding itemCategoryBinding;
+        public MyViewHolder(@NonNull ItemCategoryBinding itemCategoryBinding) {
+            super(itemCategoryBinding.getRoot());
+            this.itemCategoryBinding = itemCategoryBinding;
         }
     }
 }

@@ -50,7 +50,6 @@
             android:id="@+id/imagePost_latest"
             android:layout_width="150dp"
             android:layout_height="90dp"
-            android:src="@drawable/sliderhome_img3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>

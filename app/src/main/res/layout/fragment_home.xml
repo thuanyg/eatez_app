@@ -7,19 +7,76 @@
     android:layout_gravity="center"
     android:orientation="vertical"
     tools:context=".view.Fragment.HomeFragment">
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout_home_sticky"
+    <!-- TopActionBar-->
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="60dp"
-        android:layout_alignParentTop="true"
-        android:animateLayoutChanges="true"
-        android:paddingBottom="5dp"
-        android:backgroundTint="@color/white"
-        app:tabIndicatorColor="@color/pure_light_blue"
-        app:tabMode="fixed"
-        app:tabIndicatorHeight="5dp"
-        app:tabSelectedTextColor="@color/pure_light_blue" />
+        android:id="@+id/topActionBar"
+        android:elevation="5dp"
+        android:layout_height="60dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/top_action_bar_home"
+            android:background="@color/white"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="start"
+                    android:drawableStart="@drawable/ic_menu" />
+
+                <TextView
+                    android:id="@+id/btn_location"
+                    android:layout_width="wrap_content"
+                    android:maxWidth="220dp"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:layout_centerInParent="true"
+                    android:drawableStart="@drawable/location_on"
+                    android:drawablePadding="5dp"
+                    android:fontFamily="@font/barlow"
+                    android:text="Vietnam"
+                    android:gravity="center_vertical"
+                    android:textSize="14sp" />
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
+                    android:layout_centerInParent="true"
+                    android:layout_marginEnd="15dp"
+                    android:src="@drawable/onboarding_img_2"
+                    app:civ_border_color="@color/pure_light_blue"
+                    app:civ_border_overlay="false"
+                    app:civ_border_width="1dp" />
+
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout_home_sticky"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="60dp"
+            android:layout_alignParentTop="true"
+            android:animateLayoutChanges="true"
+            android:paddingBottom="5dp"
+            android:backgroundTint="@color/card_post_color"
+            app:tabIndicatorColor="@color/pure_light_blue"
+            app:tabMode="fixed"
+            app:tabIndicatorHeight="5dp"
+            app:tabSelectedTextColor="@color/pure_light_blue" />
+    </RelativeLayout>
 
     <LinearLayout
 
@@ -27,7 +84,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:background="@color/white"
-        android:layout_below="@id/tabLayout_home_sticky"
+        android:layout_below="@id/topActionBar"
         android:orientation="vertical">
 
             <androidx.core.widget.NestedScrollView
@@ -42,56 +99,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
-                    <!-- TopActionBar-->
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
 
-                        <androidx.appcompat.widget.Toolbar
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="8dp"
-                            android:background="@color/white"
-                            app:layout_scrollFlags="scroll|enterAlways">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_centerVertical="true"
-                                    android:layout_gravity="start"
-                                    android:drawableStart="@drawable/ic_menu" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_centerInParent="true"
-                                    android:drawableStart="@drawable/location_on"
-                                    android:drawablePadding="5dp"
-                                    android:fontFamily="@font/barlow"
-                                    android:gravity="center"
-                                    android:text="55 Giai Phong"
-                                    android:textAlignment="center"
-                                    android:textSize="14sp" />
-
-                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                                    android:layout_width="40dp"
-                                    android:layout_height="40dp"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_gravity="end"
-                                    android:layout_marginEnd="15dp"
-                                    android:src="@drawable/onboarding_img_2"
-                                    app:civ_border_color="@color/pure_light_blue"
-                                    app:civ_border_overlay="false"
-                                    app:civ_border_width="1dp" />
-
-                            </RelativeLayout>
-                        </androidx.appcompat.widget.Toolbar>
-
-                    </RelativeLayout>
                     <!--Search-->
                     <EditText
                         android:id="@+id/btnToSearch"
@@ -109,10 +117,19 @@
                         android:paddingHorizontal="8dp"
                         android:textSize="14sp" />
                     <!--Slider-->
+
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/shimmer_sliderHome"
+                        android:layout_width="match_parent"
+                        android:background="@color/shimmer_color"
+                        android:layout_marginVertical="10dp"
+                        app:shimmer_repeat_mode="reverse"
+                        android:layout_height="160dp"/>
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/viewPagerSliderHome"
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
+                        android:visibility="gone"
                         android:layout_marginVertical="10dp"
                         android:clipChildren="false"
                         android:clipToPadding="false" />
@@ -122,11 +139,31 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/barlow_semibold"
                         android:text="Category"
+                        android:layout_marginBottom="10dp"
                         android:textColor="@color/black"
                         android:textSize="20sp" />
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/shimmer_categoryHome"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <include layout="@layout/item_category_shimmer"/>
+                            <include layout="@layout/item_category_shimmer"/>
+                            <include layout="@layout/item_category_shimmer"/>
+                            <include layout="@layout/item_category_shimmer"/>
+                            <include layout="@layout/item_category_shimmer"/>
+                            <include layout="@layout/item_category_shimmer"/>
+                            <include layout="@layout/item_category_shimmer"/>
+                        </LinearLayout>
+                    </com.facebook.shimmer.ShimmerFrameLayout>
+
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rcvCategory"
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:clipToPadding="false" />

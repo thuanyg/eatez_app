@@ -35,7 +35,7 @@ public class PostLatestAdapter extends RecyclerView.Adapter<PostLatestAdapter.My
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Post p = posts.get(position);
         holder.tvTitle.setText(p.getTitle());
-        holder.tvDesc.setText(p.getDetail());
+        holder.tvDesc.setText(p.getContent());
     }
 
     @Override
