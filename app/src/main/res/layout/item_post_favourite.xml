@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.chauthai.swipereveallayout.SwipeRevealLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="3dp"
+    app:mode="same_level"
+    android:id="@+id/swipeRevealFavourite"
+    app:dragEdge="right">
+    <androidx.cardview.widget.CardView
+        android:layout_width="120dp"
+        android:layout_marginVertical="3dp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="5dp"
+        app:cardBackgroundColor="@color/gray"
+        android:layout_height="80dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_height="match_parent"
+            android:drawableStart="@drawable/ic_remove" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_marginVertical="3dp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="5dp"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@drawable/card_view_background_2"
+            android:clickable="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="match_parent">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp">
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/imageViewDishesFavourite"
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:padding="5dp"
+                        android:scaleType="fitXY"
+                        app:riv_corner_radius="4dp"
+                        />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:visibility="gone"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:src="@drawable/favourite_star_svgrepo_com"
+                        android:translationX="100dp"
+                        android:translationY="58dp" />
+                </RelativeLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tvTitleDishFavourite"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="2dp"
+                        android:text="Hamburger"
+                        android:textSize="16sp"
+                        android:singleLine="true"
+                        android:drawablePadding="5dp"
+                        android:drawableStart="@drawable/like_heart_svgrepo_com"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/barlow_semibold"/>
+                    <TextView
+                        android:id="@+id/tvLocationFavourite"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="2dp"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        android:text="54 P.Phạm Ngọc Thạch, Đống Đa, Hà Nội"
+                        android:textSize="12sp"
+                        android:drawableStart="@drawable/location_svgrepo_com"
+                        android:drawablePadding="5dp"
+                        android:fontFamily="@font/barlow"/>
+                    <TextView
+                        android:id="@+id/tvDateFavourite"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="2dp"
+                        android:text="3h trước"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        android:textSize="12sp"
+                        android:drawablePadding="5dp"
+                        android:drawableStart="@drawable/clock_time_svgrepo_com"
+                        android:fontFamily="@font/barlow"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</com.chauthai.swipereveallayout.SwipeRevealLayout>

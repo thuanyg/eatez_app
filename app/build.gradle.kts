@@ -54,6 +54,7 @@ dependencies {
     implementation("com.facebook.shimmer:shimmer:0.5.0")
     implementation("de.hdodenhof:circleimageview:3.1.0")
     implementation("com.github.amarjain07:StickyScrollView:1.0.2")
+    implementation("com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.0")
     // API & Networking
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.google.code.gson:gson:2.10.1")

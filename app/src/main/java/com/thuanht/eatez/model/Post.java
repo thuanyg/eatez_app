@@ -28,6 +28,13 @@ public class Post implements Serializable {
     @Expose
     private Restaurant restaurant;
 
+    public Post(String postId, String title, String content, Object thumbnailImage) {
+        this.postId = postId;
+        this.title = title;
+        this.content = content;
+        this.thumbnailImage = thumbnailImage;
+    }
+
     public String getPostId() {
         return postId;
     }

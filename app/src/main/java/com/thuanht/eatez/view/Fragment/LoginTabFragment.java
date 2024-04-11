@@ -20,6 +20,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.thuanht.eatez.databinding.FragmentLoginTabBinding;
+import com.thuanht.eatez.utils.KeyboardUtils;
 import com.thuanht.eatez.view.Activity.HomeActivity;
 import com.thuanht.eatez.view.Activity.LoginActivity;
 import com.thuanht.eatez.viewModel.LoginViewModel;
@@ -66,7 +67,7 @@ public class LoginTabFragment extends Fragment {
                         progressBar.setVisibility(View.GONE);
                     }
                 }, 2000); // Đặt độ trễ là 2000 milliseconds (2 giây)
-
+                KeyboardUtils.hideKeyboard(requireContext(), binding.btnLogin);
                 startActivity(intent);
                 getActivity().finish();
             }

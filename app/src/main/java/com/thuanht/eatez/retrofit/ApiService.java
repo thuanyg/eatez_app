@@ -4,6 +4,7 @@ package com.thuanht.eatez.retrofit;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.thuanht.eatez.jsonResponse.CategoryResponse;
+import com.thuanht.eatez.jsonResponse.FavouriteResponse;
 import com.thuanht.eatez.jsonResponse.PostResponse;
 import com.thuanht.eatez.jsonResponse.SliderResponse;
 import com.thuanht.eatez.model.SliderHome;
@@ -23,24 +24,32 @@ public interface ApiService {
 
     HttpLoggingInterceptor HTTP_LOGGING_INTERCEPTOR = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
 
-    OkHttpClient.Builder BUILDER = new OkHttpClient.Builder()
-            .readTimeout(30, TimeUnit.SECONDS)
-            .connectTimeout(30, TimeUnit.SECONDS)
+    OkHttpClient okHttpClient = new OkHttpClient.Builder()
+            .readTimeout(15, TimeUnit.SECONDS)
+            .connectTimeout(15, TimeUnit.SECONDS)
+            .writeTimeout(15, TimeUnit.SECONDS)
             .retryOnConnectionFailure(true)
-            .addInterceptor(HTTP_LOGGING_INTERCEPTOR);
+            .addInterceptor(HTTP_LOGGING_INTERCEPTOR).build();
 
     Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy").create();
 
     ApiService ApiService = new Retrofit.Builder()
             .baseUrl("https://htthuan.id.vn/api/")
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
             .create(ApiService.class);
+
+
     @GET("getPosts.php")
-    Observable<PostResponse> getListPost(@Query("page") int id);
+    Observable<PostResponse> getListPost(@Query("page") int pageNumber);
     @GET("getCategories.php")
     Observable<CategoryResponse> getCategories();
     @GET("getSliders.php")
     Observable<SliderResponse> getSliders();
+    @GET("getPostsOfCategory.php")
+    Observable<PostResponse> getListPostOfCategory(@Query("categoryid") int cid, @Query("page") int pageNumber);
+    @GET("getFavouritePost.php")
+    Observable<FavouriteResponse> getFavouritePost(@Query("userid") int userid, @Query("page") int pageNumber);
 }

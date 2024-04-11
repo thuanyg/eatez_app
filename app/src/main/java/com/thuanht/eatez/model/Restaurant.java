@@ -15,6 +15,9 @@ public class Restaurant implements Serializable {
     @SerializedName("res_address")
     @Expose
     private String resAddress;
+    @SerializedName("res_image")
+    @Expose
+    private String resImage;
 
     public String getResId() {
         return resId;
@@ -38,5 +41,13 @@ public class Restaurant implements Serializable {
 
     public void setResAddress(String resAddress) {
         this.resAddress = resAddress;
+    }
+
+    public String getResImage() {
+        return resImage;
+    }
+
+    public void setResImage(String resImage) {
+        this.resImage = resImage;
     }
 }

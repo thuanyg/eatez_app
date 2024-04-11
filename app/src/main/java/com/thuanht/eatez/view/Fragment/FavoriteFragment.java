@@ -1,84 +1,103 @@
 package com.thuanht.eatez.view.Fragment;
 
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.thuanht.eatez.R;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
+import com.thuanht.eatez.Adapter.PostFavouriteAdapter;
 import com.thuanht.eatez.databinding.FragmentFavoriteBinding;
+import com.thuanht.eatez.model.Favourite;
+import com.thuanht.eatez.viewModel.FavouriteViewModel;
 
-public class FavoriteFragment extends Fragment implements View.OnClickListener{
+import java.util.ArrayList;
+import java.util.List;
 
-    private FragmentFavoriteBinding bd;
-    ColorStateList def;
-    TextView dishes_tab;
-    TextView res_tab;
-    TextView select;
+public class FavoriteFragment extends Fragment {
 
-    public static TextView current = null, selected = null;
-
-    Fragment fragmentDishes, fragmentRestaurant;
-
+    private FragmentFavoriteBinding binding;
+    private FavouriteViewModel viewModel;
+    private PostFavouriteAdapter adapter;
+    private List<Favourite> favouriteList = new ArrayList<>();
+    private Favourite f_temp = new Favourite();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        bd = FragmentFavoriteBinding.inflate(inflater, container, false);
-        return bd.getRoot();
+        binding = FragmentFavoriteBinding.inflate(inflater, container, false);
+        viewModel = new ViewModelProvider(requireActivity()).get(FavouriteViewModel.class);
+        initUI();
+        initData();
+        eventHandler();
+        return binding.getRoot();
+    }
+    private void eventHandler() {
+//        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+//            @Override
+//            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+//                return false;
+//            }
+//
+//            @Override
+//            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+//                int position = viewHolder.getAdapterPosition();
+//                f_temp = favouriteList.get(position);
+//                favouriteList.remove(position);
+//                adapter.notifyItemRemoved(position);
+//
+//                Snackbar.make(binding.rcvDishesFavourite, "Xóa thành công", Snackbar.LENGTH_LONG).setAction("Undo", v -> {
+//                    favouriteList.add(f_temp);
+//                    adapter.notifyItemInserted(position);
+//                }).show();
+//            }
+//        };
+//
+//        new ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.rcvDishesFavourite);
+
+
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        fragmentDishes = new FavouriteDishesFragment();
-        fragmentRestaurant = new FavouriteRestaurantFragment();
-        loadFragment(fragmentDishes);
-        dishes_tab = bd.getRoot().findViewById(R.id.dishes_tab);
-        res_tab = bd.getRoot().findViewById(R.id.restaurant_tab);
-        select = bd.getRoot().findViewById(R.id.select);
-        dishes_tab.setOnClickListener(this);
-        res_tab.setOnClickListener(this);
-        def = res_tab.getTextColors();
+    private void initUI() {
+        adapter = new PostFavouriteAdapter(favouriteList, requireContext());
+        binding.rcvDishesFavourite.setLayoutManager(new LinearLayoutManager(requireContext(),
+                LinearLayoutManager.VERTICAL, false));
+        binding.rcvDishesFavourite.setAdapter(adapter);
+    }
+    public void initData() {
+        binding.progressLoadFavourite.setVisibility(View.VISIBLE);
+        viewModel.getFavourites().observe(requireActivity(), new Observer<List<Favourite>>() {
+            @Override
+            public void onChanged(List<Favourite> favourites) {
+                if(favourites == null){
+                    binding.tvNoPostSaved.setVisibility(View.VISIBLE);
+                    binding.progressLoadFavourite.setVisibility(View.GONE);
+                    return;
+                }
+                if(!favourites.isEmpty()){
+                    if(favouriteList.isEmpty()){
+                        favouriteList.addAll(favourites);
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        int startInsertedIndex = favouriteList.size();
+                        favouriteList.addAll(favourites);
+                        adapter.notifyItemRangeInserted(startInsertedIndex, favouriteList.size());
+                    }
+                }
+                binding.progressLoadFavourite.setVisibility(View.GONE);
+            }
+        });
+        viewModel.fetchFavouritePost(1, 1);
     }
 
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.dishes_tab){
-            replaceTabSelected(res_tab, dishes_tab);
-            // Dishes Tab Clicked
-            loadFragment(fragmentDishes);
-        } else if (view.getId() == R.id.restaurant_tab){
-            replaceTabSelected(dishes_tab, res_tab);
-            loadFragment(fragmentRestaurant);
-        }
-    }
-
-    private void loadFragment(Fragment fragment) {
-        requireActivity().getSupportFragmentManager().beginTransaction()
-                .replace(bd.frameLayoutFavourite.getId(), fragment, "FAVORITE_FRAGMENT_TAG")
-//                .addToBackStack(null)
-                .commit();
-    }
-
-    public void replaceTabSelected(TextView current, TextView tabSelected){
-        if(current == res_tab) select.animate().x(0).setDuration(100);
-        else {
-            int size = res_tab.getWidth();
-            select.animate().x(size).setDuration(100);
-        }
-        tabSelected.setTextColor(Color.WHITE);
-        current.setTextColor(def);
-        this.current = tabSelected;
-        this.selected = current;
-    }
 }

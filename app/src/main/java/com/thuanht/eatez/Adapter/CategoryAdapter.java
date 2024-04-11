@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.thuanht.eatez.R;
 import com.thuanht.eatez.databinding.ItemCategoryBinding;
+import com.thuanht.eatez.interfaceEvent.onClickItemListener;
 import com.thuanht.eatez.model.Category;
+import com.thuanht.eatez.model.Post;
 
 import java.util.List;
 
@@ -17,9 +19,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
     private final List<Category> categoryList;
     private final Context context;
 
-    public CategoryAdapter(List<Category> categoryList, Context context) {
+    private onClickItemListener<Category> listener;
+
+    public CategoryAdapter(List<Category> categoryList, Context context, onClickItemListener<Category> listener) {
         this.categoryList = categoryList;
         this.context = context;
+        this.listener = listener;
     }
 
     @NonNull
@@ -42,6 +47,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
                 holder.itemCategoryBinding.tvCategoryName.setText(category.getCname());
             }
         }
+
+        holder.itemCategoryBinding.imageViewCategory.setOnClickListener(v -> {
+            listener.onClick(categoryList.get(position));
+        });
     }
 
     @Override

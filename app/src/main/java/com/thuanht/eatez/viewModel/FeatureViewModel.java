@@ -1,14 +1,22 @@
 package com.thuanht.eatez.viewModel;
 
 import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
 import com.thuanht.eatez.jsonResponse.PostResponse;
 import com.thuanht.eatez.model.Post;
 import com.thuanht.eatez.retrofit.ApiService;
-import com.thuanht.eatez.untils.NetworkUtils;
+import com.thuanht.eatez.utils.NetworkUtils;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableSource;
@@ -20,18 +28,15 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class FeatureViewModel extends ViewModel {
 
     private Disposable disposable;
+    private MutableLiveData<Boolean> isLastPageLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Post>> posts = new MutableLiveData<>();
 
-    public MutableLiveData<List<Post>> getPosts() {
-        return posts;
-    }
-
-    public void fetchPosts(Context context){
-        ApiService.ApiService.getListPost(1).subscribeOn(Schedulers.io())
+    public void fetchFeaturePosts(Context context, int pageNumber) {
+        ApiService.ApiService.getListPost(pageNumber)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .retryWhen(observable -> observable.flatMap((Function<? super Throwable, ? extends ObservableSource<?>>) throwable -> {
                     if (NetworkUtils.isNetworkAvailable(context.getApplicationContext())) {
-                        // Nếu có mạng trở lại, thử lại kết nối
                         return Observable.just(true).delay(1, TimeUnit.SECONDS);
                     }
                     return Observable.error(throwable);
@@ -44,18 +49,43 @@ public class FeatureViewModel extends ViewModel {
 
                     @Override
                     public void onNext(@io.reactivex.rxjava3.annotations.NonNull PostResponse postResponse) {
-                        posts.setValue(postResponse.getData());
+                        Log.d("TagDev", postResponse.getPagination().toString());
+                        if (postResponse != null) {
+                            if(postResponse.getStatus()){
+                                if(postResponse.getPagination().getCurrentPage() == postResponse.getPagination().getTotalPage()){
+                                    isLastPageLiveData.setValue(true);
+                                }
+                                posts.setValue(postResponse.getData());
+                            }
+                        }
                     }
 
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-
+                        if (e instanceof IOException) {
+                            // Lỗi mất kết nối mạng
+                            Toast.makeText(context, "Netword disconnected!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Lỗi không phải do mạng
+                        }
                     }
 
                     @Override
                     public void onComplete() {
-
+                        Log.d("TagDev", "CAll API Success");
                     }
                 });
+    }
+
+    public MutableLiveData<List<Post>> getPosts() {
+        return posts;
+    }
+
+    public MutableLiveData<Boolean> getIsLastPageLiveData() {
+        return isLastPageLiveData;
+    }
+
+    public void setIsLastPage(boolean isLastPage) {
+        this.isLastPageLiveData.setValue(isLastPage);
     }
 }

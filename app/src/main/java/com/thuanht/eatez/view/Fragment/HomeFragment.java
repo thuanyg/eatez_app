@@ -8,8 +8,11 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -18,11 +21,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
+
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,33 +39,51 @@ import com.thuanht.eatez.Adapter.CategoryAdapter;
 import com.thuanht.eatez.Adapter.FragmentHomeAdapter;
 import com.thuanht.eatez.Adapter.SliderHomeAdapter;
 import com.thuanht.eatez.databinding.FragmentHomeBinding;
+import com.thuanht.eatez.interfaceEvent.onClickItemListener;
+import com.thuanht.eatez.model.Category;
 import com.thuanht.eatez.model.SliderHome;
+import com.thuanht.eatez.pagination.PaginationOnScrollListener;
 import com.thuanht.eatez.permission.LocationPermission;
+import com.thuanht.eatez.view.Activity.HomeActivity;
+import com.thuanht.eatez.view.Activity.PostCategoryActivity;
 import com.thuanht.eatez.view.Activity.SearchActivity;
 import com.thuanht.eatez.viewModel.HomeViewModel;
+
 import java.io.IOException;
+import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     private FragmentHomeBinding binding;
     private FragmentHomeAdapter adapter;
-
+    private int pageNumber = 1;
     private FusedLocationProviderClient fusedLocationProviderClient;
+
+    private Timer timer;
+    private final String KEY_CATEGORY_ID = "category_id_action_intent";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-        initSlider();
         initCategory();
         initTabLayout(binding.tabLayoutHome);
         initTabLayout(binding.tabLayoutHomeSticky);
         eventHandler();
         return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initSlider();
     }
 
     private void eventHandler() {
@@ -67,23 +92,22 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
         });
 
-        binding.nestedScrollView.setOnScrollChangeListener((View.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+        binding.nestedScrollViewHome.setOnScrollChangeListener((View.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             // Lấy vị trí tuyệt đối của Button so với NestedScrollView
-            binding.nestedScrollView.setSmoothScrollingEnabled(true);
-
+            binding.nestedScrollViewHome.setSmoothScrollingEnabled(true);
             int[] location = new int[2];
             binding.tabLayoutHome.getLocationOnScreen(location);
-
-            // Kiểm tra xem Button có nằm ở trên cùng hay không
             if (location[1] <= 0) {
-                // Button đã cuộn lên trên cùng
                 binding.tabLayoutHomeSticky.setVisibility(View.VISIBLE);
                 binding.topActionBarHome.setVisibility(View.GONE);
             } else {
                 binding.topActionBarHome.setVisibility(View.VISIBLE);
                 binding.tabLayoutHomeSticky.setVisibility(View.GONE);
             }
+
         });
+
+        // GPS Location service
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
         binding.btnLocation.setOnClickListener(v -> {
             if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) !=
@@ -105,7 +129,35 @@ public class HomeFragment extends Fragment {
                         }
                     });
         });
+
+        // Swipe refresh data
+        binding.swipeRefreshHome.setOnRefreshListener(() -> {
+            homeViewModel.fetchSliderImages();
+            homeViewModel.fetchCategories();
+            FeatureFragment featureFragment = adapter.getFeatureFragment();
+            if (featureFragment != null) {
+                featureFragment.refreshData();
+            }
+            binding.swipeRefreshHome.setRefreshing(false);
+        });
+
+
+        // Scroll -> load more data for Feature posts
+        binding.nestedScrollViewHome.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(@NonNull NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                // Kiểm tra khi người dùng cuộn xuống cuối cùng
+                if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
+                    if (adapter == null) return;
+                    FeatureFragment featureFragment = adapter.getFeatureFragment();
+                    if (featureFragment != null) {
+                        featureFragment.LoadMoreFeaturePost();
+                    }
+                }
+            }
+        });
     }
+
     public void initSlider() {
         // Viewpager set slider
         binding.shimmerSliderHome.startShimmer();
@@ -116,9 +168,9 @@ public class HomeFragment extends Fragment {
                 binding.shimmerSliderHome.stopShimmer();
                 binding.shimmerSliderHome.setVisibility(View.GONE);
 
-                binding.viewPagerSliderHome.setAdapter(new SliderHomeAdapter(requireContext(), sliderHomes, binding.viewPagerHome, sliderHome -> {
+                binding.viewPagerSliderHome.setAdapter(new SliderHomeAdapter(getActivity(), sliderHomes, binding.viewPagerHome, sliderHome -> {
                     String urlRedirect = sliderHome.getLink();
-                    if(!urlRedirect.isEmpty()){
+                    if (!urlRedirect.isEmpty()) {
                         Uri uri = Uri.parse(urlRedirect);
                         startActivity(new Intent(Intent.ACTION_VIEW, uri));
                     }
@@ -133,24 +185,36 @@ public class HomeFragment extends Fragment {
                 });
                 binding.viewPagerSliderHome.setPageTransformer(pageTransformer);
 
-                Handler handler = new Handler(Looper.getMainLooper());
-                Runnable runnable = new Runnable() {
+
+                if (timer != null) {
+                    stopAutoSlider();
+                }
+                timer = new Timer();
+                timer.scheduleAtFixedRate(new TimerTask() {
                     @Override
                     public void run() {
-                        int nextPosition = binding.viewPagerSliderHome.getCurrentItem() + 1;
-                        if (nextPosition >= sliderHomes.size()) {
-                            nextPosition = 0;
-                        }
-                        binding.viewPagerSliderHome.setCurrentItem(nextPosition);
-                        handler.postDelayed(this, 3000);
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            int nextPosition = binding.viewPagerSliderHome.getCurrentItem() + 1;
+                            if (nextPosition >= sliderHomes.size()) {
+                                nextPosition = 0;
+                            }
+                            binding.viewPagerSliderHome.setCurrentItem(nextPosition);
+                        });
                     }
-                };
-                handler.postDelayed(runnable, 3000);
+                }, 3000, 3000);
             }
         });
 
         homeViewModel.fetchSliderImages();
     }
+
+    private void stopAutoSlider() {
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+    }
+
     public void initTabLayout(TabLayout tabLayout) {
         adapter = new FragmentHomeAdapter(getActivity());
         ViewPager2 viewPager = binding.viewPagerHome;
@@ -192,10 +256,20 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
     public void initCategory() {
         binding.shimmerCategoryHome.startShimmer();
         homeViewModel.getCategoryList().observe(requireActivity(), categories -> {
-            CategoryAdapter categoryAdapter = new CategoryAdapter(categories, getContext());
+            CategoryAdapter categoryAdapter = new CategoryAdapter(categories, requireContext(), new onClickItemListener<Category>() {
+                @Override
+                public void onClick(Category category) {
+                    Intent intent = new Intent(requireActivity(), PostCategoryActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(KEY_CATEGORY_ID, category);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+            });
             binding.rcvCategory.setAdapter(categoryAdapter);
             binding.rcvCategory.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
             // Show category + Hide Shimmer
@@ -206,6 +280,5 @@ public class HomeFragment extends Fragment {
 
         homeViewModel.fetchCategories();
     }
-
 
 }

@@ -1,11 +1,13 @@
 package com.thuanht.eatez.view.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.text.HtmlCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.bumptech.glide.Glide;
 import com.thuanht.eatez.databinding.ActivityPostDetailBinding;
 import com.thuanht.eatez.model.Post;
 import com.thuanht.eatez.view.Dialog.LoadingDialog;
@@ -28,7 +30,7 @@ public class PostDetailActivity extends AppCompatActivity {
                 loadingDialog.cancel();
             }
         };
-        handler.postDelayed(runnable, 2000);
+        handler.postDelayed(runnable, 1200);
 
 
         Intent intent = getIntent();
@@ -37,7 +39,9 @@ public class PostDetailActivity extends AppCompatActivity {
             if (bundle != null && bundle.containsKey("post")) {
                 Post post = (Post) bundle.getSerializable("post");
                 binding.titlePostDetail.setText(post.getTitle());
-                binding.contentPostDetail.setText(post.getContent());
+                CharSequence spanned = HtmlCompat.fromHtml(post.getContent(), HtmlCompat.FROM_HTML_MODE_LEGACY);
+                binding.contentPostDetail.setText(spanned);
+                Glide.with(this).load(post.getThumbnailImage()).into(binding.imagePostDetail);
             }
         }
 

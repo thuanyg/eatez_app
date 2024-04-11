@@ -6,21 +6,9 @@
         <item name="android:windowBackground">@null</item>
     </style>
 
-    <style name="Widget.Theme.EatEz.ButtonBar.Fullscreen" parent="">
+    <style name="Widget.Theme.EatEz.ButtonBar.Fullscreen" parent="Widget.AppCompat.ButtonBar">
         <item name="android:background">@color/black_overlay</item>
         <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
-    </style>
-
-    <style name="MyTabLayout" parent="Widget.MaterialComponents.TabLayout">
-        <!-- Thiết lập kích thước chữ cho các tab -->
-        <item name="tabTextAppearance">@style/MyTabTextAppearance</item>
-    </style>
-
-    <style name="MyTabTextAppearance" parent="TextAppearance.Design.Tab">
-        <!-- Thiết lập kích thước chữ -->
-        <item name="android:textSize">18sp</item>
-        <item name="android:fontFamily">@font/barlow_semibold</item>
-        <item name="android:textColor">@color/black</item>
     </style>
 
 </resources>

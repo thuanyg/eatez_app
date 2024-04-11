@@ -5,15 +5,12 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 
-import com.thuanht.eatez.R;
 import com.thuanht.eatez.jsonResponse.CategoryResponse;
 import com.thuanht.eatez.jsonResponse.SliderResponse;
 import com.thuanht.eatez.model.Category;
-import com.thuanht.eatez.model.Post;
 import com.thuanht.eatez.model.SliderHome;
 import com.thuanht.eatez.retrofit.ApiService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -52,7 +49,6 @@ public class HomeViewModel extends ViewModel {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-
                     }
 
                     @Override

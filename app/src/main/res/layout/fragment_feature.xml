@@ -9,7 +9,7 @@
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmerHome"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center">
 
         <LinearLayout
@@ -45,12 +45,32 @@
         </LinearLayout>
     </com.facebook.shimmer.ShimmerFrameLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvFeatures"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false"
-        android:visibility="gone" />
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvFeatures"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
 
+        <ProgressBar
+            android:id="@+id/progress_loadPost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
 
+        <TextView
+            android:id="@+id/tvDataLoaded_Feature"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:fontFamily="@font/barlow"
+            android:textSize="16sp"
+            android:visibility="gone"
+            android:text="End of data"
+            android:textAlignment="center"/>
+    </LinearLayout>
 </RelativeLayout>
