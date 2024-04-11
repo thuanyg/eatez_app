@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:layout_margin="3dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/card_view_background_2"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/title_postCategory"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/barlow_semibold"
+                android:gravity="center"
+                android:paddingHorizontal="14dp"
+                android:textStyle="bold"
+                android:singleLine="true"
+                android:text="Want to learn how to create this ?"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/descPost_category"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/barlow"
+                android:gravity="left"
+                android:paddingVertical="2dp"
+                android:maxLines="3"
+                android:paddingHorizontal="10dp"
+                android:text="Make and I will send it out tomorrow and I haven't heard back yet"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/imagePost_category"
+            android:layout_width="150dp"
+            android:layout_height="90dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
