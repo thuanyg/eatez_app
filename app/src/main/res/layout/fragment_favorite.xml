@@ -15,12 +15,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-        <ProgressBar
-            android:id="@+id/progress_loadFavourite"
-            android:layout_width="wrap_content"
-            android:visibility="gone"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
     </LinearLayout>
 
     <LinearLayout
@@ -68,14 +62,31 @@
             android:textAlignment="center"
             android:textSize="18sp"
             android:visibility="gone" />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcvDishesFavourite"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView_Fav"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingHorizontal="5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcvDishesFavourite"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingHorizontal="5dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <ProgressBar
+                    android:id="@+id/progress_loadMoreFavourite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

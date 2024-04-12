@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.thuanht.eatez.R;
 import com.thuanht.eatez.databinding.ItemCategoryBinding;
-import com.thuanht.eatez.interfaceEvent.onClickItemListener;
+import com.thuanht.eatez.interfaceEvent.MyClickItemListener;
 import com.thuanht.eatez.model.Category;
 import com.thuanht.eatez.model.Post;
 
@@ -19,9 +19,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
     private final List<Category> categoryList;
     private final Context context;
 
-    private onClickItemListener<Category> listener;
+    private MyClickItemListener<Category> listener;
 
-    public CategoryAdapter(List<Category> categoryList, Context context, onClickItemListener<Category> listener) {
+    public CategoryAdapter(List<Category> categoryList, Context context, MyClickItemListener<Category> listener) {
         this.categoryList = categoryList;
         this.context = context;
         this.listener = listener;

@@ -15,6 +15,7 @@
         app:cardBackgroundColor="@color/gray"
         android:layout_height="80dp">
         <TextView
+            android:id="@+id/btnRemove_PostFavourite"
             android:layout_width="wrap_content"
             android:gravity="center"
             android:layout_gravity="center"
@@ -38,6 +39,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
+                android:id="@+id/layout_item_favourite"
                 android:layout_height="match_parent">
                 <RelativeLayout
                     android:layout_width="wrap_content"

@@ -76,9 +76,7 @@ public class FeatureFragment extends Fragment {
     private void goToPostDetailActivity(Post post) {
         Intent intent = new Intent(requireContext(), PostDetailActivity.class);
         if (post != null) {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("post", post);
-            intent.putExtras(bundle);
+            intent.putExtra("postid", post.getPostId());
             startActivity(intent);
         } else {
             Toast.makeText(requireContext(), "Something wrong!", Toast.LENGTH_SHORT).show();

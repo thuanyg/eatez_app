@@ -39,12 +39,11 @@ import com.thuanht.eatez.Adapter.CategoryAdapter;
 import com.thuanht.eatez.Adapter.FragmentHomeAdapter;
 import com.thuanht.eatez.Adapter.SliderHomeAdapter;
 import com.thuanht.eatez.databinding.FragmentHomeBinding;
-import com.thuanht.eatez.interfaceEvent.onClickItemListener;
+import com.thuanht.eatez.interfaceEvent.MyClickItemListener;
 import com.thuanht.eatez.model.Category;
 import com.thuanht.eatez.model.SliderHome;
-import com.thuanht.eatez.pagination.PaginationOnScrollListener;
+
 import com.thuanht.eatez.permission.LocationPermission;
-import com.thuanht.eatez.view.Activity.HomeActivity;
 import com.thuanht.eatez.view.Activity.PostCategoryActivity;
 import com.thuanht.eatez.view.Activity.SearchActivity;
 import com.thuanht.eatez.viewModel.HomeViewModel;
@@ -260,7 +259,7 @@ public class HomeFragment extends Fragment {
     public void initCategory() {
         binding.shimmerCategoryHome.startShimmer();
         homeViewModel.getCategoryList().observe(requireActivity(), categories -> {
-            CategoryAdapter categoryAdapter = new CategoryAdapter(categories, requireContext(), new onClickItemListener<Category>() {
+            CategoryAdapter categoryAdapter = new CategoryAdapter(categories, requireContext(), new MyClickItemListener<Category>() {
                 @Override
                 public void onClick(Category category) {
                     Intent intent = new Intent(requireActivity(), PostCategoryActivity.class);

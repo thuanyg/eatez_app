@@ -15,24 +15,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.thuanht.eatez.R;
-import com.thuanht.eatez.interfaceEvent.onClickItemListener;
+import com.thuanht.eatez.interfaceEvent.MyClickItemListener;
 import com.thuanht.eatez.model.Post;
 import com.thuanht.eatez.utils.DateUtils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
-public class PostFeatureAdapter extends RecyclerView.Adapter<PostFeatureAdapter.MyViewHolder>{
+public class PostFeatureAdapter extends RecyclerView.Adapter<PostFeatureAdapter.MyViewHolder> {
 
     private List<Post> postList;
 
     private Context context;
-    private final onClickItemListener<Post> itemListener;
+    private final MyClickItemListener<Post> itemListener;
 
-    public PostFeatureAdapter(Context context, List<Post> postList, onClickItemListener<Post> listener) {
+    public PostFeatureAdapter(Context context, List<Post> postList, MyClickItemListener<Post> listener) {
         this.postList = postList;
         this.itemListener = listener;
         this.context = context;
@@ -63,13 +59,13 @@ public class PostFeatureAdapter extends RecyclerView.Adapter<PostFeatureAdapter.
 
     @Override
     public int getItemCount() {
-        if(postList != null){
+        if (postList != null) {
             return postList.size();
         }
         return 0;
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
         private final LinearLayout layout;
         private final TextView tvTitle;
         private final TextView tvDesc;

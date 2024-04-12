@@ -33,7 +33,14 @@ public class FavouriteViewModel extends ViewModel {
 
                     @Override
                     public void onNext(@NonNull FavouriteResponse favouriteResponse) {
-                        favourites.setValue(favouriteResponse.getData());
+                        if(favouriteResponse != null){
+                            if(favouriteResponse.getPagination().getCurrentPage() == favouriteResponse.getPagination().getTotalPage()){
+                                isLastPage.setValue(true);
+                            }
+                            if(favouriteResponse.getData() != null){
+                                favourites.setValue(favouriteResponse.getData());
+                            }
+                        }
                     }
 
                     @Override

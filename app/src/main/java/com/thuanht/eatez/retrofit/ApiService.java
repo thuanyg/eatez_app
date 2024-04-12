@@ -52,4 +52,6 @@ public interface ApiService {
     Observable<PostResponse> getListPostOfCategory(@Query("categoryid") int cid, @Query("page") int pageNumber);
     @GET("getFavouritePost.php")
     Observable<FavouriteResponse> getFavouritePost(@Query("userid") int userid, @Query("page") int pageNumber);
+    @GET("getPost.php")
+    Observable<PostResponse> getDetailPost(@Query("postid") int postid);
 }

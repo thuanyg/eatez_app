@@ -12,7 +12,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.bumptech.glide.Glide;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.thuanht.eatez.R;
-import com.thuanht.eatez.interfaceEvent.onClickItemListener;
+import com.thuanht.eatez.interfaceEvent.MyClickItemListener;
 import com.thuanht.eatez.model.SliderHome;
 
 import java.util.List;
@@ -23,9 +23,9 @@ public class SliderHomeAdapter extends RecyclerView.Adapter<SliderHomeAdapter.Sl
     private Context context;
     private ViewPager2 viewPager;
 
-    private onClickItemListener<SliderHome> itemListener;
+    private MyClickItemListener<SliderHome> itemListener;
 
-    public SliderHomeAdapter(Context context, List<SliderHome> sliderHomeList, ViewPager2 viewPager, onClickItemListener<SliderHome> itemListener) {
+    public SliderHomeAdapter(Context context, List<SliderHome> sliderHomeList, ViewPager2 viewPager, MyClickItemListener<SliderHome> itemListener) {
         this.sliderHomeList = sliderHomeList;
         this.viewPager = viewPager;
         this.context = context;

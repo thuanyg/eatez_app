@@ -88,7 +88,7 @@
                 android:id="@+id/title_postDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Salad Caesar tươi mát "
+                android:text=""
                 android:padding="10dp"
                 android:gravity="start"
                 android:fontFamily="@font/barlow_semibold"
@@ -120,7 +120,7 @@
                     android:textColor="@color/gray_text"
                     android:fontFamily="@font/barlow"
                     android:textSize="12sp"
-                    android:text="20 May, 2024"/>
+                    android:text=""/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -135,7 +135,7 @@
                     android:textColor="@color/gray_text"
                     android:fontFamily="@font/barlow"
                     android:textSize="12sp"
-                    android:text="Thuan.Teddy"/>
+                    android:text=""/>
             </LinearLayout>
 
 
@@ -146,7 +146,7 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:textSize="18sp"
-                android:text="Từ món bún đầy hương vị cho đến các món chiên, bánh và các món tráng miệng ngọt - với tour ẩm thực quanh Phố Cổ Hà Nội sẽ cho bạn trải nghiệm tất cả trong một. Hãy khám phá những hương thơm tuyệt vời của những quầy hàng bận rộn khi bạn khám phá Khu Phố Cổ với hướng dẫn viên nói tiếng Anh. Bạn có thể chọn thời gian tham gia bất cứ lúc nào trong ngày để trải nghiệm hương vị các món ăn địa phương từ đầu giờ chiều đến tối! Trước khi dạ dày bạn no căng với các món ngon địa phương, bạn sẽ tìm hiểu về lịch sử của Phố Cổ và các thắng cảnh văn hoá từ hướng dẫn viên giàu thông tin của bạn. Với vô số những câu chuyện bạn được nghe trong suốt hành trình khám phá, bạn sẽ có một trải nghiệm thú vị trong ngày cùng các món ăn ngon!"/>
+                android:text=""/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
