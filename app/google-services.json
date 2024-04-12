@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "422555376520",
+    "project_id": "eatez-3084f",
+    "storage_bucket": "eatez-3084f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:422555376520:android:9e58be6c6a3adbdc53b83d",
+        "android_client_info": {
+          "package_name": "com.thuanht.eatez"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMYKie1NJAriLxpAtCYK-9Tiy9CC-X8nE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

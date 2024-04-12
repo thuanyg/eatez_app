@@ -1,0 +1,28 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.EatEz" parent="Theme.Material3.Light.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/shimmer_color</item>
+        <item name="colorPrimaryDark">@color/gray</item>
+        <item name="colorAccent">@color/pure_light_blue</item>
+    </style>
+
+    <style name="Theme.EatEz" parent="Base.Theme.EatEz" />
+
+    <style name="Theme.App.SplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="postSplashScreenTheme">@style/Base.Theme.EatEz</item>
+    </style>
+
+    <style name="Theme.EatEz.Fullscreen" parent="Theme.EatEz">
+        <item name="android:actionBarStyle">@style/Widget.Theme.EatEz.ActionBar.Fullscreen</item>
+        <item name="android:windowActionBarOverlay">false</item>
+        <item name="android:windowBackground">@null</item>
+    </style>
+
+    <style name="ThemeOverlay.EatEz.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
+        <item name="fullscreenTextColor">@color/light_blue_A200</item>
+    </style>
+</resources>

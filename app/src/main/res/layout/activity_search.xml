@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".view.Activity.SearchActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/btn_back_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="start"
+            android:drawableStart="@drawable/west"
+            android:padding="3dp"
+            android:textSize="24sp" />
+
+
+        <EditText
+            android:id="@+id/txtSearch"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/edit_text_background"
+            android:backgroundTint="@color/gray_overlay"
+            android:drawableStart="@drawable/search"
+            android:drawablePadding="5dp"
+            android:fontFamily="@font/barlow"
+            android:hint="Search Food, Drink, ..."
+            android:maxLines="1"
+            android:singleLine="true"
+            android:paddingHorizontal="8dp"
+            android:textSize="14sp" />
+    </androidx.appcompat.widget.Toolbar>
+</androidx.constraintlayout.widget.ConstraintLayout>

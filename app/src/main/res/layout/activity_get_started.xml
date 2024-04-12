@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    tools:context=".view.Activity.GetStartedActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.374">
+
+        <ImageView
+            android:id="@+id/slider_image"
+            android:layout_width="276dp"
+            android:layout_height="246dp"
+            android:src="@drawable/onboarding_img_1" />
+
+        <TextView
+            android:id="@+id/slider_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/barlow_semibold"
+            android:text="Experience EatEz"
+            android:layout_marginTop="15dp"
+            android:textAlignment="center"
+            android:textSize="28sp" />
+
+        <TextView
+            android:id="@+id/slider_desc"
+            android:layout_width="276dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/barlow"
+            android:text="Begin Your Culinary Journey with EatEz"
+            android:textAlignment="center"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/btn_start"
+        android:layout_width="300dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="28dp"
+        android:background="@drawable/button_background"
+        android:fontFamily="@font/barlow_semibold"
+        android:gravity="center"
+        android:text="Start!"
+        android:clickable="true"
+        android:focusable="true"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

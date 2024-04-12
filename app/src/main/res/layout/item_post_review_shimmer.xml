@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="240dp"
+    android:layout_margin="3dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/card_view_background"
+        android:clickable="true"
+        android:orientation="vertical">
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginBottom="10dp"
+            android:scaleType="centerInside"
+            android:background="@color/shimmer_color"
+            app:riv_corner_radius="2dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:fontFamily="@font/barlow_semibold"
+                android:gravity="center"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:paddingHorizontal="2dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/shimmer_color"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:paddingHorizontal="2dp"
+                android:textSize="14sp"
+                android:fontFamily="@font/barlow"
+                android:gravity="center"
+                android:maxLines="3"
+                android:ellipsize="end"
+                android:background="@color/shimmer_color"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom|center"
+                android:layout_marginBottom="2dp"
+                android:background="@color/shimmer_color"
+                android:orientation="horizontal">
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

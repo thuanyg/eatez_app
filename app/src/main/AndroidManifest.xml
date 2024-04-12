@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <application
+        android:name=".app.MyApplication"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.EatEz"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+        <activity
+            android:name=".view.Activity.PostCategoryActivity"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".view.Activity.PostDetailActivity"
+            android:exported="false"></activity>
+        <activity
+            android:name=".view.Activity.SearchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.Activity.SettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.Activity.HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.Activity.LoginActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.EatEz.Fullscreen"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".view.Activity.GetStartedActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.Activity.OnboardingActivity"
+            android:exported="true"
+            android:theme="@style/Theme.App.SplashScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+    </application>
+
+</manifest>
