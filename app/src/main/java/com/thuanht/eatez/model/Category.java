@@ -17,7 +17,7 @@ public class Category implements Serializable {
         this.cname = cname;
         this.cimage = cimage;
     }
-    // Cmt
+
 
     public int getId() {
         return id;
