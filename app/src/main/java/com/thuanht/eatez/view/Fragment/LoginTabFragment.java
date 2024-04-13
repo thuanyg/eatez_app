@@ -45,14 +45,15 @@ public class LoginTabFragment extends Fragment {
             binding.textInputLayout.setEndIconMode(TextInputLayout.END_ICON_NONE);
             binding.txtEmail.requestFocus();
         });
+        eventHandler();
         return binding.getRoot();
     }
 
     public void eventHandler() {
         // Click button login
-        String email = binding.txtEmail.getText().toString();
-        String password = binding.txtPassword.getText().toString();
         binding.btnLogin.setOnClickListener(v -> {
+            String email = binding.txtEmail.getText().toString();
+            String password = binding.txtPassword.getText().toString();
             if (viewModel.validateData(email, password)) {
                 viewModel.Login(email, password);
             }

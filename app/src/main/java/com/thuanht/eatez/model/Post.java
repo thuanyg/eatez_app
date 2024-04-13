@@ -17,7 +17,11 @@ public class Post implements Serializable {
     private String content;
     @SerializedName("thumbnail_image")
     @Expose
-    private Object thumbnailImage;
+    private String thumbnailImage;
+
+    @SerializedName("order_grab")
+    @Expose
+    private String orderGrab;
     @SerializedName("date")
     @Expose
     private String date;
@@ -28,11 +32,12 @@ public class Post implements Serializable {
     @Expose
     private Restaurant restaurant;
 
-    public Post(String postId, String title, String content, Object thumbnailImage) {
+    public Post(String postId, String title, String content, String thumbnailImage, String orderGrab) {
         this.postId = postId;
         this.title = title;
         this.content = content;
         this.thumbnailImage = thumbnailImage;
+        this.orderGrab = orderGrab;
     }
 
     public String getPostId() {
@@ -59,13 +64,10 @@ public class Post implements Serializable {
         this.content = content;
     }
 
-    public Object getThumbnailImage() {
+    public String getThumbnailImage() {
         return thumbnailImage;
     }
 
-    public void setThumbnailImage(Object thumbnailImage) {
-        this.thumbnailImage = thumbnailImage;
-    }
 
     public String getDate() {
         return date;
@@ -91,4 +93,15 @@ public class Post implements Serializable {
         this.restaurant = restaurant;
     }
 
+    public void setThumbnailImage(String thumbnailImage) {
+        this.thumbnailImage = thumbnailImage;
+    }
+
+    public String getOrderGrab() {
+        return orderGrab;
+    }
+
+    public void setOrderGrab(String orderGrab) {
+        this.orderGrab = orderGrab;
+    }
 }

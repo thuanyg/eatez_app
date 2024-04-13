@@ -13,10 +13,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.TokenWatcher;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,7 +39,7 @@ public class PostDetailActivity extends AppCompatActivity {
     private PostDetailViewModel viewModel;
     protected LoadingDialog loadingDialog;
     private int postid;
-
+    private String orderLink;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +78,7 @@ public class PostDetailActivity extends AppCompatActivity {
             @Override
             public void onChanged(Post post) {
                 if (post != null) {
+                    orderLink = post.getOrderGrab();
                     RenderDataOnUI(post);
                 }
                 loadingDialog.hide();
@@ -108,6 +111,13 @@ public class PostDetailActivity extends AppCompatActivity {
                 // Save post
             }
             return false;
+        });
+
+        binding.fabItemGrab.setOnClickListener(v -> {
+            if (orderLink.length() > 0) {
+                Uri uri = Uri.parse(orderLink);
+                startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            }
         });
     }
 
