@@ -37,11 +37,15 @@
         <activity
             android:name=".view.Activity.LoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:exported="false"
-            android:label="@string/title_activity_login"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EatEz.Fullscreen"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".view.Activity.GetStartedActivity"
             android:exported="false" />
@@ -49,10 +53,7 @@
             android:name=".view.Activity.OnboardingActivity"
             android:exported="true"
             android:theme="@style/Theme.App.SplashScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
 
         <meta-data
