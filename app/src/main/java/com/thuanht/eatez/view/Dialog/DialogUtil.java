@@ -19,7 +19,6 @@ public class DialogUtil {
     public DialogUtil() {
     }
 
-
     public static void showProgressDialog(Context context) {
         PopupDialog.getInstance(context)
                 .progressDialogBuilder()

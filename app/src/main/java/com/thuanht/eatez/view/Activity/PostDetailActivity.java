@@ -48,14 +48,12 @@ public class PostDetailActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(PostDetailViewModel.class);
         loadingDialog = new LoadingDialog(this);
 
-        setSupportActionBar(binding.toolbarFavourite);
-        getSupportActionBar().show();
-
-
+        // Get post id
         Intent intent = getIntent();
         if (intent != null) {
             postid = intent.getIntExtra("postid", 0);
         }
+
         initUI();
         initData();
         eventHandler();
@@ -63,6 +61,9 @@ public class PostDetailActivity extends AppCompatActivity {
     }
 
     public void initUI(){
+        setSupportActionBar(binding.toolbarFavourite);
+        getSupportActionBar().show();
+
         binding.layoutPostDetail.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (scrollY > 1000) {
                 binding.favRelativePostDetail.setVisibility(View.GONE);
@@ -89,6 +90,7 @@ public class PostDetailActivity extends AppCompatActivity {
         viewModel.fetchPostDetail(postid);
     }
 
+    // Render data
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void RenderDataOnUI(@NonNull Post post) {
         binding.titlePostDetail.setText(post.getTitle());
@@ -106,14 +108,16 @@ public class PostDetailActivity extends AppCompatActivity {
             finish();
         });
 
+        // Save post into favourite list
         binding.toolbarFavourite.setOnMenuItemClickListener(item -> {
             if(item.getItemId() == R.id.btn_favouritePost){
                 changeFavouriteIcon(item);
-                // Save post
+
             }
             return false;
         });
 
+        // Redirect to Grab/Shoppefood
         binding.fabItemGrab.setOnClickListener(v -> {
             if (orderLink.length() > 0) {
                 Uri uri = Uri.parse(orderLink);
@@ -121,13 +125,6 @@ public class PostDetailActivity extends AppCompatActivity {
             }
         });
 
-        binding.txtComment.setOnFocusChangeListener((v, hasFocus) -> {
-            if(hasFocus){
-                binding.favRelativePostDetail.setVisibility(View.INVISIBLE);
-            } else {
-                binding.favRelativePostDetail.setVisibility(View.VISIBLE);
-            }
-        });
     }
 
     private void changeFavouriteIcon(MenuItem item) {
