@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/tvAvatar_UserComment"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/onboarding_img_3"
+            app:civ_border_color="#179FC8"
+            app:civ_border_width="1dp" />
+        <TextView
+            android:id="@+id/tvName_UserComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hoang Tien Thuan"
+            android:padding="5dp"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <com.willy.ratingbar.ScaleRatingBar
+            android:id="@+id/RatingBar_UserComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_gravity="center"
+            app:srb_clearRatingEnabled="true"
+            app:srb_clickable="true"
+            app:srb_isIndicator="false"
+            app:srb_minimumStars="1"
+            app:srb_numStars="5"
+            app:srb_rating="4"
+            app:srb_scrollable="true"
+            app:srb_starHeight="12dp"
+            app:srb_starPadding="3dp"
+            app:srb_starWidth="12dp"
+            app:srb_stepSize="1"/>
+
+        <TextView
+            android:id="@+id/Date_UserComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="11/10/2023"
+            android:layout_gravity="center_vertical"
+            android:padding="5dp"
+            android:textSize="12sp"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/Content_UserComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:text="Nước dùng quá mặn, mọi người có thể cân nhắc."
+        android:padding="5dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#86CCCCCC"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"/>
+
+</LinearLayout>

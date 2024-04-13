@@ -16,7 +16,9 @@ public class SettingActivity extends AppCompatActivity {
         binding = ActivitySettingBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.btnBackSetting.setOnClickListener(v -> {
+        setSupportActionBar(binding.toolbarSetting);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        binding.toolbarSetting.setNavigationOnClickListener(v -> {
             finish();
         });
     }

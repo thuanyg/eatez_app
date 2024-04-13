@@ -1,16 +1,31 @@
 package com.thuanht.eatez.view.Activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.text.HtmlCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.TokenWatcher;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
+import com.thuanht.eatez.R;
 import com.thuanht.eatez.databinding.ActivityPostDetailBinding;
 import com.thuanht.eatez.model.Post;
 import com.thuanht.eatez.utils.DateUtils;
@@ -30,58 +45,84 @@ public class PostDetailActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(PostDetailViewModel.class);
         loadingDialog = new LoadingDialog(this);
 
-//        Handler handler = new Handler();
-//        Runnable runnable = new Runnable() {
-//            @Override
-//            public void run() {
-//                loadingDialog.cancel();
-//            }
-//        };
-//        handler.postDelayed(runnable, 1000);
+        setSupportActionBar(binding.toolbarFavourite);
+        getSupportActionBar().show();
 
 
         Intent intent = getIntent();
         if (intent != null) {
             postid = intent.getIntExtra("postid", 0);
-//                binding.titlePostDetail.setText(post.getTitle());
-//                CharSequence spanned = HtmlCompat.fromHtml(post.getContent(), HtmlCompat.FROM_HTML_MODE_LEGACY);
-//                binding.contentPostDetail.setText(spanned);
-//                Glide.with(this).load(post.getThumbnailImage()).into(binding.imagePostDetail);
         }
+        initUI();
         initData();
         eventHandler();
         setContentView(binding.getRoot());
     }
 
+    public void initUI(){
+        binding.layoutPostDetail.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (scrollY > 1000) {
+                binding.favRelativePostDetail.setVisibility(View.GONE);
+            } else {
+                binding.favRelativePostDetail.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
     private void initData() {
         loadingDialog.show();
         viewModel.getPost().observe(this, new Observer<Post>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onChanged(Post post) {
                 if (post != null) {
                     RenderDataOnUI(post);
                 }
                 loadingDialog.hide();
+                binding.layoutPostDetail.setVisibility(View.VISIBLE);
             }
         });
         viewModel.fetchPostDetail(postid);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void RenderDataOnUI(@NonNull Post post) {
         binding.titlePostDetail.setText(post.getTitle());
         CharSequence spanned = HtmlCompat.fromHtml(post.getContent(), HtmlCompat.FROM_HTML_MODE_LEGACY);
-        binding.contentPostDetail.setText(spanned);
+        binding.tvContentPostDetail.setText(spanned);
+        binding.tvDatePostDetail.setText(DateUtils.convertToRelativeTime(post.getDate()));
         Glide.with(this).load(post.getThumbnailImage()).into(binding.imagePostDetail);
-        binding.authorPostDetail.setText("Thuan.HT");
-        binding.datePostDetail.setText(DateUtils.getInstance().FormatDateStringToDayMonth(post.getDate()));
     }
 
     public void eventHandler() {
-        binding.btnBackPostDetail.setOnClickListener(v -> {
+        binding.toolbarFavourite.setNavigationOnClickListener(v -> {
             Intent intent = new Intent(PostDetailActivity.this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             finish();
         });
+
+        binding.toolbarFavourite.setOnMenuItemClickListener(item -> {
+            if(item.getItemId() == R.id.btn_favouritePost){
+                changeFavouriteIcon(item);
+                // Save post
+            }
+            return false;
+        });
+    }
+
+    private void changeFavouriteIcon(MenuItem item) {
+        if (item.getIcon().getColorFilter() != null && item.getIcon().getColorFilter()
+                .equals(new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_IN))) {
+            item.getIcon().setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN);
+        } else {
+            item.getIcon().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_fav_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 }
