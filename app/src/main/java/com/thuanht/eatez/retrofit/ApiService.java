@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.thuanht.eatez.jsonResponse.CategoryResponse;
 import com.thuanht.eatez.jsonResponse.FavouriteResponse;
+import com.thuanht.eatez.jsonResponse.LoginResponse;
 import com.thuanht.eatez.jsonResponse.PostResponse;
 import com.thuanht.eatez.jsonResponse.SliderResponse;
 import com.thuanht.eatez.model.SliderHome;
@@ -54,4 +55,8 @@ public interface ApiService {
     Observable<FavouriteResponse> getFavouritePost(@Query("userid") int userid, @Query("page") int pageNumber);
     @GET("getPost.php")
     Observable<PostResponse> getDetailPost(@Query("postid") int postid);
+    @GET("login.php")
+    Observable<LoginResponse> Login(@Query("email") String email, @Query("password") String password);
+    @GET("register.php")
+    Observable<LoginResponse> Register(@Query("fullname") String fullname, @Query("email") String email,@Query("password") String password);
 }
