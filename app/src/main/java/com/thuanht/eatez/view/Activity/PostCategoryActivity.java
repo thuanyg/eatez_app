@@ -89,7 +89,10 @@ public class PostCategoryActivity extends AppCompatActivity {
 
     private void initRecyclerView() {
         posts = new ArrayList<>();
-        adapter = new PostCategoryAdapter(posts, getApplicationContext());
+        adapter = new PostCategoryAdapter(posts, this, post -> {
+            int id = Integer.parseInt(post.getPostId());
+            goToPostDetailActivity(id);
+        });
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         binding.rcvPostWithCategory.setLayoutManager(linearLayoutManager);
 
@@ -97,7 +100,13 @@ public class PostCategoryActivity extends AppCompatActivity {
         binding.rcvPostWithCategory.addItemDecoration(itemDecoration);
         binding.rcvPostWithCategory.setAdapter(adapter);
     }
-
+    private void goToPostDetailActivity(int postid) {
+        Intent intent = new Intent(this, PostDetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("postid", postid);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
     public void initDataRecyclerView() {
         loadingDialog.show();
         isLoading = true;
