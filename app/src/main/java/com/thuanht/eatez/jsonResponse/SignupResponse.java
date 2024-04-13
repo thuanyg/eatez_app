@@ -1,26 +1,18 @@
 package com.thuanht.eatez.jsonResponse;
 
-public class LoginResponse {
+public class SignupResponse {
     private boolean status;
-    private String data;
+
     private String message;
 
-    public LoginResponse(boolean status,String data, String message) {
+    public SignupResponse(boolean status, String message) {
         this.status = status;
-        this.data = data;
+
         this.message = message;
     }
 
     public boolean isStatus() {
         return status;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
     }
 
     public void setStatus(boolean status) {
@@ -38,7 +30,7 @@ public class LoginResponse {
     public String toString(){
         return "LoginResponse{" +
                 "status=" + status +
-                "data="+data+
+
                 ", message='" + message  + '}';
     }
 }

@@ -22,6 +22,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.thuanht.eatez.LocalData.LocalDataManager;
+import com.thuanht.eatez.LocalData.MySharedPreferences;
 import com.thuanht.eatez.databinding.FragmentLoginTabBinding;
 import com.thuanht.eatez.interfaceEvent.LoginCallback;
 import com.thuanht.eatez.jsonResponse.LoginResponse;
@@ -35,6 +37,7 @@ public class LoginTabFragment extends Fragment implements LoginCallback {
     private FragmentLoginTabBinding binding;
     private LoginViewModel viewModel;
     private FirebaseAuth mAuth;
+    private LocalDataManager localDataManager;
 
 
 
@@ -73,14 +76,29 @@ public class LoginTabFragment extends Fragment implements LoginCallback {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        localDataManager = LocalDataManager.getInstance();
+
+        // Kiểm tra xem người dùng đã đăng nhập trước đó hay không
+        String loggedInUser = MySharedPreferences.getLoggedInUser();
+        if (loggedInUser != null) {
+            // Nếu đã đăng nhập, chuyển hướng đến màn hình Home
+            onLoginSuccess(loggedInUser);
+            return;
+        }
+
+        // Nếu chưa đăng nhập, tiếp tục hiển thị màn hình đăng nhập và xử lý logic đăng nhập
         viewModel.setLoginCallback(this); // Thiết lập loginCallback trong ViewModel
         eventHandler(); // Gọi eventHandler() để thiết lập sự kiện cho nút đăng nhập
     }
 
     @Override
-    public void onLoginSuccess() {
+    public void onLoginSuccess(String data) {
+        MySharedPreferences.setLoggedIn(data);
+
+        // Chuyển hướng đến màn hình Home
         Intent intent = new Intent(requireContext(), HomeActivity.class);
         startActivity(intent);
+        requireActivity().finish();
     }
 
     @Override

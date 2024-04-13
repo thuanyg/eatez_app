@@ -7,6 +7,7 @@ public class LocalDataManager {
     private MySharedPreferences mySharedPreferences;
     private static LocalDataManager unique;
 
+
     private LocalDataManager(){
     }
 

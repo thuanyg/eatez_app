@@ -7,6 +7,7 @@ import com.thuanht.eatez.jsonResponse.CategoryResponse;
 import com.thuanht.eatez.jsonResponse.FavouriteResponse;
 import com.thuanht.eatez.jsonResponse.LoginResponse;
 import com.thuanht.eatez.jsonResponse.PostResponse;
+import com.thuanht.eatez.jsonResponse.SignupResponse;
 import com.thuanht.eatez.jsonResponse.SliderResponse;
 import com.thuanht.eatez.model.SliderHome;
 
@@ -58,5 +59,5 @@ public interface ApiService {
     @GET("login.php")
     Observable<LoginResponse> Login(@Query("email") String email, @Query("password") String password);
     @GET("register.php")
-    Observable<LoginResponse> Register(@Query("fullname") String fullname, @Query("email") String email,@Query("password") String password);
+    Observable<SignupResponse> Register(@Query("fullname") String fullname, @Query("email") String email, @Query("password") String password);
 }
