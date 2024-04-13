@@ -1,4 +1,6 @@
 package com.thuanht.eatez.interfaceEvent;
 
-public class RegisterCallback {
+public interface RegisterCallback {
+    void onRegisterSuccess();
+    void onRegisterFailure(String errorMessage);
 }
