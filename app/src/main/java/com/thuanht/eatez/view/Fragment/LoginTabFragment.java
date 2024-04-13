@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.thuanht.eatez.LocalData.MySharedPreferences;
 import com.thuanht.eatez.databinding.FragmentLoginTabBinding;
 import com.thuanht.eatez.interfaceEvent.LoginCallback;
 import com.thuanht.eatez.jsonResponse.LoginResponse;
@@ -35,6 +36,7 @@ public class LoginTabFragment extends Fragment implements LoginCallback {
     private FragmentLoginTabBinding binding;
     private LoginViewModel viewModel;
     private FirebaseAuth mAuth;
+    private MySharedPreferences mySharedPreferences;
 
 
 
@@ -72,15 +74,27 @@ public class LoginTabFragment extends Fragment implements LoginCallback {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        mySharedPreferences = new MySharedPreferences(requireContext());
         super.onViewCreated(view, savedInstanceState);
-        viewModel.setLoginCallback(this); // Thiết lập loginCallback trong ViewModel
-        eventHandler(); // Gọi eventHandler() để thiết lập sự kiện cho nút đăng nhập
+
+        // Kiểm tra trạng thái đăng nhập, nếu đã đăng nhập thì chuyển sang màn hình Home
+        if (mySharedPreferences.isLoggedIn()) {
+            Intent intent = new Intent(requireContext(), HomeActivity.class);
+            startActivity(intent);
+            requireActivity().finish(); // Đóng màn hình đăng nhập
+        } else {
+            viewModel.setLoginCallback(this); // Thiết lập loginCallback trong ViewModel
+            eventHandler(); // Gọi eventHandler() để thiết lập sự kiện cho nút đăng nhập
+        }
     }
 
     @Override
     public void onLoginSuccess() {
+        mySharedPreferences.setLoggedIn(true);
+
         Intent intent = new Intent(requireContext(), HomeActivity.class);
         startActivity(intent);
+        requireActivity().finish(); // Đóng màn hình đăng nhập
     }
 
     @Override
