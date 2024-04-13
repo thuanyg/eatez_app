@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -117,6 +118,14 @@ public class PostDetailActivity extends AppCompatActivity {
             if (orderLink.length() > 0) {
                 Uri uri = Uri.parse(orderLink);
                 startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            }
+        });
+
+        binding.txtComment.setOnFocusChangeListener((v, hasFocus) -> {
+            if(hasFocus){
+                binding.favRelativePostDetail.setVisibility(View.INVISIBLE);
+            } else {
+                binding.favRelativePostDetail.setVisibility(View.VISIBLE);
             }
         });
     }
