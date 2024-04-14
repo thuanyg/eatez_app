@@ -198,7 +198,9 @@ public class HomeFragment extends Fragment {
 
         binding.nestedScrollViewHome.setOnScrollChangeListener((View.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             binding.nestedScrollViewHome.setSmoothScrollingEnabled(true);
+            if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())){
 
+            }
         });
 
         // GPS Location service
