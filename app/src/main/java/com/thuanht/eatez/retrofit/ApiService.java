@@ -9,6 +9,7 @@ import com.thuanht.eatez.jsonResponse.LoginResponse;
 import com.thuanht.eatez.jsonResponse.PostResponse;
 import com.thuanht.eatez.jsonResponse.SignupResponse;
 import com.thuanht.eatez.jsonResponse.SliderResponse;
+import com.thuanht.eatez.jsonResponse.UserResponse;
 import com.thuanht.eatez.model.SliderHome;
 
 import java.util.concurrent.TimeUnit;
@@ -60,4 +61,6 @@ public interface ApiService {
     Observable<LoginResponse> Login(@Query("email") String email, @Query("password") String password);
     @GET("register.php")
     Observable<SignupResponse> Register(@Query("fullname") String fullname, @Query("email") String email, @Query("password") String password);
+    @GET("getUser.php")
+    Observable<UserResponse> getUser(@Query("userid") int userid);
 }

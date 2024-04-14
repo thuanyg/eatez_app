@@ -1,13 +1,19 @@
 package com.thuanht.eatez.jsonResponse;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import com.thuanht.eatez.model.User;
+
 public class LoginResponse {
     private boolean status;
-    private String data;
+    @SerializedName("data")
+    @Expose
+    private User user;
     private String message;
 
-    public LoginResponse(boolean status,String data, String message) {
+    public LoginResponse(boolean status,User data, String message) {
         this.status = status;
-        this.data = data;
+        this.user = data;
         this.message = message;
     }
 
@@ -15,30 +21,11 @@ public class LoginResponse {
         return status;
     }
 
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
+    public User getUser() {
+        return user;
     }
 
     public String getMessage() {
         return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-    @Override
-    public String toString(){
-        return "LoginResponse{" +
-                "status=" + status +
-                "data="+data+
-                ", message='" + message  + '}';
     }
 }

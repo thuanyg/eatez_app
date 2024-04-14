@@ -78,7 +78,7 @@ public class LoginViewModel extends ViewModel {
 
                         if (loginResponse.isStatus()) {
                             isLoginSuccess.setValue(true);
-                            loginCallback.onLoginSuccess(loginResponse.getData());
+                            loginCallback.onLoginSuccess(loginResponse.getUser());
                         }else{
                             isLoginSuccess.setValue(false);
                             loginCallback.onLoginFailure(loginResponse.getMessage());

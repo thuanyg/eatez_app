@@ -27,6 +27,7 @@ import com.thuanht.eatez.LocalData.MySharedPreferences;
 import com.thuanht.eatez.databinding.FragmentLoginTabBinding;
 import com.thuanht.eatez.interfaceEvent.LoginCallback;
 import com.thuanht.eatez.jsonResponse.LoginResponse;
+import com.thuanht.eatez.model.User;
 import com.thuanht.eatez.utils.KeyboardUtils;
 import com.thuanht.eatez.view.Activity.HomeActivity;
 import com.thuanht.eatez.view.Activity.LoginActivity;
@@ -38,8 +39,6 @@ public class LoginTabFragment extends Fragment implements LoginCallback {
     private FragmentLoginTabBinding binding;
     private LoginViewModel viewModel;
     private FirebaseAuth mAuth;
-    private LocalDataManager localDataManager;
-
     private boolean isLoginSuccess = false;
 
     @Nullable
@@ -78,12 +77,10 @@ public class LoginTabFragment extends Fragment implements LoginCallback {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         // Kiểm tra xem người dùng đã đăng nhập trước đó hay không
-        String loggedInUser = MySharedPreferences.getLoggedInUser();
-        if (loggedInUser != null) {
-            // Nếu đã đăng nhập, chuyển hướng đến màn hình Home
-            onLoginSuccess(loggedInUser);
+        User user = LocalDataManager.getInstance().getUserLogin();
+        if (user != null) {
+            onLoginSuccess(user);
             return;
         }
 
@@ -93,8 +90,9 @@ public class LoginTabFragment extends Fragment implements LoginCallback {
     }
 
     @Override
-    public void onLoginSuccess(String data) {
-        MySharedPreferences.setLoggedIn(data);
+    public void onLoginSuccess(User user) {
+        Log.d("TagDev", user.toString());
+        LocalDataManager.getInstance().setUserLogin(user);
         // Chuyển hướng đến màn hình Home
         Intent intent = new Intent(requireContext(), HomeActivity.class);
         startActivity(intent);
