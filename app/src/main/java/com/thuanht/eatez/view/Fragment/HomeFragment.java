@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -16,42 +15,41 @@ import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
-import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 import com.thuanht.eatez.Adapter.CategoryAdapter;
-import com.thuanht.eatez.Adapter.FragmentHomeAdapter;
+import com.thuanht.eatez.Adapter.PostHomeAdapter;
 import com.thuanht.eatez.Adapter.SliderHomeAdapter;
+import com.thuanht.eatez.Adapter.TrendingAdapter;
 import com.thuanht.eatez.LocalData.LocalDataManager;
 import com.thuanht.eatez.databinding.FragmentHomeBinding;
 import com.thuanht.eatez.interfaceEvent.MyClickItemListener;
 import com.thuanht.eatez.model.Category;
+import com.thuanht.eatez.model.Post;
 import com.thuanht.eatez.model.SliderHome;
 
+import com.thuanht.eatez.model.Trending;
 import com.thuanht.eatez.permission.LocationPermission;
+import com.thuanht.eatez.utils.NetworkUtils;
 import com.thuanht.eatez.view.Activity.PostCategoryActivity;
+import com.thuanht.eatez.view.Activity.PostDetailActivity;
 import com.thuanht.eatez.view.Activity.SearchActivity;
 import com.thuanht.eatez.viewModel.HomeViewModel;
 
 import java.io.IOException;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -62,13 +60,15 @@ public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     private FragmentHomeBinding binding;
-    private FragmentHomeAdapter adapter;
-    private int pageNumber = 1;
+    private GridLayoutManager gridLayoutManager;
+    private List<Post> posts = new ArrayList<>();
+    private PostHomeAdapter adapterPost;
+    private int currentPage = 1;
+    private boolean isLastPage = false;
+    private boolean isLoading = false;
     private FusedLocationProviderClient fusedLocationProviderClient;
-
     private Timer timer;
     private final String KEY_CATEGORY_ID = "category_id_action_intent";
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -78,10 +78,25 @@ public class HomeFragment extends Fragment {
                 .load(LocalDataManager.getInstance().getUserLogin().getAvatar_image())
                 .into(binding.avatarHome);
         initCategory();
-        initTabLayout(binding.tabLayoutHome);
-        initTabLayout(binding.tabLayoutHomeSticky);
+        initTrending();
+        initUIRecyclerViewPost();
+        LoadRecyclerViewPost(1);
         eventHandler();
         return binding.getRoot();
+    }
+
+    private void initTrending() {
+        List<Trending> trendings = new ArrayList<>();
+        trendings.add(new Trending("Bánh mì đen", ""));
+        trendings.add(new Trending("Xe điện tự lái", ""));
+        trendings.add(new Trending("Du lịch sinh thái", ""));
+        trendings.add(new Trending("Máy lọc không khí thông minh", ""));
+        TrendingAdapter trendingAdapter = new TrendingAdapter(trendings, trending -> {
+
+        }, requireContext());
+
+        binding.rcvTrending.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+        binding.rcvTrending.setAdapter(trendingAdapter);
     }
 
     @Override
@@ -90,6 +105,91 @@ public class HomeFragment extends Fragment {
         initSlider();
     }
 
+    public void initUIRecyclerViewPost() {
+        gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        binding.rcvPostHome.setLayoutManager(gridLayoutManager);
+        adapterPost = new PostHomeAdapter(requireContext(), posts, post -> {
+            goToPostDetailActivity(Integer.parseInt(post.getPostId()));
+        });
+        binding.rcvPostHome.setAdapter(adapterPost);
+    }
+    public void LoadRecyclerViewPost(int pageNumber) {
+        startShimmer();
+        homeViewModel.getIsLastPageLiveData().observe(getViewLifecycleOwner(), isLastPage -> {
+            this.isLastPage = isLastPage;
+        });
+        homeViewModel.getPosts().observe(requireActivity(), new Observer<List<Post>>() {
+            @Override
+            public void onChanged(List<Post> list) {
+                if (list == null) {
+                    return;
+                }
+                isLoading = true;
+                if (list.isEmpty()) {
+                    // Nếu danh sách trả về từ ViewModel rỗng, có thể là đã tải hết dữ liệu
+                    isLastPage = true;
+                } else {
+                    if (posts.isEmpty()) {
+                        // Nếu danh sách posts hiện tại rỗng, thêm tất cả các phần tử từ danh sách mới vào
+                        posts.addAll(list);
+                        adapterPost.notifyDataSetChanged();
+                    } else {
+                        // Nếu danh sách posts đã chứa dữ liệu, thêm dữ liệu mới vào và cập nhật RecyclerView
+                        int startPosition = posts.size();
+                        posts.addAll(list);
+                        adapterPost.notifyItemRangeInserted(startPosition, list.size());
+                    }
+                }
+                isLoading = false;
+                binding.rcvPostHome.setVisibility(View.VISIBLE);
+                stopShimmer();
+            }
+        });
+        if(NetworkUtils.isNetworkAvailable(requireContext())){
+            homeViewModel.fetchFeaturePosts(this.requireContext(), pageNumber);
+        }
+    }
+    public void LoadMoreFeaturePost(){
+        if(isLastPage){
+            // Toast.makeText(requireContext(), "Hết dữ liệu. Current Page = " + currentPage, Toast.LENGTH_SHORT).show();
+            binding.progressLoadPost.setVisibility(View.GONE);
+            binding.tvDataLoadedHome.setVisibility(View.VISIBLE);
+            return;
+        }
+        binding.progressLoadPost.setVisibility(View.VISIBLE);
+        binding.tvDataLoadedHome.setVisibility(View.GONE);
+        currentPage++;
+        if(!isLoading){
+            homeViewModel.fetchFeaturePosts(this.requireContext(), currentPage);
+        }
+    }
+
+    // Refresh data
+    public void refreshData(){
+        currentPage = 1;
+        posts.clear();
+        startShimmer();
+        binding.progressLoadPost.setVisibility(View.VISIBLE);
+        binding.tvDataLoadedHome.setVisibility(View.GONE);
+        homeViewModel.setIsLastPage(false);
+        homeViewModel.fetchFeaturePosts(requireContext(), 1);
+    }
+    public void startShimmer() {
+        binding.shimmerHome.startShimmer();
+        binding.shimmerHome.setVisibility(View.VISIBLE);
+    }
+
+    public void stopShimmer() {
+        binding.shimmerHome.stopShimmer();
+        binding.shimmerHome.setVisibility(View.GONE);
+    }
+    private void goToPostDetailActivity(int postid) {
+        Intent intent = new Intent(requireContext(), PostDetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("postid", postid);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
     private void eventHandler() {
         binding.btnToSearch.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), SearchActivity.class);
@@ -97,17 +197,7 @@ public class HomeFragment extends Fragment {
         });
 
         binding.nestedScrollViewHome.setOnScrollChangeListener((View.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            // Lấy vị trí tuyệt đối của Button so với NestedScrollView
             binding.nestedScrollViewHome.setSmoothScrollingEnabled(true);
-            int[] location = new int[2];
-            binding.tabLayoutHome.getLocationOnScreen(location);
-            if (location[1] <= 0) {
-                binding.tabLayoutHomeSticky.setVisibility(View.VISIBLE);
-                binding.topActionBarHome.setVisibility(View.GONE);
-            } else {
-                binding.topActionBarHome.setVisibility(View.VISIBLE);
-                binding.tabLayoutHomeSticky.setVisibility(View.GONE);
-            }
 
         });
 
@@ -138,10 +228,6 @@ public class HomeFragment extends Fragment {
         binding.swipeRefreshHome.setOnRefreshListener(() -> {
             homeViewModel.fetchSliderImages();
             homeViewModel.fetchCategories();
-            FeatureFragment featureFragment = adapter.getFeatureFragment();
-            if (featureFragment != null) {
-                featureFragment.refreshData();
-            }
             binding.swipeRefreshHome.setRefreshing(false);
         });
 
@@ -152,11 +238,11 @@ public class HomeFragment extends Fragment {
             public void onScrollChange(@NonNull NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 // Kiểm tra khi người dùng cuộn xuống cuối cùng
                 if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
-                    if (adapter == null) return;
-                    FeatureFragment featureFragment = adapter.getFeatureFragment();
-                    if (featureFragment != null) {
-                        featureFragment.LoadMoreFeaturePost();
-                    }
+//                    if (adapter == null) return;
+//                    FeatureFragment featureFragment = adapter.getFeatureFragment();
+//                    if (featureFragment != null) {
+//                        featureFragment.LoadMoreFeaturePost();
+//                    }
                 }
             }
         });
@@ -217,48 +303,6 @@ public class HomeFragment extends Fragment {
             timer.cancel();
             timer = null;
         }
-    }
-
-    public void initTabLayout(TabLayout tabLayout) {
-        adapter = new FragmentHomeAdapter(getActivity());
-        ViewPager2 viewPager = binding.viewPagerHome;
-        viewPager.setOffscreenPageLimit(2);
-        viewPager.setAdapter(adapter);
-        binding.viewPagerHome.setUserInputEnabled(false);
-        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, binding.viewPagerHome, (tab, position) -> {
-            switch (position) {
-                case 0:
-                    tab.setText("Features");
-                    break;
-                case 1:
-                    tab.setText("Latest");
-                    break;
-            }
-        });
-        tabLayoutMediator.attach();
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                binding.viewPagerHome.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
-        binding.viewPagerHome.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                tabLayout.selectTab(tabLayout.getTabAt(position));
-            }
-        });
     }
 
     public void initCategory() {

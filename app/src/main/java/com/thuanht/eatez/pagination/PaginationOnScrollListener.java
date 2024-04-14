@@ -1,14 +1,7 @@
 package com.thuanht.eatez.pagination;
 
-import android.view.View;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.thuanht.eatez.view.Fragment.FeatureFragment;
 
 public abstract class PaginationOnScrollListener implements NestedScrollView.OnScrollChangeListener {
     private NestedScrollView nestedScrollView;

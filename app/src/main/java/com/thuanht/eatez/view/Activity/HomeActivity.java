@@ -2,10 +2,6 @@ package com.thuanht.eatez.view.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.CompositePageTransformer;
-import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Context;
@@ -13,13 +9,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
-import com.facebook.shimmer.ShimmerFrameLayout;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-import com.thuanht.eatez.Adapter.FragmentHomeAdapter;
 import com.thuanht.eatez.Adapter.ViewPagerHomeAdapter;
 import com.thuanht.eatez.R;
 import com.thuanht.eatez.databinding.ActivityHomeBinding;
@@ -28,7 +20,7 @@ import com.thuanht.eatez.utils.NetworkUtils;
 import com.thuanht.eatez.view.Fragment.FavoriteFragment;
 import com.thuanht.eatez.view.Fragment.HomeFragment;
 import com.thuanht.eatez.view.Fragment.NotificationFragment;
-import java.util.ArrayDeque;
+
 import java.util.Stack;
 
 public class HomeActivity extends AppCompatActivity {

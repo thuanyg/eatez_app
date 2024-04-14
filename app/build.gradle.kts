@@ -59,6 +59,7 @@ dependencies {
     implementation("com.github.ome450901:SimpleRatingBar:1.5.1");
     implementation("io.github.nikartm:fit-button:2.0.0");
     implementation("com.github.clans:fab:1.6.4");
+    implementation ("com.github.dangiashish:StyledCardView:1.0.0")
     // API & Networking
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.google.code.gson:gson:2.10.1")

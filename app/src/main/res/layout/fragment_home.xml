@@ -171,31 +171,119 @@
                         android:layout_height="match_parent"
                         android:clipToPadding="false" />
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="10dp"
-                        android:fontFamily="@font/barlow_semibold"
-                        android:text="Posts"
-                        android:textColor="@color/black"
-                        android:textSize="20sp" />
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginVertical="10dp"
+                            android:fontFamily="@font/barlow_semibold"
+                            android:text="Trending"
+                            android:textColor="@color/black"
+                            android:textSize="20sp" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:textAlignment="textEnd"
+                            android:paddingHorizontal="10dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="10dp"
+                            android:fontFamily="@font/barlow_semibold"
+                            android:text="See all"
+                            android:layout_gravity="center_vertical"
+                            android:textColor="@color/light_blue_600"
+                            android:textSize="16sp"
+                            tools:ignore="RtlCompat" />
+                    </LinearLayout>
 
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/tabLayout_home"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcvTrending"
+                        android:visibility="visible"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/edit_text_background"
-                        android:backgroundTint="@color/light_green"
-                        app:tabIndicator="@color/white"
-                        app:tabIndicatorColor="@color/white"
-                        app:tabSelectedTextColor="@color/pure_light_blue" />
+                        android:layout_height="match_parent"
+                        android:clipToPadding="false" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="10dp"
+                            android:fontFamily="@font/barlow_semibold"
+                            android:text="Posts"
+                            android:textColor="@color/black"
+                            android:textSize="20sp" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:textAlignment="textEnd"
+                            android:paddingHorizontal="10dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="10dp"
+                            android:fontFamily="@font/barlow_semibold"
+                            android:text="See all"
+                            android:layout_gravity="center_vertical"
+                            android:textColor="@color/light_blue_600"
+                            android:textSize="16sp"
+                            tools:ignore="RtlCompat" />
+                    </LinearLayout>
+
 
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/viewPager_Home"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/shimmerHome"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+                                <include layout="@layout/item_post_review_shimmer" />
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+                                <include layout="@layout/item_post_review_shimmer" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </com.facebook.shimmer.ShimmerFrameLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcvPostHome"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <ProgressBar
+                        android:id="@+id/progress_loadPost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center" />
+                    <TextView
+                        android:id="@+id/tvDataLoadedHome"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="10dp"
+                        android:fontFamily="@font/barlow"
+                        android:textSize="16sp"
+                        android:visibility="gone"
+                        android:text="End of data"
+                        android:textAlignment="center"/>
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

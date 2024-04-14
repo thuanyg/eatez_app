@@ -1,7 +1,6 @@
 package com.thuanht.eatez.view.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.text.HtmlCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,19 +12,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.thuanht.eatez.Adapter.PostCategoryAdapter;
-import com.thuanht.eatez.R;
 import com.thuanht.eatez.app.MyBroadcastReceiver;
 import com.thuanht.eatez.databinding.ActivityPostCategoryBinding;
 import com.thuanht.eatez.model.Category;
 import com.thuanht.eatez.model.Post;
 import com.thuanht.eatez.view.Dialog.LoadingDialog;
-import com.thuanht.eatez.view.Fragment.FeatureFragment;
 import com.thuanht.eatez.viewModel.PostCategoryViewModel;
 
 import java.util.ArrayList;
