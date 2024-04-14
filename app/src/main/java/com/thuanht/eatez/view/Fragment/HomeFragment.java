@@ -1,6 +1,7 @@
 package com.thuanht.eatez.view.Fragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -23,9 +24,11 @@ import androidx.viewpager2.widget.MarginPageTransformer;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -42,6 +45,7 @@ import com.thuanht.eatez.model.Post;
 import com.thuanht.eatez.model.SliderHome;
 
 import com.thuanht.eatez.model.Trending;
+import com.thuanht.eatez.pagination.EndlessRecyclerViewScrollListener;
 import com.thuanht.eatez.permission.LocationPermission;
 import com.thuanht.eatez.utils.NetworkUtils;
 import com.thuanht.eatez.view.Activity.PostCategoryActivity;
@@ -149,7 +153,7 @@ public class HomeFragment extends Fragment {
             homeViewModel.fetchFeaturePosts(this.requireContext(), pageNumber);
         }
     }
-    public void LoadMoreFeaturePost(){
+    public void LoadMorePost(){
         if(isLastPage){
             // Toast.makeText(requireContext(), "Hết dữ liệu. Current Page = " + currentPage, Toast.LENGTH_SHORT).show();
             binding.progressLoadPost.setVisibility(View.GONE);
@@ -190,20 +194,31 @@ public class HomeFragment extends Fragment {
         intent.putExtras(bundle);
         startActivity(intent);
     }
+    @SuppressLint("RestrictedApi")
     private void eventHandler() {
         binding.btnToSearch.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), SearchActivity.class);
             startActivity(intent);
         });
 
-        binding.nestedScrollViewHome.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+
+        // First, get the view tree observer of the NestedScrollView
+        ViewTreeObserver.OnScrollChangedListener onScrollChangedListener = new ViewTreeObserver.OnScrollChangedListener() {
             @Override
-            public void onScrollChange(@NonNull NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (scrollY >= (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight() - 100)) {
-                    LoadMoreFeaturePost();
+            public void onScrollChanged() {
+                View view = (View) binding.nestedScrollViewHome.getChildAt(binding.nestedScrollViewHome.getChildCount() - 1);
+                int diff = (view.getBottom() - (binding.nestedScrollViewHome.getHeight() + binding.nestedScrollViewHome.getScrollY()));
+                if (diff == 0) {
+                    LoadMorePost();
                 }
             }
-        });
+        };
+
+        binding.nestedScrollViewHome.getViewTreeObserver().addOnScrollChangedListener(onScrollChangedListener);
+
+
+
+
 
         // GPS Location service
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
@@ -232,6 +247,7 @@ public class HomeFragment extends Fragment {
         binding.swipeRefreshHome.setOnRefreshListener(() -> {
             homeViewModel.fetchSliderImages();
             homeViewModel.fetchCategories();
+            refreshData();
             binding.swipeRefreshHome.setRefreshing(false);
         });
 
@@ -262,7 +278,7 @@ public class HomeFragment extends Fragment {
                 binding.shimmerSliderHome.stopShimmer();
                 binding.shimmerSliderHome.setVisibility(View.GONE);
 
-                binding.viewPagerSliderHome.setAdapter(new SliderHomeAdapter(getActivity(), sliderHomes, binding.viewPagerHome, sliderHome -> {
+                binding.viewPagerSliderHome.setAdapter(new SliderHomeAdapter(getActivity(), sliderHomes, binding.viewPagerSliderHome, sliderHome -> {
                     String urlRedirect = sliderHome.getLink();
                     if (!urlRedirect.isEmpty()) {
                         Uri uri = Uri.parse(urlRedirect);

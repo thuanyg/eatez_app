@@ -83,7 +83,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-
         android:layout_below="@id/topActionBar"
         android:orientation="vertical">
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -95,6 +94,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingHorizontal="8dp"
+                android:fillViewport="true"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 android:scrollbars="none">
 
@@ -102,7 +102,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
-
                     <!--Search-->
                     <EditText
                         android:id="@+id/btnToSearch"
@@ -232,13 +231,6 @@
                             android:textSize="16sp"
                             tools:ignore="RtlCompat" />
                     </LinearLayout>
-
-
-                    <androidx.viewpager2.widget.ViewPager2
-                        android:id="@+id/viewPager_Home"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
                     <com.facebook.shimmer.ShimmerFrameLayout
                         android:id="@+id/shimmerHome"
                         android:layout_width="match_parent"
@@ -271,6 +263,7 @@
                         android:layout_height="wrap_content"/>
                     <ProgressBar
                         android:id="@+id/progress_loadPost"
+                        android:visibility="visible"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center" />
