@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import com.thuanht.eatez.interfaceEvent.LoginCallback;
 import com.thuanht.eatez.interfaceEvent.RegisterCallback;
 import com.thuanht.eatez.jsonResponse.LoginResponse;
+import com.thuanht.eatez.jsonResponse.SignupResponse;
 import com.thuanht.eatez.retrofit.ApiService;
 
 import java.io.IOException;
@@ -74,19 +75,19 @@ public class RegisterViewModel extends ViewModel {
                     // Trả về một Observable không phải là IOException, không thử lại
                     return Observable.error(error);
                 }))
-                .subscribe(new Observer<LoginResponse>() {
+                .subscribe(new Observer<SignupResponse>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
                         disposable = d;
                     }
 
                     @Override
-                    public void onNext(@NonNull LoginResponse loginResponse) {
+                    public void onNext(@NonNull SignupResponse signupResponse) {
 
-                        if (loginResponse.isStatus()) {
+                        if (signupResponse.isStatus()) {
                             registerCallback.onRegisterSuccess();
                         }else{
-                            registerCallback.onRegisterFailure(loginResponse.getMessage());
+                            registerCallback.onRegisterFailure(signupResponse.getMessage());
 
                         }
                     }
