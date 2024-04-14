@@ -30,6 +30,7 @@ import com.thuanht.eatez.jsonResponse.LoginResponse;
 import com.thuanht.eatez.utils.KeyboardUtils;
 import com.thuanht.eatez.view.Activity.HomeActivity;
 import com.thuanht.eatez.view.Activity.LoginActivity;
+import com.thuanht.eatez.view.Dialog.DialogUtil;
 import com.thuanht.eatez.viewModel.LoginViewModel;
 import com.thuanht.eatez.R;
 
@@ -38,9 +39,8 @@ public class LoginTabFragment extends Fragment implements LoginCallback {
     private LoginViewModel viewModel;
     private FirebaseAuth mAuth;
     private LocalDataManager localDataManager;
-    private MySharedPreferences mySharedPreferences;
 
-
+    private boolean isLoginSuccess = false;
 
     @Nullable
     @Override
@@ -57,28 +57,27 @@ public class LoginTabFragment extends Fragment implements LoginCallback {
             binding.txtEmail.requestFocus();
         });
 
+        viewModel.getIsLoginSuccess().observe(requireActivity(), isLoginSuccess -> {
+            this.isLoginSuccess = isLoginSuccess;
+        });
         return binding.getRoot();
     }
 
     public void eventHandler() {
         // Click button login
         binding.btnLogin.setOnClickListener(v -> {
+            binding.progressBarLogin.setVisibility(View.VISIBLE);
             String email = binding.txtEmail.getText().toString();
             String password = binding.txtPassword.getText().toString();
-
-
             if (viewModel.validateData(email, password)) {
                 viewModel.Login(email, password);
-
             }
         });
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        mySharedPreferences = new MySharedPreferences(requireContext());
         super.onViewCreated(view, savedInstanceState);
-        localDataManager = LocalDataManager.getInstance();
 
         // Kiểm tra xem người dùng đã đăng nhập trước đó hay không
         String loggedInUser = MySharedPreferences.getLoggedInUser();
@@ -96,35 +95,16 @@ public class LoginTabFragment extends Fragment implements LoginCallback {
     @Override
     public void onLoginSuccess(String data) {
         MySharedPreferences.setLoggedIn(data);
-
         // Chuyển hướng đến màn hình Home
         Intent intent = new Intent(requireContext(), HomeActivity.class);
         startActivity(intent);
         requireActivity().finish();
-
-        // Kiểm tra trạng thái đăng nhập, nếu đã đăng nhập thì chuyển sang màn hình Home
-        if (mySharedPreferences.isLoggedIn()) {
-            Intent intent = new Intent(requireContext(), HomeActivity.class);
-            startActivity(intent);
-            requireActivity().finish(); // Đóng màn hình đăng nhập
-        } else {
-            viewModel.setLoginCallback(this); // Thiết lập loginCallback trong ViewModel
-            eventHandler(); // Gọi eventHandler() để thiết lập sự kiện cho nút đăng nhập
-        }
-    }
-
-    @Override
-    public void onLoginSuccess() {
-        mySharedPreferences.setLoggedIn(true);
-
-        Intent intent = new Intent(requireContext(), HomeActivity.class);
-        startActivity(intent);
-        requireActivity().finish(); // Đóng màn hình đăng nhập
     }
 
     @Override
     public void onLoginFailure(String errorMessage) {
-        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+        binding.progressBarLogin.setVisibility(View.GONE);
+        Toast.makeText(getContext(), "Email or password not correct!", Toast.LENGTH_SHORT).show();
     }
 
 

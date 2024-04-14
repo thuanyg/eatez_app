@@ -27,7 +27,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class LoginViewModel extends ViewModel {
     private Disposable disposable;
-    private MutableLiveData<Boolean> login = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isLoginSuccess = new MutableLiveData<>();
     private MutableLiveData<String> errorMessage = new MutableLiveData<>();
 
     private LoginCallback loginCallback;
@@ -77,11 +77,11 @@ public class LoginViewModel extends ViewModel {
                     public void onNext(@NonNull LoginResponse loginResponse) {
 
                         if (loginResponse.isStatus()) {
+                            isLoginSuccess.setValue(true);
                             loginCallback.onLoginSuccess(loginResponse.getData());
-
                         }else{
+                            isLoginSuccess.setValue(false);
                             loginCallback.onLoginFailure(loginResponse.getMessage());
-
                         }
                     }
 
@@ -104,5 +104,9 @@ public class LoginViewModel extends ViewModel {
     }
     public MutableLiveData<String> getPasswordError() {
         return passwordError;
+    }
+
+    public MutableLiveData<Boolean> getIsLoginSuccess() {
+        return isLoginSuccess;
     }
 }
