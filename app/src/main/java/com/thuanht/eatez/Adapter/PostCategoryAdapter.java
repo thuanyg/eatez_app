@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.thuanht.eatez.R;
 import com.thuanht.eatez.databinding.ItemPostCategoryBinding;
+import com.thuanht.eatez.interfaceEvent.MyClickItemListener;
 import com.thuanht.eatez.model.Post;
 
 import java.util.List;
@@ -19,10 +20,12 @@ import java.util.List;
 public class PostCategoryAdapter extends RecyclerView.Adapter<PostCategoryAdapter.MyViewHolder>{
     private List<Post> posts;
     private Context context;
+    private MyClickItemListener<Post> itemListener;
 
-    public PostCategoryAdapter(List<Post> posts, Context context) {
+    public PostCategoryAdapter(List<Post> posts, Context context, MyClickItemListener<Post> itemListener) {
         this.posts = posts;
         this.context = context;
+        this.itemListener = itemListener;
     }
 
     @NonNull
@@ -39,6 +42,7 @@ public class PostCategoryAdapter extends RecyclerView.Adapter<PostCategoryAdapte
         CharSequence spanned = HtmlCompat.fromHtml(p.getContent(), HtmlCompat.FROM_HTML_MODE_LEGACY);
         holder.itemPostCategoryBinding.descPostCategory.setText(spanned);
         Glide.with(context).load(p.getThumbnailImage()).into(holder.itemPostCategoryBinding.imagePostCategory);
+        holder.itemView.setOnClickListener(v -> itemListener.onClick(p));
     }
 
     @Override

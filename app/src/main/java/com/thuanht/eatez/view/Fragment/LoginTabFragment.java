@@ -38,6 +38,7 @@ public class LoginTabFragment extends Fragment implements LoginCallback {
     private LoginViewModel viewModel;
     private FirebaseAuth mAuth;
     private LocalDataManager localDataManager;
+    private MySharedPreferences mySharedPreferences;
 
 
 
@@ -75,6 +76,7 @@ public class LoginTabFragment extends Fragment implements LoginCallback {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        mySharedPreferences = new MySharedPreferences(requireContext());
         super.onViewCreated(view, savedInstanceState);
         localDataManager = LocalDataManager.getInstance();
 
@@ -99,6 +101,25 @@ public class LoginTabFragment extends Fragment implements LoginCallback {
         Intent intent = new Intent(requireContext(), HomeActivity.class);
         startActivity(intent);
         requireActivity().finish();
+
+        // Kiểm tra trạng thái đăng nhập, nếu đã đăng nhập thì chuyển sang màn hình Home
+        if (mySharedPreferences.isLoggedIn()) {
+            Intent intent = new Intent(requireContext(), HomeActivity.class);
+            startActivity(intent);
+            requireActivity().finish(); // Đóng màn hình đăng nhập
+        } else {
+            viewModel.setLoginCallback(this); // Thiết lập loginCallback trong ViewModel
+            eventHandler(); // Gọi eventHandler() để thiết lập sự kiện cho nút đăng nhập
+        }
+    }
+
+    @Override
+    public void onLoginSuccess() {
+        mySharedPreferences.setLoggedIn(true);
+
+        Intent intent = new Intent(requireContext(), HomeActivity.class);
+        startActivity(intent);
+        requireActivity().finish(); // Đóng màn hình đăng nhập
     }
 
     @Override

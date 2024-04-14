@@ -39,6 +39,4 @@ public class MySharedPreferences {
         editor.remove(KEY_USER);
         editor.apply();
     }
-
-
 }

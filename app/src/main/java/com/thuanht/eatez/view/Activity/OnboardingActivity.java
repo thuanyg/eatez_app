@@ -43,11 +43,6 @@ public class OnboardingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        try {
-//            Thread.sleep(500);
-//        } catch (Exception e){
-//            e.printStackTrace();
-//        }
         SplashScreen.installSplashScreen(this);
         setContentView(R.layout.activity_onboarding);
 
@@ -57,7 +52,6 @@ public class OnboardingActivity extends AppCompatActivity {
 
         if (!isFirstInstall) {
             // Lần đầu vào ứng dụng
-            // Ánh xạ button
             btn_skip = findViewById(R.id.btn_skip);
             btn_next = findViewById(R.id.btn_next);
 
@@ -85,7 +79,7 @@ public class OnboardingActivity extends AppCompatActivity {
 
             LocalDataManager.getInstance().setValueForFirstInstall(true);
         } else {
-            Intent i = new Intent(this, HomeActivity.class);
+            Intent i = new Intent(this, LoginActivity.class);
             startActivity(i);
             finish();
         }
