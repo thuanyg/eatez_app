@@ -196,10 +196,12 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
         });
 
-        binding.nestedScrollViewHome.setOnScrollChangeListener((View.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            binding.nestedScrollViewHome.setSmoothScrollingEnabled(true);
-            if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())){
-
+        binding.nestedScrollViewHome.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(@NonNull NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY >= (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight() - 100)) {
+                    LoadMoreFeaturePost();
+                }
             }
         });
 
