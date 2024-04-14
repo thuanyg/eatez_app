@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,6 +39,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.thuanht.eatez.Adapter.CategoryAdapter;
 import com.thuanht.eatez.Adapter.FragmentHomeAdapter;
 import com.thuanht.eatez.Adapter.SliderHomeAdapter;
+import com.thuanht.eatez.LocalData.LocalDataManager;
 import com.thuanht.eatez.databinding.FragmentHomeBinding;
 import com.thuanht.eatez.interfaceEvent.MyClickItemListener;
 import com.thuanht.eatez.model.Category;
@@ -72,6 +74,9 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        Glide.with(requireActivity())
+                .load(LocalDataManager.getInstance().getUserLogin().getAvatar_image())
+                .into(binding.avatarHome);
         initCategory();
         initTabLayout(binding.tabLayoutHome);
         initTabLayout(binding.tabLayoutHomeSticky);

@@ -65,10 +65,10 @@ public class LoginTabFragment extends Fragment implements LoginCallback {
     public void eventHandler() {
         // Click button login
         binding.btnLogin.setOnClickListener(v -> {
-            binding.progressBarLogin.setVisibility(View.VISIBLE);
             String email = binding.txtEmail.getText().toString();
             String password = binding.txtPassword.getText().toString();
             if (viewModel.validateData(email, password)) {
+                binding.progressBarLogin.setVisibility(View.VISIBLE);
                 viewModel.Login(email, password);
             }
         });

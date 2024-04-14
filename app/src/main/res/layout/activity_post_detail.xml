@@ -184,9 +184,8 @@
                         android:breakStrategy="high_quality"
                         android:letterSpacing="0.01"
                         android:lineSpacingExtra="8dp"
-                        android:text="Let’s talk about these roasty, sweet, nutty brussels sprouts that combine those tender-crisp, whole-brussel bites with the ultra thin and crispy leaves, all coated with a lil’ mustard-maple drench and speckled with juicy bites of dried cranberry. Oh my gosh. WHY ARE THEY SO GOOD.
-
-To be honest, I have very few “house favorites” in our house because I always change it up. Always trying new recipes, always moving on to the next thing. We hardly stay on any one recipe for more than just a few repeats because new! exciting! rah rah rah. But this recipe has been made WEEKLY for… um, the last five months? It has solidly earned its House Favorite status. We make these brussels sprouts all. the. time.
+                        android:textAlignment="gravity"
+                        android:text="I have very few “house favorites” in our house because I always change it up. Always trying new recipes, always moving on to the next thing. We hardly stay on any one recipe for more than just a few repeats because new! exciting! rah rah rah. But this recipe has been made WEEKLY for… um, the last five months? It has solidly earned its House Favorite status. We make these brussels sprouts all. the. time.
 
 Dad loves them, toddler loves them, Mom loves them AND loves that everyone loves them. Also: guests love them, although usually if it’s more than just us, we’re going to need to double the recipe because, yes, in our house, we will for sure finish one pan between the three of us."
                         android:textColor="#333333"
