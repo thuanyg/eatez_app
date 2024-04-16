@@ -27,8 +27,9 @@ public class PostLatestAdapter extends RecyclerView.Adapter<PostLatestAdapter.My
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post_latest, parent, false);
-        return new MyViewHolder(view);
+//        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post_latest, parent, false);
+//        return new MyViewHolder(view);
+        return null;
     }
 
     @Override
@@ -48,9 +49,7 @@ public class PostLatestAdapter extends RecyclerView.Adapter<PostLatestAdapter.My
         private RoundedImageView imageView;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvTitle = itemView.findViewById(R.id.titlePost_latest);
-            tvDesc = itemView.findViewById(R.id.descPost_latest);
-            imageView = itemView.findViewById(R.id.imagePost_latest);
+
         }
     }
 }

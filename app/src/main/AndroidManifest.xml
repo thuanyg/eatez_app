@@ -19,12 +19,14 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".view.Activity.TrendingActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.Activity.PostCategoryActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".view.Activity.PostDetailActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".view.Activity.SearchActivity"
             android:exported="false" />
@@ -40,8 +42,7 @@
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EatEz.Fullscreen"
-            android:windowSoftInputMode="adjustResize" >
-        </activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".view.Activity.GetStartedActivity"
             android:exported="false" />
@@ -51,6 +52,7 @@
             android:theme="@style/Theme.App.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import com.bumptech.glide.Glide;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.thuanht.eatez.Adapter.CategoryAdapter;
@@ -66,6 +67,7 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private GridLayoutManager gridLayoutManager;
     private List<Post> posts = new ArrayList<>();
+    private List<Trending> trendings = new ArrayList<>();
     private PostHomeAdapter adapterPost;
     private int currentPage = 1;
     private boolean isLastPage = false;
@@ -73,6 +75,7 @@ public class HomeFragment extends Fragment {
     private FusedLocationProviderClient fusedLocationProviderClient;
     private Timer timer;
     private final String KEY_CATEGORY_ID = "category_id_action_intent";
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -90,17 +93,22 @@ public class HomeFragment extends Fragment {
     }
 
     private void initTrending() {
-        List<Trending> trendings = new ArrayList<>();
-        trendings.add(new Trending("Bánh mì đen", ""));
-        trendings.add(new Trending("Xe điện tự lái", ""));
-        trendings.add(new Trending("Du lịch sinh thái", ""));
-        trendings.add(new Trending("Máy lọc không khí thông minh", ""));
+        startShimmer(binding.shimmerTrending);
         TrendingAdapter trendingAdapter = new TrendingAdapter(trendings, trending -> {
 
         }, requireContext());
-
-        binding.rcvTrending.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
         binding.rcvTrending.setAdapter(trendingAdapter);
+        binding.rcvTrending.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+        homeViewModel.getTrends().observe(requireActivity(), t -> {
+            if (t != null) {
+                trendings.clear();
+                trendings.addAll(t);
+                trendingAdapter.notifyDataSetChanged();
+            }
+            stopShimmer(binding.shimmerTrending);
+            binding.rcvTrending.setVisibility(View.VISIBLE);
+        });
+        homeViewModel.fetchTrending();
     }
 
     @Override
@@ -117,8 +125,9 @@ public class HomeFragment extends Fragment {
         });
         binding.rcvPostHome.setAdapter(adapterPost);
     }
+
     public void LoadRecyclerViewPost(int pageNumber) {
-        startShimmer();
+        startShimmer(binding.shimmerHome);
         homeViewModel.getIsLastPageLiveData().observe(getViewLifecycleOwner(), isLastPage -> {
             this.isLastPage = isLastPage;
         });
@@ -146,15 +155,16 @@ public class HomeFragment extends Fragment {
                 }
                 isLoading = false;
                 binding.rcvPostHome.setVisibility(View.VISIBLE);
-                stopShimmer();
+                stopShimmer(binding.shimmerHome);
             }
         });
-        if(NetworkUtils.isNetworkAvailable(requireContext())){
+        if (NetworkUtils.isNetworkAvailable(requireContext())) {
             homeViewModel.fetchFeaturePosts(this.requireContext(), pageNumber);
         }
     }
-    public void LoadMorePost(){
-        if(isLastPage){
+
+    public void LoadMorePost() {
+        if (isLastPage) {
             // Toast.makeText(requireContext(), "Hết dữ liệu. Current Page = " + currentPage, Toast.LENGTH_SHORT).show();
             binding.progressLoadPost.setVisibility(View.GONE);
             binding.tvDataLoadedHome.setVisibility(View.VISIBLE);
@@ -163,30 +173,49 @@ public class HomeFragment extends Fragment {
         binding.progressLoadPost.setVisibility(View.VISIBLE);
         binding.tvDataLoadedHome.setVisibility(View.GONE);
         currentPage++;
-        if(!isLoading){
+        if (!isLoading) {
             homeViewModel.fetchFeaturePosts(this.requireContext(), currentPage);
         }
     }
 
-    // Refresh data
-    public void refreshData(){
+
+    public void refreshData() {
+        //Clear current data
         currentPage = 1;
         posts.clear();
-        startShimmer();
-        binding.progressLoadPost.setVisibility(View.VISIBLE);
-        binding.tvDataLoadedHome.setVisibility(View.GONE);
+        trendings.clear();
         homeViewModel.setIsLastPage(false);
+
+        //Start shimmer
+        startShimmer(binding.shimmerHome);
+        startShimmer(binding.shimmerCategoryHome);
+        startShimmer(binding.shimmerSliderHome);
+        startShimmer(binding.shimmerTrending);
+
+        //Set visibility
+        binding.tvDataLoadedHome.setVisibility(View.GONE);
+        binding.rcvPostHome.setVisibility(View.GONE);
+        binding.rcvTrending.setVisibility(View.GONE);
+        binding.rcvCategory.setVisibility(View.GONE);
+        binding.viewPagerSliderHome.setVisibility(View.GONE);
+
+        // Reload data
+        homeViewModel.fetchSliderImages();
+        homeViewModel.fetchCategories();
+        homeViewModel.fetchTrending();
         homeViewModel.fetchFeaturePosts(requireContext(), 1);
     }
-    public void startShimmer() {
-        binding.shimmerHome.startShimmer();
-        binding.shimmerHome.setVisibility(View.VISIBLE);
+
+    public void startShimmer(ShimmerFrameLayout shimmerFrameLayout) {
+        shimmerFrameLayout.startShimmer();
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
     }
 
-    public void stopShimmer() {
-        binding.shimmerHome.stopShimmer();
-        binding.shimmerHome.setVisibility(View.GONE);
+    public void stopShimmer(ShimmerFrameLayout shimmerFrameLayout) {
+        shimmerFrameLayout.stopShimmer();
+        shimmerFrameLayout.setVisibility(View.GONE);
     }
+
     private void goToPostDetailActivity(int postid) {
         Intent intent = new Intent(requireContext(), PostDetailActivity.class);
         Bundle bundle = new Bundle();
@@ -194,6 +223,7 @@ public class HomeFragment extends Fragment {
         intent.putExtras(bundle);
         startActivity(intent);
     }
+
     @SuppressLint("RestrictedApi")
     private void eventHandler() {
         binding.btnToSearch.setOnClickListener(v -> {
@@ -201,8 +231,6 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
         });
 
-
-        // First, get the view tree observer of the NestedScrollView
         ViewTreeObserver.OnScrollChangedListener onScrollChangedListener = new ViewTreeObserver.OnScrollChangedListener() {
             @Override
             public void onScrollChanged() {
@@ -213,12 +241,7 @@ public class HomeFragment extends Fragment {
                 }
             }
         };
-
         binding.nestedScrollViewHome.getViewTreeObserver().addOnScrollChangedListener(onScrollChangedListener);
-
-
-
-
 
         // GPS Location service
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
@@ -245,26 +268,8 @@ public class HomeFragment extends Fragment {
 
         // Swipe refresh data
         binding.swipeRefreshHome.setOnRefreshListener(() -> {
-            homeViewModel.fetchSliderImages();
-            homeViewModel.fetchCategories();
             refreshData();
             binding.swipeRefreshHome.setRefreshing(false);
-        });
-
-
-        // Scroll -> load more data for Feature posts
-        binding.nestedScrollViewHome.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(@NonNull NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                // Kiểm tra khi người dùng cuộn xuống cuối cùng
-                if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
-//                    if (adapter == null) return;
-//                    FeatureFragment featureFragment = adapter.getFeatureFragment();
-//                    if (featureFragment != null) {
-//                        featureFragment.LoadMoreFeaturePost();
-//                    }
-                }
-            }
         });
     }
 
@@ -326,7 +331,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void initCategory() {
-        binding.shimmerCategoryHome.startShimmer();
+        startShimmer(binding.shimmerCategoryHome);
         homeViewModel.getCategoryList().observe(requireActivity(), categories -> {
             CategoryAdapter categoryAdapter = new CategoryAdapter(categories, requireContext(), new MyClickItemListener<Category>() {
                 @Override
@@ -341,8 +346,7 @@ public class HomeFragment extends Fragment {
             binding.rcvCategory.setAdapter(categoryAdapter);
             binding.rcvCategory.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
             // Show category + Hide Shimmer
-            binding.shimmerCategoryHome.stopShimmer();
-            binding.shimmerCategoryHome.setVisibility(View.GONE);
+            stopShimmer(binding.shimmerCategoryHome);
             binding.rcvCategory.setVisibility(View.VISIBLE);
         });
 
