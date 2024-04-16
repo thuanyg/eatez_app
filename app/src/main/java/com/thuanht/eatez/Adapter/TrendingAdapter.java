@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.thuanht.eatez.R;
 import com.thuanht.eatez.databinding.ItemTrendingBinding;
 import com.thuanht.eatez.interfaceEvent.MyClickItemListener;
@@ -38,8 +39,8 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Trending t = trendings.get(position);
-        holder.binding.tvTrending.setText(t.getTitle());
-        holder.binding.imgTrending.setBackgroundResource(R.drawable.onboarding_img_3);
+        holder.binding.tvTrending.setText(t.getDish_name());
+        Glide.with(context).load(t.getImage()).into(holder.binding.imgTrending);
     }
 
     @Override

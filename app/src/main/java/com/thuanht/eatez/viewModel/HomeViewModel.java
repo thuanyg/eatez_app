@@ -11,9 +11,11 @@ import androidx.lifecycle.ViewModel;
 import com.thuanht.eatez.jsonResponse.CategoryResponse;
 import com.thuanht.eatez.jsonResponse.PostResponse;
 import com.thuanht.eatez.jsonResponse.SliderResponse;
+import com.thuanht.eatez.jsonResponse.TrendingResponse;
 import com.thuanht.eatez.model.Category;
 import com.thuanht.eatez.model.Post;
 import com.thuanht.eatez.model.SliderHome;
+import com.thuanht.eatez.model.Trending;
 import com.thuanht.eatez.retrofit.ApiService;
 
 import java.io.IOException;
@@ -32,6 +34,8 @@ public class HomeViewModel extends ViewModel {
     private Disposable disposable;
     private MutableLiveData<List<SliderHome>> sliderList = new MutableLiveData<>();
     private MutableLiveData<List<Category>> categoryList = new MutableLiveData<>();
+    private MutableLiveData<List<Trending>> trends = new MutableLiveData<>();
+
     private MutableLiveData<Boolean> isLastPageLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Post>> posts = new MutableLiveData<>();
 
@@ -155,6 +159,35 @@ public class HomeViewModel extends ViewModel {
                 });
     }
 
+    public void fetchTrending(){
+        ApiService.ApiService.getTrendingPost()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<TrendingResponse>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                    }
+
+                    @Override
+                    public void onNext(@NonNull TrendingResponse trendingResponse) {
+                        if(trendingResponse != null){
+                            if(trendingResponse.getStatus()){
+                                trends.setValue(trendingResponse.getData());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
     public MutableLiveData<List<SliderHome>> getSliderList() {
         return sliderList;
     }
@@ -172,5 +205,9 @@ public class HomeViewModel extends ViewModel {
     }
     public void setIsLastPage(boolean isLastPage) {
         this.isLastPageLiveData.setValue(isLastPage);
+    }
+
+    public MutableLiveData<List<Trending>> getTrends() {
+        return trends;
     }
 }
