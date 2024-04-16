@@ -25,6 +25,7 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.exceptions.Exceptions;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class HomeViewModel extends ViewModel {
@@ -39,12 +40,17 @@ public class HomeViewModel extends ViewModel {
         ApiService.ApiService.getListPost(pageNumber)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .retryWhen(errors -> errors.flatMap(error -> {
-                    if (error instanceof IOException) {
+                .retryWhen(errors -> errors.zipWith(Observable.range(1, 5), (error, retryCount) -> {
+                    if (error instanceof IOException && retryCount < 5) {
+                        return retryCount;
+                    }
+                    throw Exceptions    .propagate(error);
+                }).flatMap(retryCount -> {
+                    if (retryCount == 5) {
+                        return Observable.error(new Throwable("Retry limit reached"));
+                    } else {
                         return Observable.timer(5, TimeUnit.SECONDS);
                     }
-                    // Trả về một Observable không phải là IOException, không thử lại
-                    return Observable.error(error);
                 }))
                 .subscribe(new Observer<PostResponse>() {
                     @Override
@@ -74,7 +80,6 @@ public class HomeViewModel extends ViewModel {
                             // Lỗi không phải do mạng
                         }
                     }
-
                     @Override
                     public void onComplete() {
                         Log.d("TagDev", "CAll API Success");
@@ -87,6 +92,13 @@ public class HomeViewModel extends ViewModel {
         ApiService.ApiService.getSliders()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .retryWhen(errors -> errors.flatMap(error -> {
+                    if (error instanceof IOException) {
+                        return Observable.timer(5, TimeUnit.SECONDS);
+                    }
+                    // Trả về một Observable không phải là IOException, không thử lại
+                    return Observable.error(error);
+                }))
                 .subscribe(new Observer<SliderResponse>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
@@ -113,6 +125,13 @@ public class HomeViewModel extends ViewModel {
         ApiService.ApiService.getCategories()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .retryWhen(errors -> errors.flatMap(error -> {
+                    if (error instanceof IOException) {
+                        return Observable.timer(5, TimeUnit.SECONDS);
+                    }
+                    // Trả về một Observable không phải là IOException, không thử lại
+                    return Observable.error(error);
+                }))
                 .subscribe(new Observer<CategoryResponse>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {

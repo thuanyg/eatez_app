@@ -15,8 +15,6 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         LocalDataManager.getInstance().init(getApplicationContext());
-
-
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
