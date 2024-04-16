@@ -2,8 +2,14 @@ package com.thuanht.eatez.Adapter;
 
 import android.content.Context;
 import android.os.Build;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,8 +26,9 @@ import com.thuanht.eatez.utils.DateUtils;
 
 import java.util.List;
 
-public class PostFavouriteAdapter extends RecyclerView.Adapter<PostFavouriteAdapter.MyViewHolder>{
-    private final List<Favourite> favouriteList;
+public class PostFavouriteAdapter extends RecyclerView.Adapter<PostFavouriteAdapter.MyViewHolder> {
+    private List<Favourite> favouriteList;
+    private List<Favourite> favouriteListSelected;
 
     private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
     private final Context context;
@@ -29,6 +36,10 @@ public class PostFavouriteAdapter extends RecyclerView.Adapter<PostFavouriteAdap
     private SwipeRevealLayout swipeRevealLayout;
 
     private MyClickItemListener<Favourite> listenerDetaitPost, listenerDelete;
+
+    private Boolean isActionEnable = false;
+    private Boolean isSelected = false;
+
 
     public PostFavouriteAdapter(List<Favourite> favouriteList, Context context,
                                 MyClickItemListener<Favourite> listenerDetaitPost,
@@ -62,8 +73,13 @@ public class PostFavouriteAdapter extends RecyclerView.Adapter<PostFavouriteAdap
         holder.binding.tvDateFavourite.setText("Đã lưu " + DateUtils.convertToRelativeTime(fv.getDate()));
         holder.binding.layoutItemFavourite.setOnClickListener(v -> listenerDetaitPost.onClick(fv));
         holder.binding.btnRemovePostFavourite.setOnClickListener(v -> listenerDelete.onClick(fv));
-
         swipeRevealLayout = holder.binding.swipeRevealFavourite;
+        // Multi choice
+    }
+
+    private void ClickItem(MyViewHolder holder) {
+        Favourite favourite = favouriteList.get(holder.getAdapterPosition());
+
     }
 
     public void closeSwipeReveal() {
@@ -75,8 +91,9 @@ public class PostFavouriteAdapter extends RecyclerView.Adapter<PostFavouriteAdap
         return favouriteList.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
         private final ItemPostFavouriteBinding binding;
+
         public MyViewHolder(@NonNull ItemPostFavouriteBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
