@@ -55,6 +55,7 @@ import com.thuanht.eatez.utils.NetworkUtils;
 import com.thuanht.eatez.view.Activity.PostCategoryActivity;
 import com.thuanht.eatez.view.Activity.PostDetailActivity;
 import com.thuanht.eatez.view.Activity.SearchActivity;
+import com.thuanht.eatez.view.Activity.TrendingActivity;
 import com.thuanht.eatez.viewModel.HomeViewModel;
 
 import java.io.IOException;
@@ -78,6 +79,7 @@ public class HomeFragment extends Fragment {
     private FusedLocationProviderClient fusedLocationProviderClient;
     private Timer timer;
     private final String KEY_CATEGORY_ID = "category_id_action_intent";
+    private final String KEY_DISH_TREND_OBJECT = "trend_obj_action_intent";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -97,9 +99,17 @@ public class HomeFragment extends Fragment {
 
     private void initTrending() {
         startShimmer(binding.shimmerTrending);
-        TrendingAdapter trendingAdapter = new TrendingAdapter(trendings, trending -> {
 
+        TrendingAdapter trendingAdapter = new TrendingAdapter(trendings, trending -> {
+            // Send dish (Object) -> Trending Activity
+            Intent intent = new Intent(requireActivity(), TrendingActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(KEY_DISH_TREND_OBJECT, trending);
+            intent.putExtras(bundle);
+            startActivity(intent);
         }, requireContext());
+
+        // Set adapter - recycler view
         binding.rcvTrending.setAdapter(trendingAdapter);
         binding.rcvTrending.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
         homeViewModel.getTrends().observe(requireActivity(), t -> {

@@ -1,6 +1,5 @@
 package com.thuanht.eatez.jsonResponse;
 
-import com.thuanht.eatez.model.SliderHome;
 import com.thuanht.eatez.model.Trending;
 
 import java.util.List;

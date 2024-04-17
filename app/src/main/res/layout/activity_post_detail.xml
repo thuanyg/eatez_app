@@ -182,7 +182,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:breakStrategy="high_quality"
-                        android:letterSpacing="0.01"
+                        android:letterSpacing="0.008"
                         android:lineSpacingExtra="8dp"
                         android:textAlignment="gravity"
                         android:text="I have very few “house favorites” in our house because I always change it up. Always trying new recipes, always moving on to the next thing. We hardly stay on any one recipe for more than just a few repeats because new! exciting! rah rah rah. But this recipe has been made WEEKLY for… um, the last five months? It has solidly earned its House Favorite status. We make these brussels sprouts all. the. time.

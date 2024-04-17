@@ -1,6 +1,8 @@
 package com.thuanht.eatez.model;
 
-public class Trending {
+import java.io.Serializable;
+
+public class Trending implements Serializable {
     private int id, dish_id;
     private String dish_name, image, date;
 
