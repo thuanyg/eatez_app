@@ -7,11 +7,11 @@ import com.thuanht.eatez.jsonResponse.CategoryResponse;
 import com.thuanht.eatez.jsonResponse.FavouriteResponse;
 import com.thuanht.eatez.jsonResponse.LoginResponse;
 import com.thuanht.eatez.jsonResponse.PostResponse;
+import com.thuanht.eatez.jsonResponse.StatusResponse;
+import com.thuanht.eatez.jsonResponse.TrendingResponse;
 import com.thuanht.eatez.jsonResponse.SignupResponse;
 import com.thuanht.eatez.jsonResponse.SliderResponse;
-import com.thuanht.eatez.jsonResponse.TrendingResponse;
 import com.thuanht.eatez.jsonResponse.UserResponse;
-import com.thuanht.eatez.model.SliderHome;
 
 import java.util.concurrent.TimeUnit;
 
@@ -64,7 +64,16 @@ public interface ApiService {
     Observable<SignupResponse> Register(@Query("fullname") String fullname, @Query("email") String email, @Query("password") String password);
     @GET("getUser.php")
     Observable<UserResponse> getUser(@Query("userid") int userid);
-
     @GET("getDishTrending.php")
-    Observable<TrendingResponse> getTrendingPost();
+    Observable<TrendingResponse> getTrendingHome();
+    @GET("searchPostByDishID.php")
+    Observable<PostResponse> getPostTrending(@Query("dishid") int dishID, @Query("page") int pageNumber);
+    @GET("setFavouritePost.php")
+    Observable<StatusResponse> savePost(@Query("userid") int userid, @Query("post_id") int postid);
+    @GET("unsetFavouritePost.php")
+    Observable<StatusResponse> unSavePost(@Query("userid") int userid, @Query("post_id") int postid);
+    @GET("checkSaveBefore.php")
+    Observable<StatusResponse> checkSave(@Query("userid") int userid, @Query("post_id") int postid);
+
+
 }

@@ -7,7 +7,6 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context=".view.Activity.HomeActivity">
-
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager_bottomNav"
         android:layout_width="match_parent"

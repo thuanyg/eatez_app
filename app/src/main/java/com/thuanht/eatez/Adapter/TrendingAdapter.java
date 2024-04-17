@@ -41,6 +41,7 @@ public class TrendingAdapter extends RecyclerView.Adapter<TrendingAdapter.MyView
         Trending t = trendings.get(position);
         holder.binding.tvTrending.setText(t.getDish_name());
         Glide.with(context).load(t.getImage()).into(holder.binding.imgTrending);
+        holder.itemView.setOnClickListener(v -> listener.onClick(t));
     }
 
     @Override

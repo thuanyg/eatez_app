@@ -50,9 +50,9 @@ public class DateUtils {
 
         if (days > 0) {
             return days + " ngày trước";
-        } else if (hours > 1) {
+        } else if (hours >= 1) {
             return hours + " giờ trước";
-        } else if (minutes > 1) {
+        } else if (minutes >= 1) {
             return minutes + " phút trước";
         } else if (seconds > 1) {
             return seconds + " giây trước";

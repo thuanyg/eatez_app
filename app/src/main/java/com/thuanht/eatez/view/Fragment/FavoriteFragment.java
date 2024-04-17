@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.thuanht.eatez.Adapter.PostFavouriteAdapter;
+import com.thuanht.eatez.LocalData.LocalDataManager;
 import com.thuanht.eatez.databinding.FragmentFavoriteBinding;
 import com.thuanht.eatez.model.Favourite;
 import com.thuanht.eatez.model.Post;
@@ -48,6 +49,7 @@ public class FavoriteFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentFavoriteBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(FavouriteViewModel.class);
+        userid = LocalDataManager.getInstance().getUserLogin().getUserid();
         initUI();
         initData();
         eventHandler();
@@ -81,6 +83,13 @@ public class FavoriteFragment extends Fragment {
             if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
                 LoadMoreData();
             }
+        });
+
+        binding.swipeRefreshFavourite.setOnRefreshListener(() -> {
+            favouriteList.clear();
+            currentPage = 1;
+            viewModel.fetchFavouritePost(userid, 1);
+            binding.swipeRefreshFavourite.setRefreshing(false);
         });
     }
 

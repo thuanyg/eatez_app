@@ -26,26 +26,33 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.thuanht.eatez.LocalData.LocalDataManager;
 import com.thuanht.eatez.R;
 import com.thuanht.eatez.databinding.ActivityPostDetailBinding;
 import com.thuanht.eatez.model.Post;
 import com.thuanht.eatez.utils.DateUtils;
 import com.thuanht.eatez.view.Dialog.LoadingDialog;
 import com.thuanht.eatez.viewModel.PostDetailViewModel;
+import com.thuanht.eatez.viewModel.SavePostViewModel;
 
 public class PostDetailActivity extends AppCompatActivity {
     private ActivityPostDetailBinding binding;
     private PostDetailViewModel viewModel;
+    private SavePostViewModel savePostViewModel;
     protected LoadingDialog loadingDialog;
-    private int postid;
+    private int postid, userid;
     private String orderLink;
+    private Boolean isSaved = false;
+    private boolean isUnSaved = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityPostDetailBinding.inflate(getLayoutInflater());
         viewModel = new ViewModelProvider(this).get(PostDetailViewModel.class);
+        savePostViewModel = new ViewModelProvider(this).get(SavePostViewModel.class);
         loadingDialog = new LoadingDialog(this);
 
         // Get post id
@@ -53,14 +60,50 @@ public class PostDetailActivity extends AppCompatActivity {
         if (intent != null) {
             postid = intent.getIntExtra("postid", 0);
         }
+        // Get user id
+        userid = LocalDataManager.getInstance().getUserLogin().getUserid();
 
+        savePostProcess();
         initUI();
         initData();
         eventHandler();
         setContentView(binding.getRoot());
     }
 
-    public void initUI(){
+    private void savePostProcess() {
+        // Check xem da luu truoc do chua
+        savePostViewModel.getIsUserSavedBefore().observe(this, aBoolean -> {
+            if (aBoolean) {
+                isSaved = aBoolean;
+            }
+        });
+        savePostViewModel.checkSaveBefore(userid, postid);
+
+        // Luu bai viet
+        savePostViewModel.getIsSaveSuccess().observe(this, aBoolean -> {
+            if (aBoolean) {
+                isSaved = true;
+                Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
+            } else {
+                isSaved = false;
+                Toast.makeText(this, "Saved error", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Xoa bai viet da luu
+        savePostViewModel.getIsUnSaveSuccess().observe(this, aBoolean -> {
+            if (aBoolean) {
+                isUnSaved = true;
+                Toast.makeText(this, "UnSaved", Toast.LENGTH_SHORT).show();
+            } else {
+                isUnSaved = false;
+                Toast.makeText(this, "UnSaved error", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    public void initUI() {
         setSupportActionBar(binding.toolbarFavourite);
         getSupportActionBar().show();
 
@@ -71,6 +114,12 @@ public class PostDetailActivity extends AppCompatActivity {
                 binding.favRelativePostDetail.setVisibility(View.VISIBLE);
             }
         });
+
+        if (isSaved) {
+            Toast.makeText(this, "Bai viet da duoc luu truoc do", Toast.LENGTH_SHORT).show();
+        } else {
+
+        }
     }
 
     private void initData() {
@@ -88,6 +137,8 @@ public class PostDetailActivity extends AppCompatActivity {
             }
         });
         viewModel.fetchPostDetail(postid);
+
+
     }
 
     // Render data
@@ -110,9 +161,15 @@ public class PostDetailActivity extends AppCompatActivity {
 
         // Save post into favourite list
         binding.toolbarFavourite.setOnMenuItemClickListener(item -> {
-            if(item.getItemId() == R.id.btn_favouritePost){
-                changeFavouriteIcon(item);
-
+            if (item.getItemId() == R.id.btn_favouritePost) {
+                if (!isSaved) {
+                    savePostViewModel.savePost(userid, postid);
+                    changeFavouriteIcon(item);
+                } else {
+                    savePostViewModel.unSavePost(userid, postid);
+                    isSaved = false;
+                    changeFavouriteIcon(item);
+                }
             }
             return false;
         });
@@ -126,6 +183,7 @@ public class PostDetailActivity extends AppCompatActivity {
         });
 
     }
+
 
     private void changeFavouriteIcon(MenuItem item) {
         if (item.getIcon().getColorFilter() != null && item.getIcon().getColorFilter()

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -35,7 +34,6 @@ public class HomeViewModel extends ViewModel {
     private MutableLiveData<List<SliderHome>> sliderList = new MutableLiveData<>();
     private MutableLiveData<List<Category>> categoryList = new MutableLiveData<>();
     private MutableLiveData<List<Trending>> trends = new MutableLiveData<>();
-
     private MutableLiveData<Boolean> isLastPageLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Post>> posts = new MutableLiveData<>();
 
@@ -160,12 +158,13 @@ public class HomeViewModel extends ViewModel {
     }
 
     public void fetchTrending(){
-        ApiService.ApiService.getTrendingPost()
+        ApiService.ApiService.getTrendingHome()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<TrendingResponse>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
+
                     }
 
                     @Override
