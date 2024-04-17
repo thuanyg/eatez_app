@@ -20,7 +20,7 @@
     <color name="black_overlay">#66000000</color>
     <color name="success_dialog">#198754</color>
     <color name="gray_overlay">#4BCCCCCC</color>
-    <color name="shimmer_color">#BFBDBD</color>
+    <color name="shimmer_color">#D8BFBDBD</color>
     <color name="gray_text">#FF918F8F</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>

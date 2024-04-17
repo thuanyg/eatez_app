@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="wrap_content"
+    app:behavior_hideable="true"
+    android:id="@+id/bottom_sheet_layout"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="@string/bottom_sheet_behavior">
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:elevation="2dp"
+        android:background="@drawable/card_view_background"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="50dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/barlow_semibold"
+            android:gravity="center_vertical"
+            android:text="Save"
+            android:textSize="22sp" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="20dp"
+            android:padding="15dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bookmark_border" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/card_view_background"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="50dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/barlow_semibold"
+            android:gravity="center_vertical"
+            android:text="Save"
+            android:textSize="22sp" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="20dp"
+            android:padding="15dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bookmark_border" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/card_view_background"
+        android:orientation="horizontal"
+        android:elevation="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="50dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/barlow_semibold"
+            android:gravity="center_vertical"
+            android:text="Save"
+            android:textSize="22sp" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="20dp"
+            android:padding="15dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bookmark_border" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

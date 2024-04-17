@@ -6,19 +6,7 @@
     <com.github.dangiashish.StyledCardView
         android:layout_width="match_parent"
         android:layout_marginEnd="10dp"
-        android:layout_height="match_parent"
-        app:background_Type="fill_stroke"
-        app:cornerRadius="10dp"
-        app:background_Color="@color/white"
-        app:shadow0_Outer_Alpha="0.3"
-        app:shadow0_Outer_Angle="-45"
-        app:shadow0_Outer_Color="@android:color/holo_green_light"
-        app:shadow1_Outer_Color="@android:color/holo_blue_light"
-        app:stroke_ColorType="gradient_sweep"
-        app:stroke_Gradient_Angle="-45"
-        app:stroke_Gradient_Color0="@android:color/holo_blue_light"
-        app:stroke_Gradient_Color1="@android:color/holo_green_light"
-        app:stroke_Width="1dp">
+        android:layout_height="match_parent">
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:layout_width="match_parent"

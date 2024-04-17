@@ -5,20 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:orientation="vertical"
     android:background="@color/light_green"
+    android:orientation="vertical"
     tools:context=".view.Fragment.HomeFragment">
     <!-- TopActionBar-->
     <RelativeLayout
-        android:layout_width="match_parent"
         android:id="@+id/topActionBar"
-        android:elevation="5dp"
-        android:layout_height="60dp">
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:elevation="5dp">
 
         <androidx.appcompat.widget.Toolbar
+            android:id="@+id/top_action_bar_home"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/top_action_bar_home"
             app:layout_scrollFlags="scroll|enterAlways">
 
             <RelativeLayout
@@ -26,34 +26,39 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/btnToSearch"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:layout_gravity="start"
-                    android:drawableStart="@drawable/ic_menu" />
+                    android:layout_marginVertical="10dp"
+                    android:background="@drawable/edit_text_background"
+                    android:paddingHorizontal="10dp"
+                    app:drawableStartCompat="@drawable/search" />
 
                 <TextView
                     android:id="@+id/btn_location"
                     android:layout_width="wrap_content"
-                    android:maxWidth="220dp"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:ellipsize="end"
                     android:layout_centerInParent="true"
-                    android:drawableStart="@drawable/location_on"
                     android:drawablePadding="5dp"
+                    android:ellipsize="end"
                     android:fontFamily="@font/barlow"
-                    android:text="Vietnam"
                     android:gravity="center_vertical"
-                    android:textSize="14sp" />
+                    android:maxWidth="220dp"
+                    android:singleLine="true"
+                    android:text="Vietnam"
+                    android:textSize="14sp"
+                    app:drawableStartCompat="@drawable/location_on"
+                    tools:ignore="HardcodedText" />
 
                 <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/avatar_home"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_alignParentEnd="true"
-                    android:layout_gravity="end"
                     android:layout_centerInParent="true"
+                    android:layout_gravity="end"
                     android:layout_marginEnd="15dp"
                     android:src="@drawable/onboarding_img_2"
                     app:civ_border_color="@color/pure_light_blue"
@@ -67,144 +72,138 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout_home_sticky"
             android:layout_width="match_parent"
-            android:visibility="gone"
             android:layout_height="60dp"
             android:layout_alignParentTop="true"
             android:animateLayoutChanges="true"
-            android:paddingBottom="5dp"
             android:backgroundTint="@color/card_post_color"
+            android:paddingBottom="5dp"
+            android:visibility="gone"
             app:tabIndicatorColor="@color/pure_light_blue"
-            app:tabMode="fixed"
             app:tabIndicatorHeight="5dp"
+            app:tabMode="fixed"
             app:tabSelectedTextColor="@color/pure_light_blue" />
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
         android:layout_below="@id/topActionBar"
+        android:layout_gravity="center"
         android:orientation="vertical">
+
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh_home"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/nestedScrollView_Home"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingHorizontal="8dp"
                 android:fillViewport="true"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                android:scrollbars="none">
+                android:paddingHorizontal="8dp"
+                android:scrollbars="none"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
                     android:orientation="vertical">
-                    <!--Search-->
-                    <EditText
-                        android:id="@+id/btnToSearch"
-                        android:layout_width="match_parent"
-                        android:layout_height="42dp"
-                        android:layout_marginHorizontal="0dp"
-                        android:background="@drawable/edit_text_background"
-                        android:clickable="true"
-                        android:drawableStart="@drawable/search"
-                        android:drawablePadding="10dp"
-                        android:editable="false"
-                        android:focusableInTouchMode="true"
-                        android:fontFamily="@font/barlow"
-                        android:hint="Search Food, Drink, ..."
-                        android:paddingHorizontal="8dp"
-                        android:textSize="14sp" />
                     <!--Slider-->
-
                     <com.facebook.shimmer.ShimmerFrameLayout
                         android:id="@+id/shimmer_sliderHome"
                         android:layout_width="match_parent"
-                        android:background="@color/shimmer_color"
-                        android:layout_marginVertical="10dp"
-                        android:layout_height="160dp"/>
+                        android:layout_height="160dp"
+                        android:layout_marginVertical="15dp"
+                        android:background="@color/shimmer_color"/>
+
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/viewPagerSliderHome"
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
-                        android:visibility="gone"
-                        android:layout_marginVertical="10dp"
+                        android:layout_marginVertical="15dp"
                         android:clipChildren="false"
-                        android:clipToPadding="false" />
+                        android:clipToPadding="false"
+                        android:visibility="gone" />
                     <!--Category-->
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/barlow_semibold"
-                        android:text="Category"
-                        android:layout_marginBottom="10dp"
-                        android:textColor="@color/black"
-                        android:textSize="20sp" />
+
                     <com.facebook.shimmer.ShimmerFrameLayout
                         android:id="@+id/shimmer_categoryHome"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
-                            <include layout="@layout/item_category_shimmer"/>
-                            <include layout="@layout/item_category_shimmer"/>
-                            <include layout="@layout/item_category_shimmer"/>
-                            <include layout="@layout/item_category_shimmer"/>
-                            <include layout="@layout/item_category_shimmer"/>
-                            <include layout="@layout/item_category_shimmer"/>
-                            <include layout="@layout/item_category_shimmer"/>
+
+                            <include layout="@layout/item_category_shimmer" />
+
+                            <include layout="@layout/item_category_shimmer" />
+
+                            <include layout="@layout/item_category_shimmer" />
+
+                            <include layout="@layout/item_category_shimmer" />
+
+                            <include layout="@layout/item_category_shimmer" />
+
+                            <include layout="@layout/item_category_shimmer" />
+
+                            <include layout="@layout/item_category_shimmer" />
                         </LinearLayout>
                     </com.facebook.shimmer.ShimmerFrameLayout>
 
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rcvCategory"
-                        android:visibility="gone"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:clipToPadding="false" />
+                        android:clipToPadding="false"
+                        android:visibility="gone" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginVertical="5dp"
                         android:orientation="horizontal">
+
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:layout_marginVertical="10dp"
+                            android:layout_weight="1"
                             android:fontFamily="@font/barlow_semibold"
                             android:text="Trending"
                             android:textColor="@color/black"
                             android:textSize="20sp" />
+
                         <TextView
                             android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:textAlignment="textEnd"
-                            android:paddingHorizontal="10dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginVertical="10dp"
-                            android:fontFamily="@font/barlow_semibold"
-                            android:text="See all"
                             android:layout_gravity="center_vertical"
+                            android:layout_marginVertical="10dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/barlow_semibold"
+                            android:paddingHorizontal="10dp"
+                            android:text="See all"
+                            android:textAlignment="textEnd"
                             android:textColor="@color/light_blue_600"
                             android:textSize="16sp"
                             tools:ignore="RtlCompat" />
                     </LinearLayout>
+
                     <com.facebook.shimmer.ShimmerFrameLayout
                         android:id="@+id/shimmerTrending"
-                        android:layout_marginVertical="10dp"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_marginVertical="10dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:background="@drawable/card_view_background"
                             android:orientation="horizontal">
 
                             <include layout="@layout/item_trending_shimmer" />
@@ -216,87 +215,106 @@
                             <include layout="@layout/item_trending_shimmer" />
                         </LinearLayout>
                     </com.facebook.shimmer.ShimmerFrameLayout>
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rcvTrending"
-                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:clipToPadding="false" />
+                        android:clipToPadding="false"
+                        android:visibility="gone" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginVertical="5dp"
                         android:orientation="horizontal">
+
                         <TextView
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="10dp"
+                            android:layout_weight="1"
                             android:fontFamily="@font/barlow_semibold"
                             android:text="Posts"
                             android:textColor="@color/black"
                             android:textSize="20sp" />
+
                         <TextView
                             android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:textAlignment="textEnd"
-                            android:paddingHorizontal="10dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginVertical="10dp"
-                            android:fontFamily="@font/barlow_semibold"
-                            android:text="See all"
                             android:layout_gravity="center_vertical"
+                            android:layout_marginVertical="10dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/barlow_semibold"
+                            android:paddingHorizontal="10dp"
+                            android:text="See all"
+                            android:textAlignment="textEnd"
                             android:textColor="@color/light_blue_600"
                             android:textSize="16sp"
                             tools:ignore="RtlCompat" />
                     </LinearLayout>
+
                     <com.facebook.shimmer.ShimmerFrameLayout
                         android:id="@+id/shimmerHome"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
+
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:orientation="vertical">
+
                                 <include layout="@layout/item_post_review_shimmer" />
                             </LinearLayout>
+
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:orientation="vertical">
+
                                 <include layout="@layout/item_post_review_shimmer" />
                             </LinearLayout>
                         </LinearLayout>
                     </com.facebook.shimmer.ShimmerFrameLayout>
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rcvPostHome"
-                        android:visibility="gone"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
+
                     <ProgressBar
                         android:id="@+id/progress_loadPost"
-                        android:visibility="visible"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center" />
+                        android:layout_gravity="center"
+                        android:visibility="visible" />
+
                     <TextView
                         android:id="@+id/tvDataLoadedHome"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="10dp"
                         android:fontFamily="@font/barlow"
-                        android:textSize="16sp"
-                        android:visibility="gone"
                         android:text="End of data"
-                        android:textAlignment="center"/>
+                        android:textAlignment="center"
+                        android:textSize="16sp"
+                        android:visibility="gone" />
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include layout="@layout/fragment_bottom_sheet"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </LinearLayout>
