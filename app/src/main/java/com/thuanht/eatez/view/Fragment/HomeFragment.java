@@ -11,6 +11,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
@@ -34,11 +35,13 @@ import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.thuanht.eatez.Adapter.CategoryAdapter;
 import com.thuanht.eatez.Adapter.PostHomeAdapter;
 import com.thuanht.eatez.Adapter.SliderHomeAdapter;
 import com.thuanht.eatez.Adapter.TrendingAdapter;
 import com.thuanht.eatez.LocalData.LocalDataManager;
+import com.thuanht.eatez.R;
 import com.thuanht.eatez.databinding.FragmentHomeBinding;
 import com.thuanht.eatez.interfaceEvent.MyClickItemListener;
 import com.thuanht.eatez.model.Category;
@@ -226,6 +229,17 @@ public class HomeFragment extends Fragment {
 
     @SuppressLint("RestrictedApi")
     private void eventHandler() {
+        ConstraintLayout layoutBottomSheet = binding.getRoot().findViewById(R.id.bottom_sheet_layout);
+        BottomSheetBehavior bottomSheetBehavior;
+        bottomSheetBehavior = BottomSheetBehavior.from(layoutBottomSheet);
+        binding.avatarHome.setOnClickListener(v -> {
+            if(bottomSheetBehavior.getState() != bottomSheetBehavior.STATE_EXPANDED){
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            } else {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        });
+
         binding.btnToSearch.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), SearchActivity.class);
             startActivity(intent);
@@ -344,7 +358,8 @@ public class HomeFragment extends Fragment {
                 }
             });
             binding.rcvCategory.setAdapter(categoryAdapter);
-            binding.rcvCategory.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
+            binding.rcvCategory.setLayoutManager(new GridLayoutManager(requireContext(), 2, GridLayoutManager.HORIZONTAL, false));
+//            binding.rcvCategory.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
             // Show category + Hide Shimmer
             stopShimmer(binding.shimmerCategoryHome);
             binding.rcvCategory.setVisibility(View.VISIBLE);
