@@ -89,7 +89,6 @@ public class PostCategoryActivity extends AppCompatActivity {
         });
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         binding.rcvPostWithCategory.setLayoutManager(linearLayoutManager);
-
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         binding.rcvPostWithCategory.addItemDecoration(itemDecoration);
         binding.rcvPostWithCategory.setAdapter(adapter);

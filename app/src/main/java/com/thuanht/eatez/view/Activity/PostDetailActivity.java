@@ -8,6 +8,8 @@ import androidx.core.text.HtmlCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -29,9 +31,12 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.thuanht.eatez.Adapter.CommentAdapter;
 import com.thuanht.eatez.LocalData.LocalDataManager;
 import com.thuanht.eatez.R;
 import com.thuanht.eatez.databinding.ActivityPostDetailBinding;
+import com.thuanht.eatez.interfaceEvent.CommentCallback;
+import com.thuanht.eatez.model.Comment;
 import com.thuanht.eatez.model.Post;
 import com.thuanht.eatez.utils.DateUtils;
 import com.thuanht.eatez.view.Dialog.DialogUtil;
@@ -39,10 +44,16 @@ import com.thuanht.eatez.view.Dialog.LoadingDialog;
 import com.thuanht.eatez.viewModel.PostDetailViewModel;
 import com.thuanht.eatez.viewModel.SavePostViewModel;
 
-public class PostDetailActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class PostDetailActivity extends AppCompatActivity implements CommentCallback {
     private ActivityPostDetailBinding binding;
     private PostDetailViewModel viewModel;
     private SavePostViewModel savePostViewModel;
+    private CommentAdapter commentAdapter;
+    private RecyclerView recyclerView;
+    private List<Comment> comments;
     protected LoadingDialog loadingDialog;
     private int postid, userid;
     private String orderLink;
@@ -57,6 +68,9 @@ public class PostDetailActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(PostDetailViewModel.class);
         savePostViewModel = new ViewModelProvider(this).get(SavePostViewModel.class);
         loadingDialog = new LoadingDialog(this);
+
+        initRecyclerView();
+        initDataRecyclerView();
 
         // Get post id
         Intent intent = getIntent();
@@ -194,6 +208,13 @@ public class PostDetailActivity extends AppCompatActivity {
             }
         });
 
+        binding.btnSubmitComment.setOnClickListener(v -> {
+            String content = binding.txtComment.getText().toString();
+            if(viewModel.varidate(content)){
+                viewModel.addComment(userid,postid,content);
+            }
+        });
+
     }
 
     @Override
@@ -201,5 +222,47 @@ public class PostDetailActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.toolbar_fav_menu, menu);
         mMenu = menu;
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private void initRecyclerView(){
+        comments = new ArrayList<>();
+        commentAdapter = new CommentAdapter(this, comments);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        binding.rcvComment.setLayoutManager(layoutManager);
+        binding.rcvComment.setAdapter(commentAdapter);
+    }
+
+    private void initDataRecyclerView(){
+        loadingDialog.show();
+        viewModel.fetchComments(postid);
+        viewModel.getComments().observe(this, new Observer<List<Comment>>() {
+            @Override
+            public void onChanged(List<Comment> commentList) {
+                if(commentList == null) {
+                    loadingDialog.cancel();
+                    binding.tvNoComment.setVisibility(View.VISIBLE);
+                    return;
+                }if (comments.isEmpty()) {
+                    comments.addAll(commentList);
+                    commentAdapter.notifyDataSetChanged();
+                }else {
+                    int startPosition = comments.size();
+                    comments.addAll(commentList);
+                    commentAdapter.notifyItemRangeInserted(startPosition,commentList.size());
+                }
+                loadingDialog.cancel();
+            }
+        });
+    }
+
+    @Override
+    public void onCommentSuccess() {
+        viewModel.fetchComments(postid);
+    }
+
+    @Override
+    public void onCommentFailure(String errorMessage) {
+        Toast.makeText(this,"Comment fail to sumit", Toast.LENGTH_SHORT).show();
     }
 }

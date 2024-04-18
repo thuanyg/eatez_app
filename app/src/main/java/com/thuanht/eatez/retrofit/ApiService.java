@@ -4,6 +4,7 @@ package com.thuanht.eatez.retrofit;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.thuanht.eatez.jsonResponse.CategoryResponse;
+import com.thuanht.eatez.jsonResponse.CommentResponse;
 import com.thuanht.eatez.jsonResponse.FavouriteResponse;
 import com.thuanht.eatez.jsonResponse.LoginResponse;
 import com.thuanht.eatez.jsonResponse.PostResponse;
@@ -74,6 +75,9 @@ public interface ApiService {
     Observable<StatusResponse> unSavePost(@Query("userid") int userid, @Query("post_id") int postid);
     @GET("checkSaveBefore.php")
     Observable<StatusResponse> checkSave(@Query("userid") int userid, @Query("post_id") int postid);
-
+    @GET("setComment.php")
+    Observable<CommentResponse> setComment(@Query("userid") int userId, @Query("postid") int postId, @Query("content") String content);
+    @GET("getComments.php")
+    Observable<CommentResponse> getComments(@Query("postid") int postid);
 
 }
