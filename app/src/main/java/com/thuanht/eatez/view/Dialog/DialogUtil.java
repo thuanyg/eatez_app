@@ -179,23 +179,27 @@ public class DialogUtil {
                 .show();
     }
 
-    public static void showSuccessDialog(Context context) {
+    public static void showSuccessDialog(Context context, String heading, String description, String button) {
         PopupDialog.getInstance(context)
                 .statusDialogBuilder()
                 .createSuccessDialog()
                 .setHeading(heading)
                 .setDescription(description)
-//                .setHeadingFont(R.font.cubano)
-                .setActionButtonText("Play")
+                .setActionButtonText(button)
                 .setActionButtonTextColor(R.color.black)
-                .setActionButtonBackgroundColor(R.color.purple_200)
+                .setActionButtonBackgroundColor(R.color.button_color)
                 .setDismissButtonRippleColor(R.color.white)
+                .build(Dialog::dismiss)
+                .show();
+    }
 
-//                .setBackground(R.drawable.bg_blue_10)
-//                .setBackgroundColor(R.color.teal_200)
-//                .setBackgroundCornerRadius(50F)
-//                .setBackgroundCornerRadius(50F, 10F, 10F, 50F)
-
+    public static void showErrorDalog(Context context, String heading, String description, String button) {
+        PopupDialog.getInstance(context)
+                .statusDialogBuilder()
+                .createErrorDialog()
+                .setHeading("Uh-Oh")
+                .setDescription("Unexpected error occurred." +
+                        " Try again later.")
                 .build(Dialog::dismiss)
                 .show();
     }

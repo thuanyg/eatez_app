@@ -34,6 +34,7 @@ import com.thuanht.eatez.R;
 import com.thuanht.eatez.databinding.ActivityPostDetailBinding;
 import com.thuanht.eatez.model.Post;
 import com.thuanht.eatez.utils.DateUtils;
+import com.thuanht.eatez.view.Dialog.DialogUtil;
 import com.thuanht.eatez.view.Dialog.LoadingDialog;
 import com.thuanht.eatez.viewModel.PostDetailViewModel;
 import com.thuanht.eatez.viewModel.SavePostViewModel;
@@ -47,6 +48,8 @@ public class PostDetailActivity extends AppCompatActivity {
     private String orderLink;
     private Boolean isSaved = false;
     private boolean isUnSaved = false;
+    private Menu mMenu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,8 +76,18 @@ public class PostDetailActivity extends AppCompatActivity {
     private void savePostProcess() {
         // Check xem da luu truoc do chua
         savePostViewModel.getIsUserSavedBefore().observe(this, aBoolean -> {
-            if (aBoolean) {
-                isSaved = aBoolean;
+            isSaved = aBoolean;
+            if (isSaved) {
+//                Toast.makeText(this, "You have saved thís post before", Toast.LENGTH_SHORT).show();
+                if (mMenu != null) {
+                    MenuItem item = mMenu.findItem(R.id.btn_favouritePost);
+                    item.setIcon(R.drawable.saved_favourite);
+                }
+            } else {
+                if (mMenu != null) {
+                    MenuItem item = mMenu.findItem(R.id.btn_favouritePost);
+                    item.setIcon(R.drawable.add_to_favorite_);
+                }
             }
         });
         savePostViewModel.checkSaveBefore(userid, postid);
@@ -83,10 +96,11 @@ public class PostDetailActivity extends AppCompatActivity {
         savePostViewModel.getIsSaveSuccess().observe(this, aBoolean -> {
             if (aBoolean) {
                 isSaved = true;
-                Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
+                DialogUtil.showSuccessDialog(this, "Save completed",
+                        "Please check your favorites list to see all saved posts.", "Ok");
             } else {
                 isSaved = false;
-                Toast.makeText(this, "Saved error", Toast.LENGTH_SHORT).show();
+                DialogUtil.showErrorDalog(this, null, null, null);
             }
         });
 
@@ -94,10 +108,11 @@ public class PostDetailActivity extends AppCompatActivity {
         savePostViewModel.getIsUnSaveSuccess().observe(this, aBoolean -> {
             if (aBoolean) {
                 isUnSaved = true;
-                Toast.makeText(this, "UnSaved", Toast.LENGTH_SHORT).show();
+                DialogUtil.showSuccessDialog(this, "Unsave completed",
+                        "You have successfully completed the task", "Ok");
             } else {
                 isUnSaved = false;
-                Toast.makeText(this, "UnSaved error", Toast.LENGTH_SHORT).show();
+                DialogUtil.showErrorDalog(this, null, null, null);
             }
         });
     }
@@ -107,7 +122,8 @@ public class PostDetailActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbarFavourite);
         getSupportActionBar().show();
 
-        binding.layoutPostDetail.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+        binding.layoutPostDetail.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
+                (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (scrollY > 1000) {
                 binding.favRelativePostDetail.setVisibility(View.GONE);
             } else {
@@ -115,11 +131,7 @@ public class PostDetailActivity extends AppCompatActivity {
             }
         });
 
-        if (isSaved) {
-            Toast.makeText(this, "Bai viet da duoc luu truoc do", Toast.LENGTH_SHORT).show();
-        } else {
 
-        }
     }
 
     private void initData() {
@@ -164,11 +176,11 @@ public class PostDetailActivity extends AppCompatActivity {
             if (item.getItemId() == R.id.btn_favouritePost) {
                 if (!isSaved) {
                     savePostViewModel.savePost(userid, postid);
-                    changeFavouriteIcon(item);
+                    item.setIcon(R.drawable.saved_favourite);
                 } else {
                     savePostViewModel.unSavePost(userid, postid);
                     isSaved = false;
-                    changeFavouriteIcon(item);
+                    item.setIcon(R.drawable.add_to_favorite_);
                 }
             }
             return false;
@@ -184,19 +196,10 @@ public class PostDetailActivity extends AppCompatActivity {
 
     }
 
-
-    private void changeFavouriteIcon(MenuItem item) {
-        if (item.getIcon().getColorFilter() != null && item.getIcon().getColorFilter()
-                .equals(new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_IN))) {
-            item.getIcon().setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN);
-        } else {
-            item.getIcon().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_fav_menu, menu);
+        mMenu = menu;
         return super.onCreateOptionsMenu(menu);
     }
 }
