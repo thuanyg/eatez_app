@@ -86,6 +86,7 @@ public class FavoriteFragment extends Fragment {
         });
 
         binding.swipeRefreshFavourite.setOnRefreshListener(() -> {
+            binding.progressRefreshFav.setVisibility(View.VISIBLE);
             favouriteList.clear();
             currentPage = 1;
             viewModel.fetchFavouritePost(userid, 1);
@@ -166,6 +167,7 @@ public class FavoriteFragment extends Fragment {
                 }
                 isLoading = false;
                 binding.progressLoadMoreFavourite.setVisibility(View.GONE);
+                binding.progressRefreshFav.setVisibility(View.GONE);
             }
         });
         viewModel.fetchFavouritePost(userid, 1);

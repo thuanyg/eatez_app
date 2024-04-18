@@ -74,6 +74,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
+                    <ProgressBar
+                        android:visibility="gone"
+                        android:id="@+id/progress_refreshFav"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:progressTint="@color/red_hat_red"
+                        android:padding="10dp"
+                        android:layout_gravity="center_horizontal"/>
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rcvDishesFavourite"
                         android:layout_width="match_parent"

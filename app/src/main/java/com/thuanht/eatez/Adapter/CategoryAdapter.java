@@ -48,7 +48,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
             }
         }
 
-        holder.itemCategoryBinding.imageViewCategory.setOnClickListener(v -> {
+        holder.itemView.setOnClickListener(v -> {
             listener.onClick(categoryList.get(position));
         });
     }
