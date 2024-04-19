@@ -36,12 +36,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Comment comment = commentList.get(position);
-        holder.binding.tvNameUserComment.setText(comment.getName());
-        holder.binding.DateUserComment.setText(comment.getTime());
+        holder.binding.tvNameUserComment.setText(comment.getFullName());
+        holder.binding.DateUserComment.setText(comment.getDate());
         holder.binding.ContentUserComment.setText(comment.getContent());
-        if (comment.getImage() != null && !comment.getImage().isEmpty()) {
+        holder.binding.RatingBarUserComment.setRating(Float.parseFloat(comment.getRating()));
+        if (comment.getAvatarImage() != null && !comment.getAvatarImage().isEmpty()) {
             Glide.with(context)
-                    .load(comment.getImage())
+                    .load(comment.getAvatarImage())
                     .into(holder.binding.tvAvatarUserComment);
             holder.binding.tvAvatarUserComment.setVisibility(View.VISIBLE);
         } else {

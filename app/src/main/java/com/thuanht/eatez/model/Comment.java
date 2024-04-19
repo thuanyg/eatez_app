@@ -3,43 +3,49 @@ package com.thuanht.eatez.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 public class Comment {
-
-    @SerializedName("Id")
+    @SerializedName("cmt_id")
     @Expose
-    private String id;
-    @SerializedName("UserId")
+    private String cmtId;
+    @SerializedName("userid")
     @Expose
-    private String userId;
-    @SerializedName("Content")
+    private String userid;
+    @SerializedName("content")
     @Expose
     private String content;
-    @SerializedName("Image")
+    @SerializedName("avatar_image")
     @Expose
-    private String image;
-    @SerializedName("Time")
+    private String avatarImage;
+    @SerializedName("data")
     @Expose
-    private String time;
-    @SerializedName("PostId")
+    private String data;
+    @SerializedName("post_id")
     @Expose
     private String postId;
-    @SerializedName("Name")
+    @SerializedName("fullName")
     @Expose
-    private String name;
+    private String fullName;
+    @SerializedName("rating")
+    @Expose
+    private String rating;
 
-    public String getId() {
-        return id;
+    @SerializedName("date")
+    @Expose
+    private String date;
+
+    public String getCmtId() {
+        return cmtId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setCmtId(String cmtId) {
+        this.cmtId = cmtId;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUserid() {
+        return userid;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
 
     public String getContent() {
@@ -50,20 +56,24 @@ public class Comment {
         this.content = content;
     }
 
-    public String getImage() {
-        return image;
+    public String getDate() {
+        return date;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public String getAvatarImage() {
+        return avatarImage;
     }
 
-    public String getTime() {
-        return time;
+    public void setAvatarImage(String avatarImage) {
+        this.avatarImage = avatarImage;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
     }
 
     public String getPostId() {
@@ -74,12 +84,20 @@ public class Comment {
         this.postId = postId;
     }
 
-    public String getName() {
-        return name;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
     }
 
 
