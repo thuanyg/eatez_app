@@ -104,7 +104,7 @@ public class PostDetailViewModel extends ViewModel {
                     }
 
                     @Override
-                    public void onError(@NonNull Throwable e) {
+                    public void onError(@NonNull Throwable e) {disposable.dispose();
                     }
 
                     @Override
@@ -121,8 +121,8 @@ public class PostDetailViewModel extends ViewModel {
         }
         return true;
     }
-    public void addComment(int userID, int postID, String content ){
-        ApiService.ApiService.setComment(userID, postID, content)
+    public void addComment(int userID, int postID, String content, float rating ){
+        ApiService.ApiService.setComment(userID, postID, content, rating)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .retryWhen(errors -> errors.flatMap(error -> {
@@ -140,8 +140,8 @@ public class PostDetailViewModel extends ViewModel {
 
                     @Override
                     public void onNext(@NonNull CommentResponse commentResponse) {
-                        if (commentResponse.isStatus()) {
-                            commentCallback.onCommentSuccess();
+                        if (commentResponse.getStatus()) {
+                            commentCallback.onCommentSuccess(commentResponse.getComment());
                         }else{
                             commentCallback.onCommentFailure(commentResponse.getMessage());
 
@@ -158,8 +158,6 @@ public class PostDetailViewModel extends ViewModel {
                         disposable.dispose();                    }
                 });
     }
-    public MutableLiveData<List<Comment>> getComments() {
-        return comments;
-    }
+    public MutableLiveData<List<Comment>> getComments() {return comments;}
     public MutableLiveData<String> getContentCommentError(){return contentCommentError;}
 }

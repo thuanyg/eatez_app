@@ -210,8 +210,9 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
 
         binding.btnSubmitComment.setOnClickListener(v -> {
             String content = binding.txtComment.getText().toString();
+            float rating = binding.simpleRatingBar.getRating();
             if(viewModel.varidate(content)){
-                viewModel.addComment(userid,postid,content);
+                viewModel.addComment(userid,postid,content,rating);
             }
         });
 
@@ -257,8 +258,11 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
     }
 
     @Override
-    public void onCommentSuccess() {
-        viewModel.fetchComments(postid);
+    public void onCommentSuccess(Comment comment) {
+        comments.add(comment);
+        int newPosition = comments.size() - 1;
+        commentAdapter.notifyItemInserted(newPosition);
+        binding.rcvComment.scrollToPosition(newPosition);
     }
 
     @Override

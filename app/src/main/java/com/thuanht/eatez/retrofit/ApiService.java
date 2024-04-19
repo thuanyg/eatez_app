@@ -76,7 +76,7 @@ public interface ApiService {
     @GET("checkSaveBefore.php")
     Observable<StatusResponse> checkSave(@Query("userid") int userid, @Query("post_id") int postid);
     @GET("setComment.php")
-    Observable<CommentResponse> setComment(@Query("userid") int userId, @Query("postid") int postId, @Query("content") String content);
+    Observable<CommentResponse> setComment(@Query("userid") int userId, @Query("postid") int postId, @Query("content") String content, @Query("rating") float rating);
     @GET("getComments.php")
     Observable<CommentResponse> getComments(@Query("postid") int postid);
 
