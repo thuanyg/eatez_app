@@ -219,7 +219,6 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
                 viewModel.addComment(userid,postid,content);
             }
         });
-
     }
 
     @Override
