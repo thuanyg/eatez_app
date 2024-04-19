@@ -13,9 +13,29 @@ public class CommentResponse {
     @SerializedName("status")
     @Expose
     private Boolean status;
+    @SerializedName("message")
+    @Expose
+    private String message;
     @SerializedName("data")
     @Expose
     private List<Comment> data;
+    private Comment comment;
+
+    public Comment getComment() {
+        return comment;
+    }
+
+    public void setComment(Comment comment) {
+        this.comment = comment;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public Boolean getStatus() {
         return status;

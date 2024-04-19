@@ -59,12 +59,13 @@ public class PostDetailViewModel extends ViewModel {
                     public void onNext(@NonNull PostResponse postResponse) {
                         if(postResponse != null){
                             post.setValue(postResponse.getData().get(0));
+
                         }
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        disposable.dispose();
+
                     }
 
                     @Override
@@ -98,14 +99,12 @@ public class PostDetailViewModel extends ViewModel {
                     @Override
                     public void onNext(@NonNull CommentResponse commentResponse) {
                         if (commentResponse != null) {
-                            if(commentResponse.getStatus()){
-                                comments.setValue(commentResponse.getData());
-                            } else comments.setValue(null);
+                            comments.setValue(commentResponse.getData());
                         }
                     }
 
                     @Override
-                    public void onError(@NonNull Throwable e) {
+                    public void onError(@NonNull Throwable e) {disposable.dispose();
                     }
 
                     @Override
@@ -122,8 +121,8 @@ public class PostDetailViewModel extends ViewModel {
         }
         return true;
     }
-    public void addComment(int userID, int postID, String content ){
-        ApiService.ApiService.setComment(userID, postID, content)
+    public void addComment(int userID, int postID, String content, float rating ){
+        ApiService.ApiService.setComment(userID, postID, content, rating)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .retryWhen(errors -> errors.flatMap(error -> {
@@ -142,9 +141,10 @@ public class PostDetailViewModel extends ViewModel {
                     @Override
                     public void onNext(@NonNull CommentResponse commentResponse) {
                         if (commentResponse.getStatus()) {
-                            commentCallback.onCommentSuccess();
+                            commentCallback.onCommentSuccess(commentResponse.getComment());
                         }else{
-                            commentCallback.onCommentFailure("");
+                            commentCallback.onCommentFailure(commentResponse.getMessage());
+
                         }
                     }
 
@@ -158,8 +158,6 @@ public class PostDetailViewModel extends ViewModel {
                         disposable.dispose();                    }
                 });
     }
-    public MutableLiveData<List<Comment>> getComments() {
-        return comments;
-    }
+    public MutableLiveData<List<Comment>> getComments() {return comments;}
     public MutableLiveData<String> getContentCommentError(){return contentCommentError;}
 }
