@@ -59,13 +59,12 @@ public class PostDetailViewModel extends ViewModel {
                     public void onNext(@NonNull PostResponse postResponse) {
                         if(postResponse != null){
                             post.setValue(postResponse.getData().get(0));
-
                         }
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-
+                        disposable.dispose();
                     }
 
                     @Override
@@ -99,7 +98,9 @@ public class PostDetailViewModel extends ViewModel {
                     @Override
                     public void onNext(@NonNull CommentResponse commentResponse) {
                         if (commentResponse != null) {
-                            comments.setValue(commentResponse.getData());
+                            if(commentResponse.getStatus()){
+                                comments.setValue(commentResponse.getData());
+                            } else comments.setValue(null);
                         }
                     }
 
@@ -140,11 +141,10 @@ public class PostDetailViewModel extends ViewModel {
 
                     @Override
                     public void onNext(@NonNull CommentResponse commentResponse) {
-                        if (commentResponse.isStatus()) {
+                        if (commentResponse.getStatus()) {
                             commentCallback.onCommentSuccess();
                         }else{
-                            commentCallback.onCommentFailure(commentResponse.getMessage());
-
+                            commentCallback.onCommentFailure("");
                         }
                     }
 

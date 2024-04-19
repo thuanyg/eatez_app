@@ -226,7 +226,7 @@ Dad loves them, toddler loves them, Mom loves them AND loves that everyone loves
                         app:srb_starHeight="20dp"
                         app:srb_starPadding="5dp"
                         app:srb_starWidth="20dp"
-                        app:srb_stepSize="1"/>
+                        app:srb_stepSize="1" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -240,36 +240,35 @@ Dad loves them, toddler loves them, Mom loves them AND loves that everyone loves
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:orientation="horizontal"
-                        android:layout_gravity="center_vertical"
+                        android:layout_height="wrap_content"
                         android:layout_marginHorizontal="10dp"
-                        android:layout_height="wrap_content">
+                        android:paddingVertical="8dp"
+                        android:orientation="horizontal">
+
                         <EditText
                             android:id="@+id/txtComment"
                             android:layout_width="0dp"
+                            android:layout_height="45dp"
                             android:layout_weight="1"
-                            android:layout_height="50dp"
-                            android:layout_marginTop="10dp"
                             android:background="@drawable/button_add_comment"
                             android:clickable="true"
                             android:fontFamily="@font/barlow_semibold"
+                            android:hint="Write a comment"
                             android:padding="10dp"
                             android:singleLine="true"
-                            android:hint="Write a comment"
                             android:textColor="#C6000000"
                             android:textSize="16sp" />
 
                         <EditText
                             android:id="@+id/btnSubmitComment"
                             android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginTop="10dp"
-                            android:editable="false"
+                            android:layout_height="45dp"
+                            android:layout_marginStart="2dp"
                             android:background="@drawable/button_add_comment"
                             android:clickable="true"
-                            android:layout_marginStart="2dp"
-                            android:paddingHorizontal="10dp"
-                            android:drawableStart="@drawable/ic_send"/>
+                            android:drawableStart="@drawable/ic_send"
+                            android:editable="false"
+                            android:paddingHorizontal="10dp" />
                     </LinearLayout>
 
                 </LinearLayout>

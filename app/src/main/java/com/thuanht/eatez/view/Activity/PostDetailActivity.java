@@ -80,11 +80,14 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
         userid = LocalDataManager.getInstance().getUserLogin().getUserid();
 
 
-        initRecyclerView();
-        initDataRecyclerView();
+
         savePostProcess();
         initUI();
         initData();
+
+        // Comment
+        initRecyclerView();
+        initDataRecyclerView();
         eventHandler();
         setContentView(binding.getRoot());
     }
@@ -160,7 +163,7 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
                     orderLink = post.getOrderGrab();
                     RenderDataOnUI(post);
                 }
-                loadingDialog.hide();
+                loadingDialog.cancel();
                 binding.layoutPostDetail.setVisibility(View.VISIBLE);
             }
         });
@@ -252,6 +255,7 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
                     commentAdapter.notifyItemRangeInserted(startPosition,commentList.size());
                 }
                 loadingDialog.cancel();
+                binding.tvNoComment.setVisibility(View.GONE);
             }
         });
         viewModel.fetchComments(postid);
