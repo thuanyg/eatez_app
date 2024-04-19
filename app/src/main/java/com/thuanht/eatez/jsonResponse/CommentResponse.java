@@ -3,6 +3,7 @@ package com.thuanht.eatez.jsonResponse;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.thuanht.eatez.model.Comment;
+import com.thuanht.eatez.model.Pagination;
 
 import org.checkerframework.checker.units.qual.C;
 
@@ -19,14 +20,15 @@ public class CommentResponse {
     @SerializedName("data")
     @Expose
     private List<Comment> data;
-    private Comment comment;
 
-    public Comment getComment() {
-        return comment;
+    private Pagination pagination;
+
+    public Boolean getStatus() {
+        return status;
     }
 
-    public void setComment(Comment comment) {
-        this.comment = comment;
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 
     public String getMessage() {
@@ -37,14 +39,6 @@ public class CommentResponse {
         this.message = message;
     }
 
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
     public List<Comment> getData() {
         return data;
     }
@@ -53,4 +47,11 @@ public class CommentResponse {
         this.data = data;
     }
 
+    public Pagination getPagination() {
+        return pagination;
+    }
+
+    public void setPagination(Pagination pagination) {
+        this.pagination = pagination;
+    }
 }

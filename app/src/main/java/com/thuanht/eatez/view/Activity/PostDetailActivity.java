@@ -3,7 +3,6 @@ package com.thuanht.eatez.view.Activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.text.HtmlCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.Observer;
@@ -12,22 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.TokenWatcher;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -38,6 +27,7 @@ import com.thuanht.eatez.databinding.ActivityPostDetailBinding;
 import com.thuanht.eatez.interfaceEvent.CommentCallback;
 import com.thuanht.eatez.model.Comment;
 import com.thuanht.eatez.model.Post;
+import com.thuanht.eatez.model.User;
 import com.thuanht.eatez.utils.DateUtils;
 import com.thuanht.eatez.view.Dialog.DialogUtil;
 import com.thuanht.eatez.view.Dialog.LoadingDialog;
@@ -52,7 +42,6 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
     private PostDetailViewModel viewModel;
     private SavePostViewModel savePostViewModel;
     private CommentAdapter commentAdapter;
-    private RecyclerView recyclerView;
     private List<Comment> comments;
     protected LoadingDialog loadingDialog;
     private int postid, userid;
@@ -60,16 +49,19 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
     private Boolean isSaved = false;
     private boolean isUnSaved = false;
     private Menu mMenu;
+    private int pageNumber = 1;
+    private boolean isLastPageComment = false;
+    private boolean isLoading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityPostDetailBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         viewModel = new ViewModelProvider(this).get(PostDetailViewModel.class);
         savePostViewModel = new ViewModelProvider(this).get(SavePostViewModel.class);
         loadingDialog = new LoadingDialog(this);
-
-
+        viewModel.setCommentCallback(this);
 
         // Get post id
         Intent intent = getIntent();
@@ -80,16 +72,15 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
         userid = LocalDataManager.getInstance().getUserLogin().getUserid();
 
 
-
         savePostProcess();
         initUI();
+        // Initial post detail
         initData();
-
         // Comment
-        initRecyclerView();
-        initDataRecyclerView();
+        initRecyclerViewComment();
+        initDataRecyclerViewComment();
+
         eventHandler();
-        setContentView(binding.getRoot());
     }
 
     private void savePostProcess() {
@@ -140,17 +131,6 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
     public void initUI() {
         setSupportActionBar(binding.toolbarFavourite);
         getSupportActionBar().show();
-
-        binding.layoutPostDetail.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
-                (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            if (scrollY > 1000) {
-                binding.favRelativePostDetail.setVisibility(View.GONE);
-            } else {
-                binding.favRelativePostDetail.setVisibility(View.VISIBLE);
-            }
-        });
-
-
     }
 
     private void initData() {
@@ -160,21 +140,19 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
             @Override
             public void onChanged(Post post) {
                 if (post != null) {
-                    orderLink = post.getOrderGrab();
-                    RenderDataOnUI(post);
+                    RenderDataPostDetailOnUI(post);
                 }
                 loadingDialog.cancel();
                 binding.layoutPostDetail.setVisibility(View.VISIBLE);
             }
         });
         viewModel.fetchPostDetail(postid);
-
-
     }
 
     // Render data
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void RenderDataOnUI(@NonNull Post post) {
+    private void RenderDataPostDetailOnUI(@NonNull Post post) {
+        orderLink = post.getOrderGrab();
         binding.titlePostDetail.setText(post.getTitle());
         CharSequence spanned = HtmlCompat.fromHtml(post.getContent(), HtmlCompat.FROM_HTML_MODE_LEGACY);
         binding.tvContentPostDetail.setText(spanned);
@@ -213,13 +191,43 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
             }
         });
 
+        // Add comment
         binding.btnSubmitComment.setOnClickListener(v -> {
             String content = binding.txtComment.getText().toString();
             float rating = binding.simpleRatingBar.getRating();
-            if(viewModel.varidate(content)){
-                viewModel.addComment(userid,postid,content,rating);
+            if (viewModel.varidate(content)) {
+                binding.btnSubmitComment.startAnimation();
+                viewModel.addComment(userid, postid, content, (int) rating);
             }
         });
+
+        // Load more comment
+        binding.layoutPostDetail.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(@NonNull NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY > 700) {
+                    binding.favRelativePostDetail.setVisibility(View.GONE);
+                } else {
+                    binding.favRelativePostDetail.setVisibility(View.VISIBLE);
+                }
+                if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
+                    LoadMoreComment();
+                }
+            }
+        });
+
+    }
+
+    private void LoadMoreComment() {
+        if (isLastPageComment) {
+            binding.progressBarLoadComment.setVisibility(View.GONE);
+            return;
+        }
+        binding.progressBarLoadComment.setVisibility(View.VISIBLE);
+        if (!isLoading) {
+            this.pageNumber++;
+            viewModel.fetchComments(postid, pageNumber);
+        }
     }
 
     @Override
@@ -229,48 +237,64 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void initRecyclerView(){
+    private void initRecyclerViewComment() {
         comments = new ArrayList<>();
         commentAdapter = new CommentAdapter(this, comments);
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         binding.rcvComment.setLayoutManager(layoutManager);
         binding.rcvComment.setAdapter(commentAdapter);
     }
 
-    private void initDataRecyclerView(){
+    private void initDataRecyclerViewComment() {
+        viewModel.getIsLastPageComment().observe(this, aBoolean -> this.isLastPageComment = aBoolean);
+        isLoading = true;
         viewModel.getComments().observe(this, new Observer<List<Comment>>() {
             @Override
             public void onChanged(List<Comment> commentList) {
-                if(commentList == null) {
+                binding.progressBarLoadComment.setVisibility(View.VISIBLE);
+                if (commentList == null) {
                     binding.tvNoComment.setVisibility(View.VISIBLE);
+                    binding.progressBarLoadComment.setVisibility(View.GONE);
                     return;
                 }
-                if (comments.size() > 0) {
+                if (comments.isEmpty()) {
                     comments.addAll(commentList);
                     commentAdapter.notifyDataSetChanged();
-                }else {
+                } else {
                     int startPosition = comments.size();
                     comments.addAll(commentList);
-                    commentAdapter.notifyItemRangeInserted(startPosition,commentList.size());
+                    commentAdapter.notifyItemRangeInserted(startPosition, commentList.size());
                 }
+                isLoading = false;
                 loadingDialog.cancel();
                 binding.tvNoComment.setVisibility(View.GONE);
+                binding.progressBarLoadComment.setVisibility(View.GONE);
             }
         });
-        viewModel.fetchComments(postid);
+        viewModel.fetchComments(postid, 1);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    public void onCommentSuccess(Comment comment) {
-        comments.add(comment);
-        int newPosition = comments.size() - 1;
-        commentAdapter.notifyItemInserted(newPosition);
-        binding.rcvComment.scrollToPosition(newPosition);
+    public void onCommentSuccess() {
+        Comment c = new Comment();
+        User u = LocalDataManager.getInstance().getUserLogin();
+
+        c.setFullName(u.getFullName());
+        c.setAvatarImage(u.getAvatar_image());
+        c.setContent(binding.txtComment.getText().toString());
+        c.setRating(String.valueOf(binding.simpleRatingBar.getRating()));
+        c.setDate("Just now");
+
+        comments.add(0, c);
+        commentAdapter.notifyItemInserted(0);
+
+        binding.txtComment.setText("");
+        binding.btnSubmitComment.revertAnimation();
     }
 
     @Override
     public void onCommentFailure(String errorMessage) {
-        Toast.makeText(this,"Comment fail to sumit", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Comment fail to submit", Toast.LENGTH_SHORT).show();
     }
 }

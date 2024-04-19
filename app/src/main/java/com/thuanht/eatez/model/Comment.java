@@ -32,6 +32,11 @@ public class Comment {
     @Expose
     private String date;
 
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public String getCmtId() {
         return cmtId;
     }

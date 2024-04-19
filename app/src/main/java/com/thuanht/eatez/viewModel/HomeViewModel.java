@@ -30,7 +30,7 @@ import io.reactivex.rxjava3.exceptions.Exceptions;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class HomeViewModel extends ViewModel {
-    private Disposable disposable;
+    private Disposable disposable_postHome, disposable_category, disposable_slider, disposable_trending;
     private MutableLiveData<List<SliderHome>> sliderList = new MutableLiveData<>();
     private MutableLiveData<List<Category>> categoryList = new MutableLiveData<>();
     private MutableLiveData<List<Trending>> trends = new MutableLiveData<>();
@@ -46,7 +46,7 @@ public class HomeViewModel extends ViewModel {
                     if (error instanceof IOException && retryCount < 5) {
                         return retryCount;
                     }
-                    throw Exceptions    .propagate(error);
+                    throw Exceptions.propagate(error);
                 }).flatMap(retryCount -> {
                     if (retryCount == 5) {
                         return Observable.error(new Throwable("Retry limit reached"));
@@ -57,7 +57,7 @@ public class HomeViewModel extends ViewModel {
                 .subscribe(new Observer<PostResponse>() {
                     @Override
                     public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-                        disposable = d;
+                        disposable_postHome = d;
                     }
 
                     @Override
@@ -81,10 +81,12 @@ public class HomeViewModel extends ViewModel {
                         } else {
                             // Lỗi không phải do mạng
                         }
+                        disposable_postHome.dispose();
                     }
+
                     @Override
                     public void onComplete() {
-                        Log.d("TagDev", "CAll API Success");
+                        disposable_postHome.dispose();
                     }
                 });
     }
@@ -104,7 +106,7 @@ public class HomeViewModel extends ViewModel {
                 .subscribe(new Observer<SliderResponse>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-                        disposable = d;
+                        disposable_slider = d;
                     }
 
                     @Override
@@ -114,11 +116,12 @@ public class HomeViewModel extends ViewModel {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
+                        disposable_postHome.dispose();
                     }
 
                     @Override
                     public void onComplete() {
-
+                        disposable_postHome.dispose();
                     }
                 });
     }
@@ -137,7 +140,7 @@ public class HomeViewModel extends ViewModel {
                 .subscribe(new Observer<CategoryResponse>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-                        disposable = d;
+                        disposable_category = d;
                     }
 
                     @Override
@@ -147,30 +150,30 @@ public class HomeViewModel extends ViewModel {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-
+                        disposable_category.dispose();
                     }
 
                     @Override
                     public void onComplete() {
-
+                        disposable_category.dispose();
                     }
                 });
     }
 
-    public void fetchTrending(){
+    public void fetchTrending() {
         ApiService.ApiService.getTrendingHome()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<TrendingResponse>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-
+                        disposable_trending = d;
                     }
 
                     @Override
                     public void onNext(@NonNull TrendingResponse trendingResponse) {
-                        if(trendingResponse != null){
-                            if(trendingResponse.getStatus()){
+                        if (trendingResponse != null) {
+                            if (trendingResponse.getStatus()) {
                                 trends.setValue(trendingResponse.getData());
                             }
                         }
@@ -178,15 +181,16 @@ public class HomeViewModel extends ViewModel {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-
+                        disposable_trending.dispose();
                     }
 
                     @Override
                     public void onComplete() {
-
+                        disposable_trending.dispose();
                     }
                 });
     }
+
     public MutableLiveData<List<SliderHome>> getSliderList() {
         return sliderList;
     }
@@ -202,6 +206,7 @@ public class HomeViewModel extends ViewModel {
     public MutableLiveData<List<Post>> getPosts() {
         return posts;
     }
+
     public void setIsLastPage(boolean isLastPage) {
         this.isLastPageLiveData.setValue(isLastPage);
     }

@@ -24,6 +24,20 @@ public class DateUtils {
         return instance;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String getCurrentDateTime(){
+        LocalDateTime currentDateTime = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            currentDateTime = LocalDateTime.now();
+        }
+
+        DateTimeFormatter formatter = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        }
+        String formattedDateTime = currentDateTime.format(formatter);
+        return formattedDateTime;
+    }
     public String FormatDateStringToDayMonth(String date){
         String formattedDate = date;
         SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
