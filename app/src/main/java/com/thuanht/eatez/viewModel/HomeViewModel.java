@@ -116,12 +116,12 @@ public class HomeViewModel extends ViewModel {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        disposable_postHome.dispose();
+                        disposable_slider.dispose();
                     }
 
                     @Override
                     public void onComplete() {
-                        disposable_postHome.dispose();
+                        disposable_slider.dispose();
                     }
                 });
     }
