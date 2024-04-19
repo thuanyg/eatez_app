@@ -69,8 +69,7 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
         savePostViewModel = new ViewModelProvider(this).get(SavePostViewModel.class);
         loadingDialog = new LoadingDialog(this);
 
-        initRecyclerView();
-        initDataRecyclerView();
+
 
         // Get post id
         Intent intent = getIntent();
@@ -80,6 +79,9 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
         // Get user id
         userid = LocalDataManager.getInstance().getUserLogin().getUserid();
 
+
+        initRecyclerView();
+        initDataRecyclerView();
         savePostProcess();
         initUI();
         initData();
@@ -234,16 +236,14 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
     }
 
     private void initDataRecyclerView(){
-        loadingDialog.show();
-        viewModel.fetchComments(postid);
         viewModel.getComments().observe(this, new Observer<List<Comment>>() {
             @Override
             public void onChanged(List<Comment> commentList) {
                 if(commentList == null) {
-                    loadingDialog.cancel();
                     binding.tvNoComment.setVisibility(View.VISIBLE);
                     return;
-                }if (comments.isEmpty()) {
+                }
+                if (comments.size() > 0) {
                     comments.addAll(commentList);
                     commentAdapter.notifyDataSetChanged();
                 }else {
@@ -254,6 +254,7 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
                 loadingDialog.cancel();
             }
         });
+        viewModel.fetchComments(postid);
     }
 
     @Override
