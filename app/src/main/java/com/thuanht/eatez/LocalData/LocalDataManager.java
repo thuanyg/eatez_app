@@ -48,4 +48,8 @@ public class LocalDataManager {
         user = mySharedPreferences.getValue(LOGIN_USER_INFORMATION, type);
         return user;
     }
+
+    public void clearUserLogin(){
+        mySharedPreferences.clearValue(LOGIN_USER_INFORMATION);
+    }
 }

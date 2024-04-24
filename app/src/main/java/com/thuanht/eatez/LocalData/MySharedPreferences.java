@@ -37,10 +37,10 @@ public class MySharedPreferences {
     }
 
 
-    public void clearLoggedInUser() {
+    public void clearValue(String KEY) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(MY_SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.remove(KEY_USER);
+        editor.remove(KEY);
         editor.apply();
     }
 }
