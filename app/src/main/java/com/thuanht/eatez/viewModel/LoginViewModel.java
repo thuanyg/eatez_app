@@ -43,7 +43,6 @@ public class LoginViewModel extends ViewModel {
 
 
     public boolean validateData(String email, String password){
-        emailError.setValue(null);
         if(TextUtils.isEmpty(email)){
             emailError.setValue("Email cannot be empty");
             return false;

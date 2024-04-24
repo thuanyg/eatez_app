@@ -8,6 +8,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".view.Activity.PostDetailActivity">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ProgressBar
+            android:id="@+id/progress_PostDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"/>
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -312,6 +321,7 @@ Dad loves them, toddler loves them, Mom loves them AND loves that everyone loves
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="end"
+        android:visibility="gone"
         android:orientation="horizontal">
 
         <com.github.clans.fab.FloatingActionMenu

@@ -43,7 +43,6 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
     private SavePostViewModel savePostViewModel;
     private CommentAdapter commentAdapter;
     private List<Comment> comments;
-    protected LoadingDialog loadingDialog;
     private int postid, userid;
     private String orderLink;
     private Boolean isSaved = false;
@@ -60,7 +59,6 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
         setContentView(binding.getRoot());
         viewModel = new ViewModelProvider(this).get(PostDetailViewModel.class);
         savePostViewModel = new ViewModelProvider(this).get(SavePostViewModel.class);
-        loadingDialog = new LoadingDialog(this);
         viewModel.setCommentCallback(this);
 
         // Get post id
@@ -134,7 +132,6 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
     }
 
     private void initData() {
-        loadingDialog.show();
         viewModel.getPost().observe(this, new Observer<Post>() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -142,8 +139,9 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
                 if (post != null) {
                     RenderDataPostDetailOnUI(post);
                 }
-                loadingDialog.cancel();
+                binding.progressPostDetail.setVisibility(View.GONE);
                 binding.layoutPostDetail.setVisibility(View.VISIBLE);
+                binding.favRelativePostDetail.setVisibility(View.VISIBLE);
             }
         });
         viewModel.fetchPostDetail(postid);
@@ -223,8 +221,8 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
             binding.progressBarLoadComment.setVisibility(View.GONE);
             return;
         }
-        binding.progressBarLoadComment.setVisibility(View.VISIBLE);
         if (!isLoading) {
+            binding.progressBarLoadComment.setVisibility(View.VISIBLE);
             this.pageNumber++;
             viewModel.fetchComments(postid, pageNumber);
         }
@@ -251,7 +249,6 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
         viewModel.getComments().observe(this, new Observer<List<Comment>>() {
             @Override
             public void onChanged(List<Comment> commentList) {
-                binding.progressBarLoadComment.setVisibility(View.VISIBLE);
                 if (commentList == null) {
                     binding.tvNoComment.setVisibility(View.VISIBLE);
                     binding.progressBarLoadComment.setVisibility(View.GONE);
@@ -266,7 +263,6 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
                     commentAdapter.notifyItemRangeInserted(startPosition, commentList.size());
                 }
                 isLoading = false;
-                loadingDialog.cancel();
                 binding.tvNoComment.setVisibility(View.GONE);
                 binding.progressBarLoadComment.setVisibility(View.GONE);
             }
