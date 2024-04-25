@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="20dp">
-
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="match_parent"
@@ -215,6 +214,7 @@
                         android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/btnLinkedDevice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_linkphone"
@@ -229,6 +229,7 @@
                         android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/btnChangeTheme"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_theme_contrast"
@@ -276,6 +277,7 @@
                         android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/btnInviteFriend"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_invite"

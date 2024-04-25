@@ -169,9 +169,6 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
 
     public void eventHandler() {
         binding.toolbarFavourite.setNavigationOnClickListener(v -> {
-            Intent intent = new Intent(PostDetailActivity.this, HomeActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
             finish();
         });
 

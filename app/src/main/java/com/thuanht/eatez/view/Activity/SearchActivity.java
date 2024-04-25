@@ -10,7 +10,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,7 @@ import com.thuanht.eatez.Adapter.PostHomeAdapter;
 import com.thuanht.eatez.R;
 import com.thuanht.eatez.databinding.ActivitySearchBinding;
 import com.thuanht.eatez.model.Post;
+import com.thuanht.eatez.utils.KeyboardUtils;
 import com.thuanht.eatez.viewModel.SearchViewModel;
 
 import java.util.ArrayList;
@@ -31,7 +34,8 @@ public class SearchActivity extends AppCompatActivity {
     private ActivitySearchBinding binding;
     private SearchViewModel viewModel;
     private PostHomeAdapter adapter;
-    private  List<Post> posts;
+    private List<Post> posts;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +49,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private void observer() {
         viewModel.getPost_results().observe(this, posts -> {
-            if(posts == null){
+            if (posts == null) {
                 this.posts.clear();
                 binding.tvNoResultSearch.setVisibility(View.VISIBLE);
                 binding.tvNoResultSearch.setText("No result found");
@@ -61,16 +65,13 @@ public class SearchActivity extends AppCompatActivity {
 
     private void initUI() {
         posts = new ArrayList<>();
-        adapter = new PostHomeAdapter(this, posts, post -> {});
+        adapter = new PostHomeAdapter(this, posts, post -> goToPostDetailActivity(Integer.parseInt(post.getPostId())));
         binding.rcvSearchResult.setLayoutManager(new GridLayoutManager(this, 2));
         binding.rcvSearchResult.setAdapter(adapter);
     }
 
     private void eventHandler() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         binding.txtSearch.requestFocus();
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-
         binding.btnBackSearch.setOnClickListener(v -> {
             finish();
         });
@@ -138,5 +139,13 @@ public class SearchActivity extends AppCompatActivity {
             }
         }
         return cursor;
+    }
+
+    private void goToPostDetailActivity(int postid) {
+        Intent intent = new Intent(this, PostDetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("postid", postid);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }
