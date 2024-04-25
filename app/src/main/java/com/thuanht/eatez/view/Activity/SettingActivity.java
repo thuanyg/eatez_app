@@ -42,6 +42,10 @@ public class SettingActivity extends AppCompatActivity {
             finish();
         });
 
+        binding.btnRecentlySetting.setOnClickListener(v -> {
+            startActivity(new Intent(this, RecentWatchedActivity.class));
+        });
+
         binding.btnSignOut.setOnClickListener(v -> {
             DialogUtil.showStandardDialog(this, "Log Out Comfirmation", "Are you sure logout this account?",
                     "Yes", "Cancel", new DialogUtil.DialogClickListener() {

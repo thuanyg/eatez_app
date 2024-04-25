@@ -22,31 +22,77 @@
             android:layout_centerVertical="true"
             android:layout_gravity="start"
             android:drawableStart="@drawable/west"
+            android:layout_marginRight="10dp"
             android:padding="3dp"
             android:textSize="24sp" />
 
-
-        <EditText
+        <androidx.appcompat.widget.SearchView
             android:id="@+id/txtSearch"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="10dp"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="2dp"
+            android:layout_marginHorizontal="10dp"
+            app:iconifiedByDefault="false"
             android:background="@drawable/edit_text_background"
-            android:backgroundTint="@color/gray_overlay"
-            android:drawableStart="@drawable/search"
-            android:drawablePadding="5dp"
-            android:fontFamily="@font/barlow"
-            android:hint="Search Food, Drink, ..."
-            android:maxLines="1"
-            android:paddingHorizontal="8dp"
-            android:singleLine="true"
-            android:textSize="14sp" />
+            app:defaultQueryHint="Search food, drink, ..."/>
     </androidx.appcompat.widget.Toolbar>
 
     <View
+        android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/gray_overlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <TextView
+        android:id="@+id/tvResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/barlow_semibold"
+        android:padding="10dp"
+        android:text="Results"
+        android:textSize="24sp"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcv_SearchResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvResult" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ProgressBar
+            android:visibility="gone"
+            android:id="@+id/progress_Search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="150dp" />
+    </FrameLayout>
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tvNoResultSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="No result found"
+        android:textSize="20sp"
+        android:layout_marginTop="150dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

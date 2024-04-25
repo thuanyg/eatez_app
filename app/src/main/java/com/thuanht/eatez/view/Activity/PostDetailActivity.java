@@ -8,12 +8,12 @@ import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.thuanht.eatez.Adapter.CommentAdapter;
 import com.thuanht.eatez.LocalData.LocalDataManager;
 import com.thuanht.eatez.R;
+import com.thuanht.eatez.database.database.AppDatabase;
 import com.thuanht.eatez.databinding.ActivityPostDetailBinding;
 import com.thuanht.eatez.interfaceEvent.CommentCallback;
 import com.thuanht.eatez.model.Comment;
@@ -30,12 +31,13 @@ import com.thuanht.eatez.model.Post;
 import com.thuanht.eatez.model.User;
 import com.thuanht.eatez.utils.DateUtils;
 import com.thuanht.eatez.view.Dialog.DialogUtil;
-import com.thuanht.eatez.view.Dialog.LoadingDialog;
 import com.thuanht.eatez.viewModel.PostDetailViewModel;
 import com.thuanht.eatez.viewModel.SavePostViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class PostDetailActivity extends AppCompatActivity implements CommentCallback {
     private ActivityPostDetailBinding binding;
@@ -68,8 +70,6 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
         }
         // Get user id
         userid = LocalDataManager.getInstance().getUserLogin().getUserid();
-
-
         savePostProcess();
         initUI();
         // Initial post detail
@@ -79,6 +79,13 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
         initDataRecyclerViewComment();
 
         eventHandler();
+
+        Executor executor = Executors.newSingleThreadExecutor();
+        List<Post> posts = new ArrayList<>();
+        posts.addAll(AppDatabase.getInstance(this).postDAO().selectAll());
+        for (Post p : posts) {
+            Log.d("TagDev", p.getTitle());
+        }
     }
 
     private void savePostProcess() {
@@ -138,6 +145,7 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
             public void onChanged(Post post) {
                 if (post != null) {
                     RenderDataPostDetailOnUI(post);
+                    SaveOnRecentlyWatched(post);
                 }
                 binding.progressPostDetail.setVisibility(View.GONE);
                 binding.layoutPostDetail.setVisibility(View.VISIBLE);
@@ -146,6 +154,7 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
         });
         viewModel.fetchPostDetail(postid);
     }
+
 
     // Render data
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -292,5 +301,14 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
     @Override
     public void onCommentFailure(String errorMessage) {
         Toast.makeText(this, "Comment fail to submit", Toast.LENGTH_SHORT).show();
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void SaveOnRecentlyWatched(Post post) {
+        post.setPost_id(Integer.parseInt(post.getPostId()));
+        post.setDate_rb(DateUtils.getInstance().getCurrentDateTime());
+        long row_affect = AppDatabase.getInstance(this).postDAO().insert(post);
+//        Log.d("TagDev", row_affect + " rows affected ID");
     }
 }

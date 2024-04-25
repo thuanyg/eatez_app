@@ -65,15 +65,15 @@ public class HomeActivity extends AppCompatActivity {
                 int itemId = item.getItemId();
                 if (itemId == R.id.nav_home) {
                     binding.viewPagerBottomNav.setCurrentItem(0, false);
-                    fragmentStack.add(0);
+//                    fragmentStack.add(0);
                     return true;
                 } else if (itemId == R.id.nav_favourite) {
                     binding.viewPagerBottomNav.setCurrentItem(1, false);
-                    fragmentStack.add(1);
+//                    fragmentStack.add(1);
                     return true;
                 } else if (itemId == R.id.nav_notification) {
                     binding.viewPagerBottomNav.setCurrentItem(2, false);
-                    fragmentStack.add(2);
+//                    fragmentStack.add(2);
                     return true;
                 } else {
                     startActivity(new Intent(context, SettingActivity.class));
@@ -81,8 +81,6 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
     private void switchToFragment(int position) {
