@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.thuanht.eatez.LocalData.LocalDataManager;
@@ -40,6 +41,38 @@ public class SettingActivity extends AppCompatActivity {
     private void eventHandler() {
         binding.toolbarSetting.setNavigationOnClickListener(v -> {
             finish();
+        });
+
+        binding.btnRecentlySetting.setOnClickListener(v -> {
+            startActivity(new Intent(this, RecentWatchedActivity.class));
+        });
+
+        binding.btnNotificationSetting.setOnClickListener(v -> {
+            Toast.makeText(this, "This function is being developed.", Toast.LENGTH_SHORT).show();
+        });
+
+        binding.btnPrivacy.setOnClickListener(v -> {
+            Toast.makeText(this, "This function is being developed.", Toast.LENGTH_SHORT).show();
+        });
+
+        binding.btnDataStorage.setOnClickListener(v -> {
+            Toast.makeText(this, "This function is being developed.", Toast.LENGTH_SHORT).show();
+        });
+
+        binding.btnLinkedDevice.setOnClickListener(v -> {
+            Toast.makeText(this, "This function is being developed.", Toast.LENGTH_SHORT).show();
+        });
+
+        binding.btnChangeTheme.setOnClickListener(v -> {
+            Toast.makeText(this, "This function is being developed.", Toast.LENGTH_SHORT).show();
+        });
+
+        binding.btnAboutUsSetting.setOnClickListener(v -> {
+            Toast.makeText(this, "This function is being developed.", Toast.LENGTH_SHORT).show();
+        });
+
+        binding.btnInviteFriend.setOnClickListener(v -> {
+            Toast.makeText(this, "This function is being developed.", Toast.LENGTH_SHORT).show();
         });
 
         binding.btnSignOut.setOnClickListener(v -> {

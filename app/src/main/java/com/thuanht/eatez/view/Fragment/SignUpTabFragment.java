@@ -98,6 +98,7 @@ public class SignUpTabFragment extends Fragment implements RegisterCallback {
 
     @Override
     public void onRegisterSuccess() {
+        binding.progressSignUp.setVisibility(View.VISIBLE);
         Intent intent = new Intent(requireContext(), LoginActivity.class);
         startActivity(intent);
     }

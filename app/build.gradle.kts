@@ -54,7 +54,6 @@ dependencies {
     implementation("com.makeramen:roundedimageview:2.3.0")
     implementation("com.facebook.shimmer:shimmer:0.5.0")
     implementation("de.hdodenhof:circleimageview:3.1.0")
-    implementation("com.github.amarjain07:StickyScrollView:1.0.2")
     implementation("com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.0")
     implementation("com.saadahmedev.popup-dialog:popup-dialog:2.0.0")
     implementation("com.github.ome450901:SimpleRatingBar:1.5.1");
@@ -68,6 +67,9 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    // RoomDatabase
+    implementation ("androidx.room:room-runtime:2.6.1")
+    annotationProcessor("androidx.room:room-compiler:2.6.1")
     // RxAndroid - RxJava
     implementation ("io.reactivex.rxjava3:rxandroid:3.0.2")
     implementation ("io.reactivex.rxjava3:rxjava:3.1.8")

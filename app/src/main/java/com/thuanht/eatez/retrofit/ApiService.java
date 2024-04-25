@@ -79,5 +79,6 @@ public interface ApiService {
     Observable<StatusResponse> setComment(@Query("userid") int userId, @Query("postid") int postId, @Query("content") String content, @Query("rating") int rating);
     @GET("getComments.php")
     Observable<CommentResponse> getComments(@Query("postid") int postid, @Query("page") int pageNumber);
-
+    @GET("searchPosts.php")
+    Observable<PostResponse> searchPost(@Query("key") String key);
 }
