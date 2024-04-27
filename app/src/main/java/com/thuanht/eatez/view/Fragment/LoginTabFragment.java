@@ -17,6 +17,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.airbnb.lottie.L;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -24,6 +25,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.thuanht.eatez.LocalData.LocalDataManager;
 import com.thuanht.eatez.LocalData.MySharedPreferences;
+import com.thuanht.eatez.database.database.AppDatabase;
+import com.thuanht.eatez.database.entity.Suggestion;
 import com.thuanht.eatez.databinding.FragmentLoginTabBinding;
 import com.thuanht.eatez.interfaceEvent.LoginCallback;
 import com.thuanht.eatez.jsonResponse.LoginResponse;
@@ -34,6 +37,10 @@ import com.thuanht.eatez.view.Activity.LoginActivity;
 import com.thuanht.eatez.view.Dialog.DialogUtil;
 import com.thuanht.eatez.viewModel.LoginViewModel;
 import com.thuanht.eatez.R;
+import com.thuanht.eatez.viewModel.SuggestViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoginTabFragment extends Fragment implements LoginCallback {
     private FragmentLoginTabBinding binding;
@@ -46,7 +53,6 @@ public class LoginTabFragment extends Fragment implements LoginCallback {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentLoginTabBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
-
         // Quan sát LiveData để nhận thông báo lỗi email & password
         viewModel.getEmailError().observe(requireActivity(), errorString -> {
             binding.txtEmail.setError(errorString);
@@ -91,7 +97,6 @@ public class LoginTabFragment extends Fragment implements LoginCallback {
 
     @Override
     public void onLoginSuccess(User user) {
-        Log.d("TagDev", user.toString());
         LocalDataManager.getInstance().setUserLogin(user);
         // Chuyển hướng đến màn hình Home
         Intent intent = new Intent(requireContext(), HomeActivity.class);
@@ -104,7 +109,6 @@ public class LoginTabFragment extends Fragment implements LoginCallback {
         binding.progressBarLogin.setVisibility(View.GONE);
         Toast.makeText(getContext(), "Email or password not correct!", Toast.LENGTH_SHORT).show();
     }
-
 
 
 }
