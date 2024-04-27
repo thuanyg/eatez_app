@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".app.MyApplication"
@@ -52,6 +53,8 @@
         <activity
             android:name=".view.Activity.GetStartedActivity"
             android:exported="false" />
+        <activity android:name=".view.Activity.EditProfileActivity"
+            android:exported="false"/>
         <activity
             android:name=".view.Activity.OnboardingActivity"
             android:exported="true"

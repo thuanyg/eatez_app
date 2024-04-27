@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.thuanht.eatez.jsonResponse.CategoryResponse;
 import com.thuanht.eatez.jsonResponse.CommentResponse;
 import com.thuanht.eatez.jsonResponse.FavouriteResponse;
+import com.thuanht.eatez.jsonResponse.ProfileResponse;
 import com.thuanht.eatez.jsonResponse.LoginResponse;
 import com.thuanht.eatez.jsonResponse.PostResponse;
 import com.thuanht.eatez.jsonResponse.StatusResponse;
@@ -19,11 +20,16 @@ import java.util.concurrent.TimeUnit;
 
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
 import io.reactivex.rxjava3.core.Observable;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
+import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface ApiService {
@@ -95,6 +101,13 @@ public interface ApiService {
 
     @GET("getComments.php")
     Observable<CommentResponse> getComments(@Query("postid") int postid, @Query("page") int pageNumber);
+    @Multipart
+    @POST("setUser.php")
+    Observable<UserResponse> updateProfileUser(
+            @Part("userid") int userid,
+            @Part("fullName") RequestBody fullName,
+            @Part MultipartBody.Part avatarImage
+    );
 
     @GET("searchPosts.php")
     Observable<PostResponse> searchPost(@Query("key") String key);
