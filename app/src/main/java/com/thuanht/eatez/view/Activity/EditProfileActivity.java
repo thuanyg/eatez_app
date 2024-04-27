@@ -91,6 +91,17 @@ public class EditProfileActivity extends AppCompatActivity{
         binding.btnEditSubmit.setOnClickListener(v ->{
             if(muri != null){
                 callApiUpdateProfile();
+                EditProfileViewModel.getUserDataLiveData().observe(this, user -> {
+                    binding.edNameEdit.setText(user.getFullName());
+                    Glide.with(this)
+                            .load(user.getAvatar_image())
+                            .placeholder(R.drawable.onboarding_img_3)
+                            .into(binding.avatarImgEdit);
+                    LocalDataManager.getInstance().setUserLogin(user);
+                    Intent intent = new Intent(this,SettingActivity.class);
+                    startActivity(intent);
+                });
+
             }
         });
     }

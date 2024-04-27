@@ -28,6 +28,9 @@ public class EditProfileViewModel extends ViewModel {
     private static Disposable disposable;
     private static MutableLiveData<User> userDataLiveData = new MutableLiveData<>();
 
+    public static MutableLiveData<User> getUserDataLiveData() {
+        return userDataLiveData;
+    }
 
     public static void updateProfileAfterImageSelection(int userid, RequestBody fullname, MultipartBody.Part avatarImage) {
         ApiService.ApiService.updateProfileUser(userid, fullname, avatarImage)
@@ -49,7 +52,6 @@ public class EditProfileViewModel extends ViewModel {
                     public void onNext(@NonNull UserResponse userResponse) {
                         if (userResponse.isStatus()) {
                             userDataLiveData.setValue(userResponse.getData());
-                            LocalDataManager.getInstance().setUserLogin(userResponse.getData());
                         } else {
                             Log.e(TAG, "Update failed");
                         }
