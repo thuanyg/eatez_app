@@ -2,8 +2,10 @@ package com.thuanht.eatez.view.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,6 +14,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationBarView;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.normal.TedPermission;
 import com.thuanht.eatez.Adapter.ViewPagerHomeAdapter;
 import com.thuanht.eatez.R;
 import com.thuanht.eatez.databinding.ActivityHomeBinding;
@@ -21,18 +25,13 @@ import com.thuanht.eatez.view.Fragment.FavoriteFragment;
 import com.thuanht.eatez.view.Fragment.HomeFragment;
 import com.thuanht.eatez.view.Fragment.NotificationFragment;
 
+import java.util.List;
 import java.util.Stack;
 
 public class HomeActivity extends AppCompatActivity {
     private ActivityHomeBinding binding;
     private Stack<Integer> fragmentStack = new Stack<>();
-
     private ViewPager2 viewPager;
-
-    HomeFragment homefragment = new HomeFragment();
-    FavoriteFragment favoriteFragment = new FavoriteFragment();
-    NotificationFragment notificationFragment = new NotificationFragment();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +41,30 @@ public class HomeActivity extends AppCompatActivity {
         initNavigation();
         eventHandler();
         LocationPermission.getInstance(this).requestPermission(this);
+//        requestPermissions();
+    }
+
+    private void requestPermissions() {
+        PermissionListener permissionlistener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                Toast.makeText(HomeActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onPermissionDenied(List<String> deniedPermissions) {
+                Toast.makeText(HomeActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+
+        };
+        if(checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            TedPermission.create()
+                    .setPermissionListener(permissionlistener)
+                    .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                    .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.POST_NOTIFICATIONS)
+                    .check();
+        }
+
     }
 
     private void initViewPager() {
@@ -91,7 +114,6 @@ public class HomeActivity extends AppCompatActivity {
     public void eventHandler() {
         if (!NetworkUtils.isNetworkAvailable(this)) {
             Toast.makeText(this, "No Internet connection", Toast.LENGTH_SHORT).show();
-            return;
         }
     }
     @Override
@@ -99,22 +121,10 @@ public class HomeActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LocationPermission.REQUEST_PERMISSION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
             }
         }
     }
-
-//    @Override
-//    public void onBackPressed() {
-//        if (!fragmentStack.isEmpty()) {
-//            fragmentStack.pop();
-//            if (!fragmentStack.isEmpty()) {
-//                switchToFragment(fragmentStack.peek());
-//                return;
-//            }
-//        }
-//        super.onBackPressed();
-//    }
 }
