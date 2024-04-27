@@ -22,6 +22,8 @@ import android.widget.Toast;
 
 import com.thuanht.eatez.Adapter.PostHomeAdapter;
 import com.thuanht.eatez.R;
+import com.thuanht.eatez.database.database.AppDatabase;
+import com.thuanht.eatez.database.entity.Suggestion;
 import com.thuanht.eatez.databinding.ActivitySearchBinding;
 import com.thuanht.eatez.model.Post;
 import com.thuanht.eatez.utils.KeyboardUtils;
@@ -121,21 +123,14 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private Cursor getCursorWithSuggestions(String query) {
-        String[] listFoods = new String[]{
-                "Bánh mì", "Bún bò Huế", "Bún chả", "Bún riêu", "Bún thịt nướng", "Cà phê sữa đá",
-                "Chả cá Lã Vọng", "Chả giò", "Cơm tấm", "Gỏi cuốn", "Mì Quảng", "Nem chua", "Phở bò",
-                "Phở gà", "Bánh cuốn", "Bánh xèo", "Bún đậu mắm tôm", "Bún đậu", "Bún mắm",
-                "Bánh tráng trộn", "Bánh canh", "Bánh ít", "Bánh ngọt", "Bánh bèo",
-                "Bún thang", "Chè", "Gỏi", "Hủ tiếu", "Mì xào", "Ốc", "Bánh canh cua", "Bánh bao",
-                "Bánh bột lọc", "Bánh tét", "Bánh mì pate", "Bánh mì bơ", "Bánh tráng nướng", "Bún ốc",
-                "Bánh mì chảo", "Bánh tráng cuốn", "Bánh phồng tôm", "Bánh đa cua"
-        };
-
+        List<Suggestion> suggestionList = AppDatabase.getInstance(this).suggestionDAO().selectAll();
+        System.out.println(suggestionList);
         String[] columnNames = {"_id", "query_suggestion"};
         MatrixCursor cursor = new MatrixCursor(columnNames);
-        for (int i = 0; i < listFoods.length; i++) {
-            if (listFoods[i].toLowerCase().contains(query.toLowerCase())) {
-                cursor.addRow(new Object[]{i, listFoods[i]});
+        int idx = 0;
+        for (Suggestion suggestion: suggestionList) {
+            if (suggestion.getSuggest_value().toLowerCase().contains(query.toLowerCase())) {
+                cursor.addRow(new Object[]{idx++, suggestion.getSuggest_value()});
             }
         }
         return cursor;

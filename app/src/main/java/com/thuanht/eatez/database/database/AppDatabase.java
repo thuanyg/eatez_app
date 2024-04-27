@@ -7,12 +7,13 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.thuanht.eatez.database.dao.PostDAO;
+import com.thuanht.eatez.database.dao.SuggestionDAO;
+import com.thuanht.eatez.database.entity.Suggestion;
 import com.thuanht.eatez.model.Post;
 
-@Database(entities = {Post.class}, version = 1)
+@Database(entities = {Post.class, Suggestion.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase instance;
-
     public static synchronized AppDatabase getInstance(Context context){
         if (instance == null){
             instance = Room.databaseBuilder(context.getApplicationContext(),
@@ -23,8 +24,6 @@ public abstract class AppDatabase extends RoomDatabase {
         }
         return instance;
     }
-
     public abstract PostDAO postDAO();
-//    public abstract DishDAO dishDAO();
-//    public abstract RestaurantDAO restaurantDAO();
+    public abstract SuggestionDAO suggestionDAO();
 }

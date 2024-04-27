@@ -2,15 +2,22 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:background="@color/white"
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/tvSuggestion"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@color/white"
-        android:gravity="center"
+        android:layout_marginVertical="2dp"
+        android:background="@drawable/button_clicked_bg"
+        android:paddingHorizontal="10dp"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:clickable="true"
         android:text="ThuanHT"
+        android:drawableStart="@drawable/search"
+        android:drawableTint="@color/gray_text"
         android:textSize="16sp"
         android:textColor="@color/gray_text"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,7 +26,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.5dp"
         android:background="@color/gray_overlay"
         app:layout_constraintBottom_toBottomOf="@+id/tvSuggestion" />
 </androidx.constraintlayout.widget.ConstraintLayout>

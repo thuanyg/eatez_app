@@ -9,6 +9,7 @@ import com.thuanht.eatez.jsonResponse.FavouriteResponse;
 import com.thuanht.eatez.jsonResponse.LoginResponse;
 import com.thuanht.eatez.jsonResponse.PostResponse;
 import com.thuanht.eatez.jsonResponse.StatusResponse;
+import com.thuanht.eatez.jsonResponse.SuggestResponse;
 import com.thuanht.eatez.jsonResponse.TrendingResponse;
 import com.thuanht.eatez.jsonResponse.SignupResponse;
 import com.thuanht.eatez.jsonResponse.SliderResponse;
@@ -49,36 +50,55 @@ public interface ApiService {
 
     @GET("getPosts.php")
     Observable<PostResponse> getListPost(@Query("page") int pageNumber);
+
     @GET("getCategories.php")
     Observable<CategoryResponse> getCategories();
+
     @GET("getSliders.php")
     Observable<SliderResponse> getSliders();
+
     @GET("getPostsOfCategory.php")
     Observable<PostResponse> getListPostOfCategory(@Query("categoryid") int cid, @Query("page") int pageNumber);
+
     @GET("getFavouritePost.php")
     Observable<FavouriteResponse> getFavouritePost(@Query("userid") int userid, @Query("page") int pageNumber);
+
     @GET("getPost.php")
     Observable<PostResponse> getDetailPost(@Query("postid") int postid);
+
     @GET("login.php")
     Observable<LoginResponse> Login(@Query("email") String email, @Query("password") String password);
+
     @GET("register.php")
     Observable<SignupResponse> Register(@Query("fullname") String fullname, @Query("email") String email, @Query("password") String password);
+
     @GET("getUser.php")
     Observable<UserResponse> getUser(@Query("userid") int userid);
+
     @GET("getDishTrending.php")
     Observable<TrendingResponse> getTrendingHome();
+
     @GET("searchPostByDishID.php")
     Observable<PostResponse> getPostTrending(@Query("dishid") int dishID, @Query("page") int pageNumber);
+
     @GET("setFavouritePost.php")
     Observable<StatusResponse> savePost(@Query("userid") int userid, @Query("post_id") int postid);
+
     @GET("unsetFavouritePost.php")
     Observable<StatusResponse> unSavePost(@Query("userid") int userid, @Query("post_id") int postid);
+
     @GET("checkSaveBefore.php")
     Observable<StatusResponse> checkSave(@Query("userid") int userid, @Query("post_id") int postid);
+
     @GET("setComment.php")
     Observable<StatusResponse> setComment(@Query("userid") int userId, @Query("postid") int postId, @Query("content") String content, @Query("rating") int rating);
+
     @GET("getComments.php")
     Observable<CommentResponse> getComments(@Query("postid") int postid, @Query("page") int pageNumber);
+
     @GET("searchPosts.php")
     Observable<PostResponse> searchPost(@Query("key") String key);
+
+    @GET("getSuggestion.php")
+    Observable<SuggestResponse> getSuggestionValue();
 }

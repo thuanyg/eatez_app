@@ -2,6 +2,10 @@ package com.thuanht.eatez.app;
 
 import android.app.Activity;
 import android.app.Application;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.WindowManager;
 
@@ -11,10 +15,13 @@ import androidx.annotation.Nullable;
 import com.thuanht.eatez.LocalData.LocalDataManager;
 
 public class MyApplication extends Application {
+    public static final String CHANNEL_ID = "CHANNEL_ID1";
+
     @Override
     public void onCreate() {
         super.onCreate();
         LocalDataManager.getInstance().init(getApplicationContext());
+        createChannelNotification();
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
@@ -54,5 +61,13 @@ public class MyApplication extends Application {
 
             }
         });
+    }
+
+    private void createChannelNotification() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, "Post Notifications", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
     }
 }

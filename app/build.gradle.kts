@@ -4,6 +4,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        create("config_thuanht") {
+            storeFile = file("/home/thuanht/Desktop/eatez_keystore.jks")
+            storePassword = "123456"
+            keyAlias = "thuanht"
+            keyPassword = "123456"
+        }
+    }
     namespace = "com.thuanht.eatez"
     compileSdk = 34
 
@@ -24,6 +32,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("config_thuanht")
         }
     }
     compileOptions {
@@ -78,6 +87,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
     implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-messaging")
     // Google Location Service
     implementation("com.google.android.gms:play-services-location:21.2.0")
     // Glide
