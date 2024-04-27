@@ -6,6 +6,10 @@ public class UserResponse {
     private boolean status;
     private User data;
 
+    public void setData(User data) {
+        this.data = data;
+    }
+
     public boolean isStatus() {
         return status;
     }
