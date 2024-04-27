@@ -3,6 +3,7 @@ package com.thuanht.eatez.firebase.FirebaseCloudMessage;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
@@ -32,7 +33,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void SendNotification(String title, String messageContent) {
         int id = getNotificationID();
         Intent intent = new Intent(this, SettingActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, id, intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addNextIntent(intent);
+        PendingIntent pendingIntent = stackBuilder.getPendingIntent(id, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification.Builder builder;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {

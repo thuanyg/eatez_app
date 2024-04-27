@@ -31,8 +31,7 @@
             android:exported="false" />
         <activity
             android:name=".view.Activity.PostDetailActivity"
-            android:parentActivityName=".view.Activity.HomeActivity"
-            android:exported="false" />
+            android:parentActivityName=".view.Activity.HomeActivity" />
         <activity
             android:name=".view.Activity.SearchActivity"
             android:windowSoftInputMode="adjustNothing"
