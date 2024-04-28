@@ -180,6 +180,7 @@
                             android:textSize="20sp" />
 
                         <TextView
+                            android:id="@+id/btnSeeAllTrending"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -240,6 +241,8 @@
                             android:textSize="20sp" />
 
                         <TextView
+                            android:id="@+id/btnSeeAllPost"
+                            android:visibility="gone"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"

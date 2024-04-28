@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.ActionMode;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -27,9 +28,11 @@ import com.thuanht.eatez.LocalData.LocalDataManager;
 import com.thuanht.eatez.databinding.FragmentFavoriteBinding;
 import com.thuanht.eatez.model.Favourite;
 import com.thuanht.eatez.model.Post;
+import com.thuanht.eatez.view.Activity.HomeActivity;
 import com.thuanht.eatez.view.Activity.PostDetailActivity;
 import com.thuanht.eatez.view.Dialog.DialogUtil;
 import com.thuanht.eatez.viewModel.FavouriteViewModel;
+import com.thuanht.eatez.viewModel.SavePostViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,17 +41,24 @@ public class FavoriteFragment extends Fragment {
 
     private FragmentFavoriteBinding binding;
     private FavouriteViewModel viewModel;
+    private SavePostViewModel savePostViewModel;
     private PostFavouriteAdapter adapter;
     private List<Favourite> favouriteList = new ArrayList<>();
     private int currentPage = 1;
     private boolean isLoading, isLastPage = false;
     private int userid = 1;
+    // Define for multi selection
+    private ActionMode actionMode;
+    private boolean isMultiSelect = false;
+    //i created List of int type to store id of data, you can create custom class type data according to your need.
+    private List<Integer> selectedIds = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentFavoriteBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(FavouriteViewModel.class);
+        savePostViewModel = new ViewModelProvider(requireActivity()).get(SavePostViewModel.class);
         userid = LocalDataManager.getInstance().getUserLogin().getUserid();
         initUI();
         initData();
@@ -92,15 +102,18 @@ public class FavoriteFragment extends Fragment {
             viewModel.fetchFavouritePost(userid, 1);
             binding.swipeRefreshFavourite.setRefreshing(false);
         });
+
+
     }
 
     private void LoadMoreData() {
-        if(this.isLastPage) {
+        if (this.isLastPage) {
             binding.progressLoadMoreFavourite.setVisibility(View.GONE);
             return;
-        };
+        }
+        ;
         binding.progressLoadMoreFavourite.setVisibility(View.VISIBLE);
-        if(!isLoading){
+        if (!isLoading) {
             currentPage++;
             viewModel.fetchFavouritePost(userid, currentPage);
         }
@@ -109,37 +122,61 @@ public class FavoriteFragment extends Fragment {
     private void initUI() {
         adapter = new PostFavouriteAdapter(favouriteList, requireContext(),
                 // Callback go to detail post
-                favourite -> {
-                    if (favourite != null) {
-                        goToPostDetailActivity(Integer.parseInt(favourite.getPostId()));
+                new PostFavouriteAdapter.OnclickItemListener() {
+                    @Override
+                    public void onClick(Favourite favourite) {
+                        if (favourite != null) {
+                            goToPostDetailActivity(Integer.parseInt(favourite.getPostId()));
+                        }
+                    }
+
+                    @Override
+                    public void longClick(Favourite favourite) {
+
                     }
                 },
                 // Delete favourite item
                 favourite -> {
-                    DialogUtil.showStandardDialog(requireContext(), "Delete comfirmation", "Are you sure delete it?",
-                            "Yes", "Cancel", new DialogUtil.DialogClickListener() {
-                                @Override
-                                public void onPositiveButtonClicked(Dialog dialog) {
-                                    int position = favouriteList.indexOf(favourite);
-                                    favouriteList.remove(position);
-                                    adapter.notifyItemRemoved(position);
-                                    dialog.dismiss();
-                                    adapter.closeSwipeReveal();
-                                    Snackbar.make(binding.rcvDishesFavourite, "Xóa thành công", Snackbar.LENGTH_LONG).setAction("Undo", v -> {
-                                        favouriteList.add(position, favourite);
-                                        adapter.notifyItemInserted(position);
-                                    }).show();
-                                }
-
-                                @Override
-                                public void onNegativeButtonClicked() {
-
-                                }
-                            });
+//                    DialogUtil.showStandardDialog(requireContext(), "Delete comfirmation", "Are you sure delete it?",
+//                            "Yes", "Cancel", new DialogUtil.DialogClickListener() {
+//                                @Override
+//                                public void onPositiveButtonClicked(Dialog dialog) {
+//
+//                                }
+//
+//                                @Override
+//                                public void onNegativeButtonClicked() {
+//
+//                                }
+//                            });
+                    int position = favouriteList.indexOf(favourite);
+                    favouriteList.remove(position);
+                    adapter.notifyItemRemoved(position);
+                    adapter.closeSwipeReveal();
+                    // Remove from DB
+                    savePostViewModel.unSavePost(userid, Integer.parseInt(favourite.getPostId()));
+                    adapter.notifyItemRemoved(position);
+                    Snackbar.make(binding.rcvDishesFavourite, "Xóa thành công", Snackbar.LENGTH_LONG).setAction("Undo", v -> {
+                        favouriteList.add(position, favourite);
+                        savePostViewModel.savePost(userid, Integer.parseInt(favourite.getPostId()));
+                        adapter.notifyItemInserted(position);
+                    }).show();
                 });
         binding.rcvDishesFavourite.setLayoutManager(new LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL, false));
         binding.rcvDishesFavourite.setAdapter(adapter);
+
+        // OB
+        savePostViewModel.getIsUnSaveSuccess().observe(requireActivity(), aBoolean -> {
+            if(aBoolean){
+                Toast.makeText(requireContext(), "Removed", Toast.LENGTH_SHORT).show();
+            }
+        });
+        savePostViewModel.getIsSaveSuccess().observe(requireActivity(), aBoolean -> {
+            if(aBoolean){
+                Toast.makeText(requireContext(), "Restored", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void initData() {
@@ -153,6 +190,8 @@ public class FavoriteFragment extends Fragment {
                 binding.progressLoadMoreFavourite.setVisibility(View.VISIBLE);
                 if (favourites == null) {
                     binding.tvNoPostSaved.setVisibility(View.VISIBLE);
+                    binding.progressLoadMoreFavourite.setVisibility(View.GONE);
+                    binding.progressRefreshFav.setVisibility(View.GONE);
                     return;
                 }
                 if (!favourites.isEmpty()) {
@@ -166,6 +205,7 @@ public class FavoriteFragment extends Fragment {
                     }
                 }
                 isLoading = false;
+                binding.tvNoPostSaved.setVisibility(View.GONE);
                 binding.progressLoadMoreFavourite.setVisibility(View.GONE);
                 binding.progressRefreshFav.setVisibility(View.GONE);
             }

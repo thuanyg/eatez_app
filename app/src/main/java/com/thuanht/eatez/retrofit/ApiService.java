@@ -24,6 +24,7 @@ import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
@@ -114,4 +115,9 @@ public interface ApiService {
 
     @GET("getSuggestion.php")
     Observable<SuggestResponse> getSuggestionValue();
+    @GET("setToken.php")
+    Observable<SignupResponse> setToken(@Query("userid") int userid, @Query("token") String token);
+
+    @GET("setToken.php")
+    Call<SignupResponse> updateToken(@Query("userid") int userid, @Query("token") String token);
 }

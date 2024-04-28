@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="15dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageNotification"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/category" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="3dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvTitleNotification"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/barlow_semibold"
+                    android:paddingStart="10dp"
+                    android:singleLine="true"
+                    android:text="This is a title notification when you click at Notification"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tvDateNotitfication"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="5dp"
+                    android:fontFamily="@font/barlow_semibold"
+                    android:paddingStart="10dp"
+                    android:text="Dec 16, 2024"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvNotification"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:paddingVertical="3dp"
+                android:paddingStart="10dp"
+                android:text="Cuốn sách được xuất bản lần đầu tiên năm 1980. Khi đó, nhà văn Sơn Tùng chia sẻ, trong lúc tìm kiếm tư liệu về cuộc đời của Hồ Chủ tịch, ông đồng thời cũng tìm hiểu về những nhà cách mạng cùng thời đã từng được gặp, từng công tác với Bác."
+                android:textColor="#656565"
+                android:textSize="15sp"
+                android:textStyle="normal" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

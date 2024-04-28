@@ -3,6 +3,7 @@ package com.thuanht.eatez.viewModel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.thuanht.eatez.jsonResponse.SignupResponse;
 import com.thuanht.eatez.jsonResponse.UserResponse;
 import com.thuanht.eatez.model.User;
 import com.thuanht.eatez.retrofit.ApiService;
@@ -18,29 +19,28 @@ public class UserViewModel extends ViewModel {
     private MutableLiveData<User> user = new MutableLiveData<>();
     private MutableLiveData<Boolean> status = new MutableLiveData<>();
 
-    public void fetchUser(int userid){
-        ApiService.ApiService.getUser(userid)
+    public void setToken(int userid, String token){
+        ApiService.ApiService.setToken(userid, token)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<UserResponse>() {
+                .subscribe(new Observer<SignupResponse>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
                         disposable = d;
                     }
 
                     @Override
-                    public void onNext(@NonNull UserResponse userResponse) {
-                        if(userResponse  != null){
-                            if(userResponse.isStatus() && userResponse.getData() != null){
-                                user.setValue(userResponse.getData());
-                                status.setValue(Boolean.TRUE);
-                            }
-                        }
+                    public void onNext(@NonNull SignupResponse signupResponse) {
+                        if(signupResponse != null){
+                            if(signupResponse.isStatus()){
+                                status.setValue(true);
+                            } else status.setValue(false);
+                        } else status.setValue(false);
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        status.setValue(Boolean.FALSE);
+                        disposable.dispose();
                     }
 
                     @Override
@@ -52,6 +52,10 @@ public class UserViewModel extends ViewModel {
 
     public MutableLiveData<User> getUser() {
         return user;
+    }
+
+    public Disposable getDisposable() {
+        return disposable;
     }
 
     public MutableLiveData<Boolean> getStatus() {

@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".app.MyApplication"
@@ -21,59 +21,50 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".view.Activity.RecentWatchedActivity"
+            android:name=".view.Activity.TrendDetailActivity"
             android:exported="false" />
-        <activity
-            android:name=".view.Activity.TrendingActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.Activity.PostCategoryActivity"
-            android:exported="false" />
+        <activity android:name=".view.Activity.RecentWatchedActivity" />
+        <activity android:name=".view.Activity.TrendingActivity" />
+        <activity android:name=".view.Activity.PostCategoryActivity" />
         <activity
             android:name=".view.Activity.PostDetailActivity"
             android:parentActivityName=".view.Activity.HomeActivity" />
         <activity
             android:name=".view.Activity.SearchActivity"
-            android:windowSoftInputMode="adjustNothing"
-            android:exported="false" />
-        <activity
-            android:name=".view.Activity.SettingActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.Activity.HomeActivity"
-            android:exported="false" />
+            android:windowSoftInputMode="adjustNothing" />
+        <activity android:name=".view.Activity.SettingActivity" />
+        <activity android:name=".view.Activity.HomeActivity" />
         <activity
             android:name=".view.Activity.LoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.EatEz.Fullscreen"
             android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".view.Activity.GetStartedActivity"
-            android:exported="false" />
-        <activity android:name=".view.Activity.EditProfileActivity"
-            android:exported="false"/>
+        <activity android:name=".view.Activity.GetStartedActivity" />
+        <activity android:name=".view.Activity.EditProfileActivity" />
         <activity
             android:name=".view.Activity.OnboardingActivity"
             android:exported="true"
             android:theme="@style/Theme.App.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <service
             android:name=".firebase.FirebaseCloudMessage.MyFirebaseMessagingService"
-            android:exported="false">
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
+
 </manifest>

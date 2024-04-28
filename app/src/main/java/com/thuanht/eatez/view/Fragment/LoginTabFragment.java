@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.thuanht.eatez.LocalData.LocalDataManager;
 import com.thuanht.eatez.LocalData.MySharedPreferences;
 import com.thuanht.eatez.database.database.AppDatabase;
@@ -38,6 +39,7 @@ import com.thuanht.eatez.view.Dialog.DialogUtil;
 import com.thuanht.eatez.viewModel.LoginViewModel;
 import com.thuanht.eatez.R;
 import com.thuanht.eatez.viewModel.SuggestViewModel;
+import com.thuanht.eatez.viewModel.UserViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +88,10 @@ public class LoginTabFragment extends Fragment implements LoginCallback {
         // Kiểm tra xem người dùng đã đăng nhập trước đó hay không
         User user = LocalDataManager.getInstance().getUserLogin();
         if (user != null) {
-            onLoginSuccess(user);
+            // Chuyển hướng đến màn hình Home
+            Intent intent = new Intent(requireContext(), HomeActivity.class);
+            startActivity(intent);
+            requireActivity().finish();
             return;
         }
 
@@ -98,6 +103,14 @@ public class LoginTabFragment extends Fragment implements LoginCallback {
     @Override
     public void onLoginSuccess(User user) {
         LocalDataManager.getInstance().setUserLogin(user);
+        // Get current FCM token
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                return;
+            }
+            String token = task.getResult();
+            updateUserTokenToServer(token);
+        });
         // Chuyển hướng đến màn hình Home
         Intent intent = new Intent(requireContext(), HomeActivity.class);
         startActivity(intent);
@@ -110,5 +123,14 @@ public class LoginTabFragment extends Fragment implements LoginCallback {
         Toast.makeText(getContext(), "Email or password not correct!", Toast.LENGTH_SHORT).show();
     }
 
-
+    private void updateUserTokenToServer(String token) {
+        UserViewModel viewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        viewModel.getStatus().observeForever(aBoolean -> {
+//            if(aBoolean){
+//                Toast.makeText(requireContext(), "Luu token thanh cong", Toast.LENGTH_SHORT).show();
+//            } else Toast.makeText(requireContext(), "Luu token khong thanh cong", Toast.LENGTH_SHORT).show();
+        });
+        int userid = LocalDataManager.getInstance().getUserLogin().getUserid();
+        viewModel.setToken(userid, token);
+    }
 }
