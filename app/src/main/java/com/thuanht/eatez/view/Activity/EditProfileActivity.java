@@ -99,6 +99,7 @@ public class EditProfileActivity extends AppCompatActivity{
                         LocalDataManager.getInstance().setUserLogin(user);
                         Intent intent = new Intent(this,SettingActivity.class);
                         startActivity(intent);
+                        finish();
                     }
                 });
 
