@@ -1,10 +1,17 @@
 package com.thuanht.eatez.view.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.Manifest;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -12,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.thuanht.eatez.LocalData.LocalDataManager;
 import com.thuanht.eatez.LocalData.MySharedPreferences;
 import com.thuanht.eatez.R;
+import com.thuanht.eatez.app.MyApplication;
 import com.thuanht.eatez.databinding.ActivitySettingBinding;
 import com.thuanht.eatez.model.User;
 import com.thuanht.eatez.view.Dialog.DialogUtil;
@@ -19,7 +27,6 @@ import com.thuanht.eatez.viewModel.UserViewModel;
 
 public class SettingActivity extends AppCompatActivity {
     private ActivitySettingBinding binding;
-    private UserViewModel viewModel;
     private MySharedPreferences mySharedPreferences;
 
     private int userID = -1;
@@ -29,8 +36,6 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySettingBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        viewModel = new ViewModelProvider(this).get(UserViewModel.class);
         setSupportActionBar(binding.toolbarSetting);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 

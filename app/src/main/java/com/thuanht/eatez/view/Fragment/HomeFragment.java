@@ -51,6 +51,7 @@ import com.thuanht.eatez.utils.NetworkUtils;
 import com.thuanht.eatez.view.Activity.PostCategoryActivity;
 import com.thuanht.eatez.view.Activity.PostDetailActivity;
 import com.thuanht.eatez.view.Activity.SearchActivity;
+import com.thuanht.eatez.view.Activity.TrendDetailActivity;
 import com.thuanht.eatez.view.Activity.TrendingActivity;
 import com.thuanht.eatez.viewModel.HomeViewModel;
 
@@ -290,6 +291,10 @@ public class HomeFragment extends Fragment {
         binding.swipeRefreshHome.setOnRefreshListener(() -> {
             refreshData();
             binding.swipeRefreshHome.setRefreshing(false);
+        });
+
+        binding.btnSeeAllTrending.setOnClickListener(v -> {
+            startActivity(new Intent(requireActivity(), TrendDetailActivity.class));
         });
     }
 

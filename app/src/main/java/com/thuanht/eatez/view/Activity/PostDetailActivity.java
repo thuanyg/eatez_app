@@ -80,7 +80,6 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
 
         eventHandler();
 
-        Executor executor = Executors.newSingleThreadExecutor();
         List<Post> posts = new ArrayList<>();
         posts.addAll(AppDatabase.getInstance(this).postDAO().selectAll());
         for (Post p : posts) {

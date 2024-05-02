@@ -27,13 +27,14 @@ public class LocationPermission {
 
     public void requestPermission(Activity activity) {
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return;
-        if(ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+        if(ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            || ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED){
             // Quyền đã được cấp phép
-
         } else {
-            String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION};
+            String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.POST_NOTIFICATIONS};
             ActivityCompat.requestPermissions(activity, permissions, REQUEST_PERMISSION_CODE);
         }
     }
 }
+
 

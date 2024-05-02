@@ -49,7 +49,7 @@ public class FavouriteViewModel extends ViewModel {
                             }
                             if(favouriteResponse.getData() != null){
                                 favourites.setValue(favouriteResponse.getData());
-                            }
+                            } else favourites.setValue(null);
                         }
                     }
 
@@ -64,6 +64,7 @@ public class FavouriteViewModel extends ViewModel {
                     }
                 });
     }
+
     public LiveData<List<Favourite>> getFavourites() {
         return favourites;
     }

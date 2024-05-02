@@ -33,7 +33,7 @@ public class DateUtils {
 
         DateTimeFormatter formatter = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         }
         String formattedDateTime = currentDateTime.format(formatter);
         return formattedDateTime;

@@ -73,10 +73,8 @@ public class EditProfileActivity extends AppCompatActivity{
         binding = ActivityEditProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbarEdit);
-
         initData();
         eventHandler();
-
     }
 
     private void eventHandler(){
@@ -134,7 +132,6 @@ public class EditProfileActivity extends AppCompatActivity{
                 chooseImage();
             }
         }
-
     }
 
     public void callApiUpdateProfile(){

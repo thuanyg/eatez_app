@@ -28,26 +28,18 @@ import java.util.List;
 
 public class PostFavouriteAdapter extends RecyclerView.Adapter<PostFavouriteAdapter.MyViewHolder> {
     private List<Favourite> favouriteList;
-    private List<Favourite> favouriteListSelected;
 
     private final ViewBinderHelper viewBinderHelper = new ViewBinderHelper();
     private final Context context;
-
     private SwipeRevealLayout swipeRevealLayout;
+    private OnclickItemListener listener;
+    private OnClickDeleteItem  liDeleteItem;
 
-    private MyClickItemListener<Favourite> listenerDetaitPost, listenerDelete;
-
-    private Boolean isActionEnable = false;
-    private Boolean isSelected = false;
-
-
-    public PostFavouriteAdapter(List<Favourite> favouriteList, Context context,
-                                MyClickItemListener<Favourite> listenerDetaitPost,
-                                MyClickItemListener<Favourite> listenerDelete) {
+    public PostFavouriteAdapter(List<Favourite> favouriteList, Context context, OnclickItemListener listener, OnClickDeleteItem liDeleteItem) {
         this.favouriteList = favouriteList;
         this.context = context;
-        this.listenerDetaitPost = listenerDetaitPost;
-        this.listenerDelete = listenerDelete;
+        this.listener = listener;
+        this.liDeleteItem = liDeleteItem;
     }
 
     @NonNull
@@ -71,16 +63,15 @@ public class PostFavouriteAdapter extends RecyclerView.Adapter<PostFavouriteAdap
         holder.binding.tvTitleDishFavourite.setText(fv.getTitle());
         holder.binding.tvLocationFavourite.setText(fv.getRestaurant().getResAddress());
         holder.binding.tvDateFavourite.setText("Đã lưu " + DateUtils.convertToRelativeTime(fv.getDate()));
-        holder.binding.layoutItemFavourite.setOnClickListener(v -> listenerDetaitPost.onClick(fv));
-        holder.binding.btnRemovePostFavourite.setOnClickListener(v -> listenerDelete.onClick(fv));
+        holder.binding.layoutItemFavourite.setOnClickListener(v -> listener.onClick(fv));
+        holder.binding.layoutItemFavourite.setOnLongClickListener(v -> {
+            listener.longClick(fv);
+            return true;
+        });
         swipeRevealLayout = holder.binding.swipeRevealFavourite;
-        // Multi choice
+        holder.binding.btnRemovePostFavourite.setOnClickListener(v -> liDeleteItem.onClick(fv));
     }
 
-    private void ClickItem(MyViewHolder holder) {
-        Favourite favourite = favouriteList.get(holder.getAdapterPosition());
-
-    }
 
     public void closeSwipeReveal() {
         swipeRevealLayout.open(true);
@@ -98,6 +89,15 @@ public class PostFavouriteAdapter extends RecyclerView.Adapter<PostFavouriteAdap
             super(binding.getRoot());
             this.binding = binding;
         }
+    }
+
+    public interface OnclickItemListener {
+        void onClick(Favourite favourite);
+        void longClick(Favourite favourite);
+    }
+
+    public interface OnClickDeleteItem {
+        void onClick(Favourite favourite);
     }
 
 }
