@@ -19,6 +19,7 @@ import com.thuanht.eatez.jsonResponse.UserResponse;
 import java.util.concurrent.TimeUnit;
 
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -77,10 +78,13 @@ public interface ApiService {
     Observable<LoginResponse> Login(@Query("email") String email, @Query("password") String password);
 
     @GET("register.php")
-    Observable<SignupResponse> Register(@Query("fullname") String fullname, @Query("email") String email, @Query("password") String password);
+    Observable<SignupResponse> Register(@Query("fullname") String fullname, @Query("email") String email, @Query("password") String password, @Query("avatar_image") String avatar_image);
 
     @GET("getUser.php")
     Observable<UserResponse> getUser(@Query("userid") int userid);
+
+    @GET("getUserByEmail.php")
+    Observable<UserResponse> getUserByEmail(@Query("email") String email);
 
     @GET("getDishTrending.php")
     Observable<TrendingResponse> getTrendingHome();
@@ -117,7 +121,6 @@ public interface ApiService {
     Observable<SuggestResponse> getSuggestionValue();
     @GET("setToken.php")
     Observable<SignupResponse> setToken(@Query("userid") int userid, @Query("token") String token);
-
     @GET("setToken.php")
     Call<SignupResponse> updateToken(@Query("userid") int userid, @Query("token") String token);
 }

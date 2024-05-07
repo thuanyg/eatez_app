@@ -5,12 +5,17 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.thuanht.eatez.LocalData.LocalDataManager;
 import com.thuanht.eatez.R;
 import com.thuanht.eatez.databinding.ActivitySettingBinding;
+import com.thuanht.eatez.firebase.FirebaseAuth.GoogleSignInManager;
 import com.thuanht.eatez.model.User;
 import com.thuanht.eatez.view.Dialog.DialogUtil;
 
@@ -67,10 +72,15 @@ public class SettingActivity extends AppCompatActivity {
                     "Yes", "Cancel", new DialogUtil.DialogClickListener() {
                         @Override
                         public void onPositiveButtonClicked(Dialog dialog) {
-                            DialogUtil.showProgressDialog(SettingActivity.this);
                             LocalDataManager.getInstance().clearUserLogin();
-                            startActivity(new Intent(SettingActivity.this, LoginActivity.class));
-                            finish();
+                            GoogleSignInClient gsc = GoogleSignInManager.getInstance().getGoogleSignInClient();
+                            gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(Task<Void> task) {
+                                    finish();
+                                    startActivity(new Intent(SettingActivity.this, LoginActivity.class));
+                                }
+                            });
                         }
                         @Override
                         public void onNegativeButtonClicked() {

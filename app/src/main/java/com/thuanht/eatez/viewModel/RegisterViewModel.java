@@ -63,9 +63,9 @@ public class RegisterViewModel extends ViewModel {
         return true;
     }
 
-    public void register(String fullname,String email, String password){
+    public void register(String fullname,String email, String password, String avt_image){
         // Login codeD
-        ApiService.ApiService.Register(fullname,email,password)
+        ApiService.ApiService.Register(fullname,email,password, avt_image)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .retryWhen(errors -> errors.flatMap(error -> {
@@ -88,7 +88,6 @@ public class RegisterViewModel extends ViewModel {
                             registerCallback.onRegisterSuccess();
                         }else{
                             registerCallback.onRegisterFailure(signupResponse.getMessage());
-
                         }
                     }
 

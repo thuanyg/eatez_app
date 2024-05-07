@@ -89,6 +89,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-messaging")
+    implementation ("com.google.android.gms:play-services-auth:18.1.0")
     // Google Location Service
     implementation("com.google.android.gms:play-services-location:21.2.0")
     // Glide

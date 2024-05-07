@@ -68,10 +68,6 @@ public class SignUpTabFragment extends Fragment implements RegisterCallback {
             binding.txtPassword.requestFocus();
         });
 
-
-        // Thêm sự kiện cho nút "Sign Up"
-
-
         return binding.getRoot();
     }
 
@@ -85,7 +81,7 @@ public class SignUpTabFragment extends Fragment implements RegisterCallback {
             Log.e("pass1",password1);
             Log.e("pass2",password2);
             if (viewModel.validateData(fullname,email, password1, password2)) {
-                viewModel.register(fullname, email, password1);
+                viewModel.register(fullname, email, password1, "");
             }
         });
     }
@@ -107,5 +103,4 @@ public class SignUpTabFragment extends Fragment implements RegisterCallback {
     public void onRegisterFailure(String errorMessage) {
         Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
     }
-
 }

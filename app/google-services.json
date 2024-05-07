@@ -12,7 +12,20 @@
           "package_name": "com.thuanht.eatez"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "71010235196-m4qigpjlpv9he52es6iuqgkihsm1qng0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.thuanht.eatez",
+            "certificate_hash": "5ad291e0d762090814abbd349f5837afedececb4"
+          }
+        },
+        {
+          "client_id": "71010235196-lk0tchk5kd1e4de4cjr1otdptn3blsjb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyA9Vwu4wmJDBjYgBBQNYVehHR23bXICwBY"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "71010235196-lk0tchk5kd1e4de4cjr1otdptn3blsjb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
