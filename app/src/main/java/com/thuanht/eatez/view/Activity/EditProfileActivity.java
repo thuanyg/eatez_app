@@ -90,25 +90,37 @@ public class EditProfileActivity extends AppCompatActivity{
         });
 
         binding.btnEditSubmit.setOnClickListener(v ->{
-            if(muri != null){
                 binding.progressEditProfile.setVisibility(View.VISIBLE);
-                callApiUpdateProfile();
-                EditProfileViewModel.getUserDataLiveData().observe(this, user -> {
-                    if(user != null){
-                        binding.edNameEdit.setText(user.getFullName());
-                        Glide.with(this)
-                                .load(user.getAvatar_image())
-                                .placeholder(R.drawable.onboarding_img_3)
-                                .into(binding.avatarImgEdit);
-                        LocalDataManager.getInstance().setUserLogin(user);
-                        Intent intent = new Intent(this,SettingActivity.class);
-                        startActivity(intent);
-                        finish();
+                try{
+                    if(muri!=null){
+                        callApiUpdateProfile();
+                        EditProfileViewModel.getUserDataLiveData().observe(this, user -> {
+                            if(user != null){
+                                LocalDataManager.getInstance().setUserLogin(user);
+                                finish();
+                                Intent intent = new Intent(this,SettingActivity.class);
+                                startActivity(intent);
+                            }
+                            binding.progressEditProfile.setVisibility(View.GONE);
+                        });
                     }
-                    binding.progressEditProfile.setVisibility(View.GONE);
-                });
+                    else{
+                        callApiUpdateProfileNoImage();
+                        EditProfileViewModel.getUserDataLiveData().observe(this, user -> {
+                            if(user != null){
+                                LocalDataManager.getInstance().setUserLogin(user);
+                                finish();
+                                Intent intent = new Intent(this,SettingActivity.class);
+                                startActivity(intent);
+                            }
+                            binding.progressEditProfile.setVisibility(View.GONE);
+                        });
+                    }
 
-            }
+                }catch (Exception e){
+
+                }
+
         });
     }
     private void initData() {
@@ -149,12 +161,14 @@ public class EditProfileActivity extends AppCompatActivity{
         Log.e("mmazzzzz",RealPath);
         File file = new File(RealPath);
         RequestBody requestBodyAvta = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        if(muri != null){
-            MultipartBody.Part mutilpartBodyAvata = MultipartBody.Part.createFormData("avatar_image",file.getName(),requestBodyAvta);
-            Log.e("hehe", "userid: " + userid + ", fullname: " + requestBodyFullname + ", avatar: " + mutilpartBodyAvata);
-            EditProfileViewModel.updateProfileAfterImageSelection(userid,requestBodyFullname,mutilpartBodyAvata);
-        }else{
-            EditProfileViewModel.updateProfileUser(userid, requestBodyFullname, null);
-        }
+        MultipartBody.Part mutilpartBodyAvata = MultipartBody.Part.createFormData("avatar_image",file.getName(),requestBodyAvta);
+        Log.e("hehe", "userid: " + userid + ", fullname: " + requestBodyFullname + ", avatar: " + mutilpartBodyAvata);
+        EditProfileViewModel.updateProfileAfterImageSelection(userid,requestBodyFullname,mutilpartBodyAvata);
+
+    }public void callApiUpdateProfileNoImage(){
+        String fullname = binding.edNameEdit.getText().toString().trim();
+        userid = LocalDataManager.getInstance().getUserLogin().getUserid();
+        RequestBody requestBodyFullname = RequestBody.create(MediaType.parse("multipart/form-data"), fullname);
+        EditProfileViewModel.updateProfileUser(userid, requestBodyFullname, null);
     }
 }
