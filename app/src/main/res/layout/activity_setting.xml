@@ -120,21 +120,6 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/btnFav_Setting"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_bookmark_added"
-                        android:drawablePadding="15dp"
-                        android:fontFamily="@font/barlow_semibold"
-                        android:clickable="true"
-                        android:background="@drawable/button_clicked_bg"
-                        android:gravity="center_vertical"
-                        android:paddingHorizontal="20dp"
-                        android:paddingVertical="8dp"
-                        android:text="Favorites"
-                        android:textSize="16sp" />
-
-                    <TextView
                         android:id="@+id/btnRecently_Setting"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

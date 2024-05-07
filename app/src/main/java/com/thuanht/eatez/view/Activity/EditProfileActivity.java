@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -73,6 +74,8 @@ public class EditProfileActivity extends AppCompatActivity{
         binding = ActivityEditProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbarEdit);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         initData();
         eventHandler();
     }
@@ -88,6 +91,7 @@ public class EditProfileActivity extends AppCompatActivity{
 
         binding.btnEditSubmit.setOnClickListener(v ->{
             if(muri != null){
+                binding.progressEditProfile.setVisibility(View.VISIBLE);
                 callApiUpdateProfile();
                 EditProfileViewModel.getUserDataLiveData().observe(this, user -> {
                     if(user != null){
@@ -101,6 +105,7 @@ public class EditProfileActivity extends AppCompatActivity{
                         startActivity(intent);
                         finish();
                     }
+                    binding.progressEditProfile.setVisibility(View.GONE);
                 });
 
             }
@@ -151,6 +156,5 @@ public class EditProfileActivity extends AppCompatActivity{
         }else{
             EditProfileViewModel.updateProfileUser(userid, requestBodyFullname, null);
         }
-
     }
 }
