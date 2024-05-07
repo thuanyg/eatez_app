@@ -81,6 +81,7 @@ public class SettingActivity extends AppCompatActivity {
         });
 
         binding.btnEditProfile.setOnClickListener(view -> {
+            finish();
             startActivity(new Intent(SettingActivity.this, EditProfileActivity.class));
         });
     }
