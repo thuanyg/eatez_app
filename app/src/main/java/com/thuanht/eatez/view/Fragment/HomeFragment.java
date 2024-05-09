@@ -23,6 +23,8 @@ import androidx.viewpager2.widget.MarginPageTransformer;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +32,8 @@ import android.view.ViewTreeObserver;
 
 import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -181,7 +185,7 @@ public class HomeFragment extends Fragment {
                 stopShimmer(binding.shimmerHome);
             }
         });
-        if (NetworkUtils.isNetworkAvailable(requireContext())) {
+        if (NetworkUtils.isNetworkAvailable(requireContext()) && !isLoading) {
             homeViewModel.fetchFeaturePosts(this.requireContext(), pageNumber);
         }
     }
@@ -343,7 +347,7 @@ public class HomeFragment extends Fragment {
                     stopAutoSlider();
                 }
                 timer = new Timer();
-                timer.scheduleAtFixedRate(new TimerTask() {
+                timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
                         new Handler(Looper.getMainLooper()).post(() -> {
@@ -388,8 +392,6 @@ public class HomeFragment extends Fragment {
             stopShimmer(binding.shimmerCategoryHome);
             binding.rcvCategory.setVisibility(View.VISIBLE);
         });
-
         homeViewModel.fetchCategories();
     }
-
 }

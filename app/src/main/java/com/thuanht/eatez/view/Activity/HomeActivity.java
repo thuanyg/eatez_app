@@ -10,10 +10,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationBarView;
@@ -36,6 +42,7 @@ public class HomeActivity extends AppCompatActivity {
     private ActivityHomeBinding binding;
     private Stack<Integer> fragmentStack = new Stack<>();
     private ViewPager2 viewPager;
+    private AdView adView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +52,9 @@ public class HomeActivity extends AppCompatActivity {
         initNavigation();
         eventHandler();
         LocationPermission.getInstance(this).requestPermission(this);
+
+        MobileAds.initialize(this, initializationStatus -> {});
+        loadBanner();
 //        requestPermissions();
     }
 
@@ -130,6 +140,42 @@ public class HomeActivity extends AppCompatActivity {
 //                Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private AdSize getAdSize() {
+        // Determine the screen width (less decorations) to use for the ad width.
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+
+        float density = outMetrics.density;
+
+        float adWidthPixels = binding.layoutAds.getWidth();
+
+        // If the ad hasn't been laid out, default to the full screen width.
+        if (adWidthPixels == 0) {
+            adWidthPixels = outMetrics.widthPixels;
+        }
+
+        int adWidth = (int) (adWidthPixels / density);
+        return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth);
+    }
+
+    private void loadBanner() {
+
+        // Create a new ad view.
+        adView = new AdView(this);
+        adView.setAdSize(getAdSize());
+//        adView.setAdUnitId("ca-app-pub-3940256099942544/9214589741");
+        adView.setAdUnitId("ca-app-pub-3298142721010689/6313525580/3968733153");
+
+        // Replace ad container with new ad view.
+        binding.layoutAds.removeAllViews();
+        binding.layoutAds.addView(adView);
+
+        // Start loading the ad in the background.
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
     }
 
 }

@@ -11,10 +11,13 @@ import com.thuanht.eatez.jsonResponse.PostResponse;
 import com.thuanht.eatez.model.Post;
 import com.thuanht.eatez.retrofit.ApiService;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -23,10 +26,19 @@ public class PostCategoryViewModel extends ViewModel {
     private Disposable disposable;
     private MutableLiveData<List<Post>> posts = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLastPage = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isNetworkDisconnect = new MutableLiveData<>();
+    int retryCount = 0;
     public void fetchPostOfCategory(Context context, int categoryID, int page){
         ApiService.ApiService.getListPostOfCategory(categoryID, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .retryWhen(errors -> errors.flatMap(error -> {
+                    if (error instanceof IOException && retryCount < 2) {
+                        retryCount++;
+                        return Observable.timer(5, TimeUnit.SECONDS);
+                    }
+                    return Observable.error(error);
+                }))
                 .subscribe(new Observer<PostResponse>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
@@ -52,7 +64,11 @@ public class PostCategoryViewModel extends ViewModel {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        disposable.dispose();
+                        if (retryCount >= 2) {
+                            isNetworkDisconnect.setValue(true);
+                            retryCount = 0;
+                            disposable.dispose();
+                        }
                     }
 
                     @Override
@@ -68,5 +84,9 @@ public class PostCategoryViewModel extends ViewModel {
 
     public LiveData<Boolean> getIsLastPage() {
         return isLastPage;
+    }
+
+    public MutableLiveData<Boolean> getIsNetworkDisconnect() {
+        return isNetworkDisconnect;
     }
 }

@@ -19,7 +19,6 @@ import com.thuanht.eatez.app.MyBroadcastReceiver;
 import com.thuanht.eatez.databinding.ActivityPostCategoryBinding;
 import com.thuanht.eatez.model.Category;
 import com.thuanht.eatez.model.Post;
-import com.thuanht.eatez.view.Dialog.LoadingDialog;
 import com.thuanht.eatez.viewModel.PostCategoryViewModel;
 
 import java.util.ArrayList;
@@ -32,7 +31,6 @@ public class PostCategoryActivity extends AppCompatActivity {
     private List<Post> posts;
     private PostCategoryAdapter adapter;
     private PostCategoryViewModel viewModel;
-    private LoadingDialog loadingDialog;
     private int currentPage = 1;
     private boolean isLoading = false;
     private boolean isLastPage = false;
@@ -51,7 +49,6 @@ public class PostCategoryActivity extends AppCompatActivity {
 
     public void initUI(){
         viewModel = new ViewModelProvider(this).get(PostCategoryViewModel.class);
-        loadingDialog = new LoadingDialog(this);
         broadcastReceiver = new MyBroadcastReceiver();
     }
     private void eventHandler() {
@@ -66,6 +63,13 @@ public class PostCategoryActivity extends AppCompatActivity {
             if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
                 LoadMoreData();
             }
+        });
+
+        binding.btnTryAgain.setOnClickListener(v -> {
+            binding.layoutDisconnect.setVisibility(View.GONE);
+            binding.nestedScrollViewPostCategory.setVisibility(View.VISIBLE);
+            binding.progressPostCategory.setVisibility(View.VISIBLE);
+            fetchPostCategory();
         });
     }
 
@@ -101,15 +105,20 @@ public class PostCategoryActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void initDataRecyclerView() {
-        loadingDialog.show();
         isLoading = true;
+        binding.progressPostCategory.setVisibility(View.VISIBLE);
+        viewModel.getIsNetworkDisconnect().observe(this, isNetwordDisconnect -> {
+            binding.layoutDisconnect.setVisibility(View.VISIBLE);
+            binding.nestedScrollViewPostCategory.setVisibility(View.GONE);
+            binding.progressPostCategory.setVisibility(View.GONE);
+        });
         viewModel.getPosts().observe(this, new Observer<List<Post>>() {
             @Override
             public void onChanged(List<Post> list) {
                 isLoading = true;
                 if (list == null) {
-                    loadingDialog.cancel();
                     binding.tvNoDataPostCategory.setVisibility(View.VISIBLE);
+                    binding.progressPostCategory.setVisibility(View.GONE);
                     return;
                 }
                 if (posts.isEmpty()) {
@@ -122,9 +131,13 @@ public class PostCategoryActivity extends AppCompatActivity {
                     adapter.notifyItemRangeInserted(startPosition, list.size());
                 }
                 isLoading = false;
-                loadingDialog.cancel();
+                binding.progressPostCategory.setVisibility(View.GONE);
             }
         });
+        fetchPostCategory();
+    }
+
+    private void fetchPostCategory(){
         Category category = null;
         Intent intent = getIntent();
         if (intent != null) {

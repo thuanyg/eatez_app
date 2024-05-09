@@ -140,6 +140,13 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
     }
 
     private void initData() {
+        viewModel.getIsNetworkDisconnect().observe(this, isNetworkDisconnect -> {
+            if(isNetworkDisconnect){
+                binding.layoutPostDetail.setVisibility(View.GONE);
+                binding.layoutDisconnect.setVisibility(View.VISIBLE);
+                binding.progressPostDetail.setVisibility(View.GONE);
+            }
+        });
         viewModel.getPost().observe(this, new Observer<Post>() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -219,6 +226,13 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
                     LoadMoreComment();
                 }
             }
+        });
+
+        binding.btnTryAgain.setOnClickListener(v -> {
+            binding.layoutDisconnect.setVisibility(View.GONE);
+            binding.progressPostDetail.setVisibility(View.VISIBLE);
+            viewModel.fetchPostDetail(postid);
+            viewModel.fetchComments(postid, 1);
         });
 
     }

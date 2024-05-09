@@ -159,6 +159,13 @@ public class HomeViewModel extends ViewModel {
         ApiService.ApiService.getTrendingHome()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .retryWhen(errors -> errors.flatMap(error -> {
+                    if (error instanceof IOException) {
+                        return Observable.timer(5, TimeUnit.SECONDS);
+                    }
+                    // Trả về một Observable không phải là IOException, không thử lại
+                    return Observable.error(error);
+                }))
                 .subscribe(new Observer<TrendingResponse>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {

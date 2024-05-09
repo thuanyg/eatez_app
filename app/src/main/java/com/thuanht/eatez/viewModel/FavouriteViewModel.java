@@ -23,16 +23,18 @@ public class FavouriteViewModel extends ViewModel {
     private Disposable disposable;
     private MutableLiveData<List<Favourite>> favourites = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLastPage = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isNetworkDisconnect = new MutableLiveData<>();
+    int retryCount = 0;
 
     public void fetchFavouritePost(int userid, int pageNumber){
         ApiService.ApiService.getFavouritePost(userid, pageNumber)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .retryWhen(errors -> errors.flatMap(error -> {
-                    if (error instanceof IOException) {
+                    if (error instanceof IOException && retryCount < 2) {
+                        retryCount++;
                         return Observable.timer(5, TimeUnit.SECONDS);
                     }
-                    // Trả về một Observable không phải là IOException, không thử lại
                     return Observable.error(error);
                 }))
                 .subscribe(new Observer<FavouriteResponse>() {
@@ -55,7 +57,10 @@ public class FavouriteViewModel extends ViewModel {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-
+                        if (retryCount >= 2) {
+                            isNetworkDisconnect.setValue(true);
+                            disposable.dispose();
+                        }
                     }
 
                     @Override
@@ -73,5 +78,7 @@ public class FavouriteViewModel extends ViewModel {
         return isLastPage;
     }
 
-
+    public MutableLiveData<Boolean> getIsNetworkDisconnect() {
+        return isNetworkDisconnect;
+    }
 }

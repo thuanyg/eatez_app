@@ -67,28 +67,6 @@ public class FavoriteFragment extends Fragment {
     }
 
     private void eventHandler() {
-//        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-//            @Override
-//            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-//                return false;
-//            }
-//
-//            @Override
-//            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-//                int position = viewHolder.getAdapterPosition();
-//                f_temp = favouriteList.get(position);
-//                favouriteList.remove(position);
-//                adapter.notifyItemRemoved(position);
-//
-//                Snackbar.make(binding.rcvDishesFavourite, "Xóa thành công", Snackbar.LENGTH_LONG).setAction("Undo", v -> {
-//                    favouriteList.add(f_temp);
-//                    adapter.notifyItemInserted(position);
-//                }).show();
-//            }
-//        };
-//
-//        new ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.rcvDishesFavourite);
-
         binding.nestedScrollViewFav.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
                 LoadMoreData();
@@ -96,14 +74,16 @@ public class FavoriteFragment extends Fragment {
         });
 
         binding.swipeRefreshFavourite.setOnRefreshListener(() -> {
-            binding.progressRefreshFav.setVisibility(View.VISIBLE);
-            favouriteList.clear();
-            currentPage = 1;
-            viewModel.fetchFavouritePost(userid, 1);
-            binding.swipeRefreshFavourite.setRefreshing(false);
+            refreshData();
         });
+    }
 
-
+    private void refreshData(){
+        binding.progressRefreshFav.setVisibility(View.VISIBLE);
+        favouriteList.clear();
+        currentPage = 1;
+        viewModel.fetchFavouritePost(userid, 1);
+        binding.swipeRefreshFavourite.setRefreshing(false);
     }
 
     private void LoadMoreData() {
@@ -137,18 +117,6 @@ public class FavoriteFragment extends Fragment {
                 },
                 // Delete favourite item
                 favourite -> {
-//                    DialogUtil.showStandardDialog(requireContext(), "Delete comfirmation", "Are you sure delete it?",
-//                            "Yes", "Cancel", new DialogUtil.DialogClickListener() {
-//                                @Override
-//                                public void onPositiveButtonClicked(Dialog dialog) {
-//
-//                                }
-//
-//                                @Override
-//                                public void onNegativeButtonClicked() {
-//
-//                                }
-//                            });
                     int position = favouriteList.indexOf(favourite);
                     favouriteList.remove(position);
                     adapter.notifyItemRemoved(position);
@@ -177,12 +145,25 @@ public class FavoriteFragment extends Fragment {
                 Toast.makeText(requireContext(), "Restored", Toast.LENGTH_SHORT).show();
             }
         });
+
+        binding.btnTryAgain.setOnClickListener(v -> {
+            binding.layoutDisconnect.setVisibility(View.GONE);
+            binding.swipeRefreshFavourite.setVisibility(View.VISIBLE);
+            refreshData();
+        });
     }
 
     public void initData() {
         isLoading = true;
         viewModel.getIsLastPage().observe(requireActivity(), aBoolean -> {
             this.isLastPage = aBoolean;
+        });
+        viewModel.getIsNetworkDisconnect().observe(getViewLifecycleOwner(), isNetworkDisconnet -> {
+            if(isNetworkDisconnet){
+                binding.swipeRefreshFavourite.setVisibility(View.GONE);
+                binding.layoutDisconnect.setVisibility(View.VISIBLE);
+                binding.progressLoadMoreFavourite.setVisibility(View.GONE);
+            }
         });
         viewModel.getFavourites().observe(requireActivity(), new Observer<List<Favourite>>() {
             @Override

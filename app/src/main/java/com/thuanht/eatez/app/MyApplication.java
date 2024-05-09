@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.google.android.gms.ads.MobileAds;
 import com.thuanht.eatez.LocalData.LocalDataManager;
 
 public class MyApplication extends Application {

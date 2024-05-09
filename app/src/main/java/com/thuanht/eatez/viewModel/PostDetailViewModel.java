@@ -31,6 +31,8 @@ public class PostDetailViewModel extends ViewModel {
     private CommentCallback commentCallback;
     private MutableLiveData<String> contentCommentError = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLastPageComment = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isNetworkDisconnect = new MutableLiveData<>();
+    int retryCount = 0;
 
     public void setCommentCallback(CommentCallback callback) {
         this.commentCallback = callback;
@@ -41,10 +43,10 @@ public class PostDetailViewModel extends ViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .retryWhen(errors -> errors.flatMap(error -> {
-                    if (error instanceof IOException) {
+                    if (error instanceof IOException && retryCount < 2) {
+                        retryCount++;
                         return Observable.timer(5, TimeUnit.SECONDS);
                     }
-                    // Trả về một Observable không phải là IOException, không thử lại
                     return Observable.error(error);
                 }))
                 .subscribe(new Observer<PostResponse>() {
@@ -66,7 +68,10 @@ public class PostDetailViewModel extends ViewModel {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        disposable_post.dispose();
+                        if (retryCount >= 2) {
+                            isNetworkDisconnect.setValue(true);
+                            disposable_post.dispose();
+                        }
                     }
 
                     @Override
@@ -175,5 +180,9 @@ public class PostDetailViewModel extends ViewModel {
 
     public MutableLiveData<Boolean> getIsLastPageComment() {
         return isLastPageComment;
+    }
+
+    public MutableLiveData<Boolean> getIsNetworkDisconnect() {
+        return isNetworkDisconnect;
     }
 }
