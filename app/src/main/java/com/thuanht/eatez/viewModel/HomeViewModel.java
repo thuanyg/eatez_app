@@ -20,6 +20,7 @@ import com.thuanht.eatez.retrofit.ApiService;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -36,23 +37,20 @@ public class HomeViewModel extends ViewModel {
     private MutableLiveData<List<Trending>> trends = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLastPageLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Post>> posts = new MutableLiveData<>();
-
+    private MutableLiveData<Boolean> isNetworkDisconnect = new MutableLiveData<>();
+    int retryCount = 0;
 
     public void fetchFeaturePosts(Context context, int pageNumber) {
+        isNetworkDisconnect.setValue(false);
         ApiService.ApiService.getListPost(pageNumber)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .retryWhen(errors -> errors.zipWith(Observable.range(1, 5), (error, retryCount) -> {
-                    if (error instanceof IOException && retryCount < 5) {
-                        return retryCount;
-                    }
-                    throw Exceptions.propagate(error);
-                }).flatMap(retryCount -> {
-                    if (retryCount == 5) {
-                        return Observable.error(new Throwable("Retry limit reached"));
-                    } else {
+                .retryWhen(errors -> errors.flatMap(error -> {
+                    if (error instanceof IOException && retryCount < 2) {
+                        retryCount++;
                         return Observable.timer(5, TimeUnit.SECONDS);
                     }
+                    return Observable.error(error);
                 }))
                 .subscribe(new Observer<PostResponse>() {
                     @Override
@@ -75,13 +73,10 @@ public class HomeViewModel extends ViewModel {
 
                     @Override
                     public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                        if (e instanceof IOException) {
-                            // Lỗi mất kết nối mạng
-                            Toast.makeText(context, "Netword disconnected!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            // Lỗi không phải do mạng
+                        if (retryCount >= 2) {
+                            isNetworkDisconnect.setValue(true);
+                            disposable_postHome.dispose();
                         }
-                        disposable_postHome.dispose();
                     }
 
                     @Override
@@ -213,5 +208,9 @@ public class HomeViewModel extends ViewModel {
 
     public MutableLiveData<List<Trending>> getTrends() {
         return trends;
+    }
+
+    public MutableLiveData<Boolean> getIsNetworkDisconnect() {
+        return isNetworkDisconnect;
     }
 }

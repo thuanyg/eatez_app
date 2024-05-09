@@ -34,7 +34,7 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-public class EditProfileActivity extends AppCompatActivity{
+public class EditProfileActivity extends AppCompatActivity {
     private ActivityEditProfileBinding binding;
     private static final int PICK_IMAGE_REQUEST = 1;
     public static final int REQUEST_PERMISSION_CODE = 1;
@@ -52,15 +52,15 @@ public class EditProfileActivity extends AppCompatActivity{
                 @Override
                 public void onActivityResult(ActivityResult o) {
                     Log.e(TAG, "hehe");
-                    if(o.getResultCode() == Activity.RESULT_OK){
+                    if (o.getResultCode() == Activity.RESULT_OK) {
                         Intent data = o.getData();
-                        if(data == null) return;
+                        if (data == null) return;
                         Uri uri = data.getData();
                         muri = uri;
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                             binding.avatarImgEdit.setImageBitmap(bitmap);
-                        }catch (IOException e){
+                        } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
@@ -80,49 +80,49 @@ public class EditProfileActivity extends AppCompatActivity{
         eventHandler();
     }
 
-    private void eventHandler(){
+    private void eventHandler() {
         binding.toolbarEdit.setNavigationOnClickListener(v -> {
             finish();
         });
 
-        binding.avatarImgEdit.setOnClickListener(v ->{
+        binding.avatarImgEdit.setOnClickListener(v -> {
             chooseImage();
         });
 
-        binding.btnEditSubmit.setOnClickListener(v ->{
-                binding.progressEditProfile.setVisibility(View.VISIBLE);
-                try{
-                    if(muri!=null){
-                        callApiUpdateProfile();
-                        EditProfileViewModel.getUserDataLiveData().observe(this, user -> {
-                            if(user != null){
-                                LocalDataManager.getInstance().setUserLogin(user);
-                                finish();
-                                Intent intent = new Intent(this,SettingActivity.class);
-                                startActivity(intent);
-                            }
-                            binding.progressEditProfile.setVisibility(View.GONE);
-                        });
-                    }
-                    else{
-                        callApiUpdateProfileNoImage();
-                        EditProfileViewModel.getUserDataLiveData().observe(this, user -> {
-                            if(user != null){
-                                LocalDataManager.getInstance().setUserLogin(user);
-                                finish();
-                                Intent intent = new Intent(this,SettingActivity.class);
-                                startActivity(intent);
-                            }
-                            binding.progressEditProfile.setVisibility(View.GONE);
-                        });
-                    }
-
-                }catch (Exception e){
-
+        binding.btnEditSubmit.setOnClickListener(v -> {
+            binding.progressEditProfile.setVisibility(View.VISIBLE);
+            try {
+                if (muri != null) {
+                    callApiUpdateProfile();
+                    EditProfileViewModel.getUserDataLiveData().observe(this, user -> {
+                        if (user != null) {
+                            LocalDataManager.getInstance().setUserLogin(user);
+                            finish();
+                            Intent intent = new Intent(this, SettingActivity.class);
+                            startActivity(intent);
+                        }
+                        binding.progressEditProfile.setVisibility(View.GONE);
+                    });
+                } else {
+                    callApiUpdateProfileNoImage();
+                    EditProfileViewModel.getUserDataLiveData().observe(this, user -> {
+                        if (user != null) {
+                            LocalDataManager.getInstance().setUserLogin(user);
+                            finish();
+                            Intent intent = new Intent(this, SettingActivity.class);
+                            startActivity(intent);
+                        }
+                        binding.progressEditProfile.setVisibility(View.GONE);
+                    });
                 }
+
+            } catch (Exception e) {
+
+            }
 
         });
     }
+
     private void initData() {
         User userLogin = LocalDataManager.getInstance().getUserLogin();
         if (userLogin != null) {
@@ -133,6 +133,7 @@ public class EditProfileActivity extends AppCompatActivity{
                     .into(binding.avatarImgEdit);
         }
     }
+
     private void chooseImage() {
         if (ImagePermission.getInstance(this).requestPermission(this)) {
             Intent intent = new Intent();
@@ -145,27 +146,28 @@ public class EditProfileActivity extends AppCompatActivity{
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_PERMISSION_CODE){
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        if (requestCode == REQUEST_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 chooseImage();
             }
         }
     }
 
-    public void callApiUpdateProfile(){
+    public void callApiUpdateProfile() {
         String fullname = binding.edNameEdit.getText().toString().trim();
         userid = LocalDataManager.getInstance().getUserLogin().getUserid();
         RequestBody requestBodyFullname = RequestBody.create(MediaType.parse("multipart/form-data"), fullname);
 
-        String RealPath = RealPathUtil.getRealPath(this,muri);
-        Log.e("mmazzzzz",RealPath);
+        String RealPath = RealPathUtil.getRealPath(this, muri);
+        Log.e("mmazzzzz", RealPath);
         File file = new File(RealPath);
         RequestBody requestBodyAvta = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        MultipartBody.Part mutilpartBodyAvata = MultipartBody.Part.createFormData("avatar_image",file.getName(),requestBodyAvta);
+        MultipartBody.Part mutilpartBodyAvata = MultipartBody.Part.createFormData("avatar_image", file.getName(), requestBodyAvta);
         Log.e("hehe", "userid: " + userid + ", fullname: " + requestBodyFullname + ", avatar: " + mutilpartBodyAvata);
-        EditProfileViewModel.updateProfileAfterImageSelection(userid,requestBodyFullname,mutilpartBodyAvata);
+        EditProfileViewModel.updateProfileAfterImageSelection(userid, requestBodyFullname, mutilpartBodyAvata);
+    }
 
-    }public void callApiUpdateProfileNoImage(){
+    public void callApiUpdateProfileNoImage() {
         String fullname = binding.edNameEdit.getText().toString().trim();
         userid = LocalDataManager.getInstance().getUserLogin().getUserid();
         RequestBody requestBodyFullname = RequestBody.create(MediaType.parse("multipart/form-data"), fullname);

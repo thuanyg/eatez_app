@@ -48,11 +48,13 @@ import com.thuanht.eatez.model.SliderHome;
 import com.thuanht.eatez.model.Trending;
 import com.thuanht.eatez.permission.LocationPermission;
 import com.thuanht.eatez.utils.NetworkUtils;
+import com.thuanht.eatez.view.Activity.EditProfileActivity;
 import com.thuanht.eatez.view.Activity.PostCategoryActivity;
 import com.thuanht.eatez.view.Activity.PostDetailActivity;
 import com.thuanht.eatez.view.Activity.SearchActivity;
 import com.thuanht.eatez.view.Activity.TrendDetailActivity;
 import com.thuanht.eatez.view.Activity.TrendingActivity;
+import com.thuanht.eatez.view.Dialog.DialogUtil;
 import com.thuanht.eatez.viewModel.HomeViewModel;
 
 import java.io.IOException;
@@ -83,9 +85,14 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-        Glide.with(requireActivity())
-                .load(LocalDataManager.getInstance().getUserLogin().getAvatar_image())
-                .into(binding.avatarHome);
+        try {
+            Glide.with(requireActivity())
+                    .load(LocalDataManager.getInstance().getUserLogin().getAvatar_image())
+                    .placeholder(R.drawable.onboarding_img_3)
+                    .into(binding.avatarHome);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         initCategory();
         initTrending();
         initUIRecyclerViewPost();
@@ -140,6 +147,12 @@ public class HomeFragment extends Fragment {
         startShimmer(binding.shimmerHome);
         homeViewModel.getIsLastPageLiveData().observe(getViewLifecycleOwner(), isLastPage -> {
             this.isLastPage = isLastPage;
+        });
+        homeViewModel.getIsNetworkDisconnect().observe(getViewLifecycleOwner(), isNetworkDisconnet -> {
+            if(isNetworkDisconnet){
+                binding.swipeRefreshHome.setVisibility(View.GONE);
+                binding.layoutDisconnect.setVisibility(View.VISIBLE);
+            }
         });
         homeViewModel.getPosts().observe(requireActivity(), new Observer<List<Post>>() {
             @Override
@@ -236,15 +249,9 @@ public class HomeFragment extends Fragment {
 
     @SuppressLint("RestrictedApi")
     private void eventHandler() {
-        ConstraintLayout layoutBottomSheet = binding.getRoot().findViewById(R.id.bottom_sheet_layout);
-        BottomSheetBehavior bottomSheetBehavior;
-        bottomSheetBehavior = BottomSheetBehavior.from(layoutBottomSheet);
         binding.avatarHome.setOnClickListener(v -> {
-            if(bottomSheetBehavior.getState() != bottomSheetBehavior.STATE_EXPANDED){
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            } else {
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            }
+            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+            startActivity(intent);
         });
 
         binding.btnToSearch.setOnClickListener(v -> {
@@ -295,6 +302,12 @@ public class HomeFragment extends Fragment {
 
         binding.btnSeeAllTrending.setOnClickListener(v -> {
             startActivity(new Intent(requireActivity(), TrendDetailActivity.class));
+        });
+
+        binding.btnTryAgain.setOnClickListener(v -> {
+            binding.layoutDisconnect.setVisibility(View.GONE);
+            binding.swipeRefreshHome.setVisibility(View.VISIBLE);
+            refreshData();
         });
     }
 

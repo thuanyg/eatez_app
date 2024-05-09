@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -81,18 +83,24 @@ public class SettingActivity extends AppCompatActivity {
                                     startActivity(new Intent(SettingActivity.this, LoginActivity.class));
                                 }
                             });
+                            // Log out facebook
+                            boolean isLoggedIn = AccessToken.getCurrentAccessToken() != null && !AccessToken.getCurrentAccessToken().isExpired();
+                            if (!isLoggedIn) {
+                                // Đã đăng xuất thành công
+                            } else {
+                                LoginManager.getInstance().logOut();
+                            }
                         }
                         @Override
                         public void onNegativeButtonClicked() {
 
                         }
                     });
-
         });
 
         binding.btnEditProfile.setOnClickListener(view -> {
-            finish();
             startActivity(new Intent(SettingActivity.this, EditProfileActivity.class));
+            finish();
         });
     }
 

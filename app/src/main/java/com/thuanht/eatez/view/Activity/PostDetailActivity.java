@@ -70,8 +70,8 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
         }
         // Get user id
         userid = LocalDataManager.getInstance().getUserLogin().getUserid();
-        savePostProcess();
         initUI();
+        savePostProcess();
         // Initial post detail
         initData();
         // Comment
@@ -95,11 +95,13 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
 //                Toast.makeText(this, "You have saved thís post before", Toast.LENGTH_SHORT).show();
                 if (mMenu != null) {
                     MenuItem item = mMenu.findItem(R.id.btn_favouritePost);
+                    item.setVisible(true);
                     item.setIcon(R.drawable.saved_favourite);
                 }
             } else {
                 if (mMenu != null) {
                     MenuItem item = mMenu.findItem(R.id.btn_favouritePost);
+                    item.setVisible(true);
                     item.setIcon(R.drawable.add_to_favorite_);
                 }
             }

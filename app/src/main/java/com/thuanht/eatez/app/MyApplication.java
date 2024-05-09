@@ -12,6 +12,8 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.thuanht.eatez.LocalData.LocalDataManager;
 
 public class MyApplication extends Application {
@@ -20,6 +22,8 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
         LocalDataManager.getInstance().init(getApplicationContext());
         createChannelNotification();
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
