@@ -86,7 +86,7 @@ public class OnboardingActivity extends AppCompatActivity {
             slideViewPager.addOnPageChangeListener(viewPagerListener);
             LocalDataManager.getInstance().setValueForFirstInstall(true);
         } else {
-            Intent i = new Intent(this, LoginActivity.class);
+            Intent i = new Intent(this, HomeActivity.class);
             startActivity(i);
             finish();
         }

@@ -2,7 +2,6 @@ package com.thuanht.eatez.view.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.Manifest;
@@ -11,7 +10,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -20,10 +18,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
 import com.thuanht.eatez.Adapter.ViewPagerHomeAdapter;
@@ -31,16 +26,11 @@ import com.thuanht.eatez.R;
 import com.thuanht.eatez.databinding.ActivityHomeBinding;
 import com.thuanht.eatez.permission.LocationPermission;
 import com.thuanht.eatez.utils.NetworkUtils;
-import com.thuanht.eatez.view.Fragment.FavoriteFragment;
-import com.thuanht.eatez.view.Fragment.HomeFragment;
-import com.thuanht.eatez.view.Fragment.NotificationFragment;
-
 import java.util.List;
-import java.util.Stack;
+
 
 public class HomeActivity extends AppCompatActivity {
     private ActivityHomeBinding binding;
-    private Stack<Integer> fragmentStack = new Stack<>();
     private ViewPager2 viewPager;
     private AdView adView;
     @Override
@@ -52,7 +42,6 @@ public class HomeActivity extends AppCompatActivity {
         initNavigation();
         eventHandler();
         LocationPermission.getInstance(this).requestPermission(this);
-
         MobileAds.initialize(this, initializationStatus -> {});
         loadBanner();
 //        requestPermissions();
@@ -130,6 +119,7 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(this, "No Internet connection", Toast.LENGTH_SHORT).show();
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

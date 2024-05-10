@@ -45,7 +45,8 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
     private SavePostViewModel savePostViewModel;
     private CommentAdapter commentAdapter;
     private List<Comment> comments;
-    private int postid, userid;
+    private int postid;
+    private int userid = -1;
     private String orderLink;
     private Boolean isSaved = false;
     private boolean isUnSaved = false;
@@ -69,7 +70,9 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
             postid = intent.getIntExtra("postid", 0);
         }
         // Get user id
-        userid = LocalDataManager.getInstance().getUserLogin().getUserid();
+        if(LocalDataManager.getInstance().getUserLogin() != null){
+            userid = LocalDataManager.getInstance().getUserLogin().getUserid();
+        }
         initUI();
         savePostProcess();
         // Initial post detail
@@ -180,16 +183,23 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
             finish();
         });
 
+        binding.btnFollow.setOnClickListener(v -> {
+            Uri uri = Uri.parse("https://facebook.com/htt268");
+            startActivity(new Intent(Intent.ACTION_VIEW, uri));
+        });
+
         // Save post into favourite list
         binding.toolbarFavourite.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.btn_favouritePost) {
-                if (!isSaved) {
-                    savePostViewModel.savePost(userid, postid);
-                    item.setIcon(R.drawable.saved_favourite);
-                } else {
-                    savePostViewModel.unSavePost(userid, postid);
-                    isSaved = false;
-                    item.setIcon(R.drawable.add_to_favorite_);
+            if(DialogUtil.checkLoginAndRequired(this)){
+                if (item.getItemId() == R.id.btn_favouritePost) {
+                    if (!isSaved) {
+                        savePostViewModel.savePost(userid, postid);
+                        item.setIcon(R.drawable.saved_favourite);
+                    } else {
+                        savePostViewModel.unSavePost(userid, postid);
+                        isSaved = false;
+                        item.setIcon(R.drawable.add_to_favorite_);
+                    }
                 }
             }
             return false;
@@ -205,6 +215,8 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
 
         // Add comment
         binding.btnSubmitComment.setOnClickListener(v -> {
+            if(!DialogUtil.checkLoginAndRequired(this)) return;
+
             String content = binding.txtComment.getText().toString();
             float rating = binding.simpleRatingBar.getRating();
             if (viewModel.varidate(content)) {

@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Toast;
 
@@ -70,6 +71,12 @@ public class SettingActivity extends AppCompatActivity {
         });
 
         binding.btnSignOut.setOnClickListener(v -> {
+            if(LocalDataManager.getInstance().getUserLogin() == null){
+                finishAffinity();
+                System.exit(0);
+                return;
+            }
+
             DialogUtil.showStandardDialog(this, "Log Out Comfirmation", "Are you sure logout this account?",
                     "Yes", "Cancel", new DialogUtil.DialogClickListener() {
                         @Override
@@ -99,8 +106,13 @@ public class SettingActivity extends AppCompatActivity {
         });
 
         binding.btnEditProfile.setOnClickListener(view -> {
-            startActivity(new Intent(SettingActivity.this, EditProfileActivity.class));
-            finish();
+            if(LocalDataManager.getInstance().getUserLogin() != null){
+                startActivity(new Intent(SettingActivity.this, EditProfileActivity.class));
+                finish();
+            } else {
+                startActivity(new Intent(SettingActivity.this, LoginActivity.class));
+                finish();
+            }
         });
     }
 
@@ -113,6 +125,10 @@ public class SettingActivity extends AppCompatActivity {
                     .load(userLogin.getAvatar_image())
                     .placeholder(R.drawable.onboarding_img_3)
                     .into(binding.avatarImgSetting);
+            return;
         }
+
+        binding.btnEditProfile.setText("Login");
+        binding.btnSignOut.setText("Exit App");
     }
 }

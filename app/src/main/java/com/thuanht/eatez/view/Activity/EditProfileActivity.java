@@ -59,7 +59,7 @@ public class EditProfileActivity extends AppCompatActivity {
                         muri = uri;
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                            binding.avatarImgEdit.setImageBitmap(bitmap);
+                            Glide.with(EditProfileActivity.this).load(bitmap).into(binding.avatarImgEdit);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

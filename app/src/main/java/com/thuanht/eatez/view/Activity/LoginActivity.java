@@ -113,6 +113,11 @@ public class LoginActivity extends AppCompatActivity{
         binding.btnFacebook.setOnClickListener(v -> {
             LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("email", "public_profile"));
         });
+
+        binding.btnSkipLogin.setOnClickListener(v -> {
+            finish();
+            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+        });
     }
 
     private void getFbInfo() {

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="LoginViewModel"
             type="com.thuanht.eatez.viewModel.LoginViewModel" />
@@ -16,14 +15,12 @@
         android:layout_gravity="center"
         android:background="@color/white"
         tools:context=".view.Activity.LoginActivity">
-
-
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="300dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/ttt"
+            android:src="@drawable/loginbg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -33,12 +30,23 @@
             android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity="end"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <TextView
+                android:id="@+id/btnSkipLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:padding="10dp"
+                android:fontFamily="@font/barlow_semibold"
+                android:text="Skip"
+                android:layout_margin="5dp"
+                android:textColor="@color/button_color"
+                android:textSize="18sp" />
         </RelativeLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout

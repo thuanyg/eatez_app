@@ -46,7 +46,7 @@ public class FavoriteFragment extends Fragment {
     private List<Favourite> favouriteList = new ArrayList<>();
     private int currentPage = 1;
     private boolean isLoading, isLastPage = false;
-    private int userid = 1;
+    private int userid = -1;
     // Define for multi selection
     private ActionMode actionMode;
     private boolean isMultiSelect = false;
@@ -59,7 +59,9 @@ public class FavoriteFragment extends Fragment {
         binding = FragmentFavoriteBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(FavouriteViewModel.class);
         savePostViewModel = new ViewModelProvider(requireActivity()).get(SavePostViewModel.class);
-        userid = LocalDataManager.getInstance().getUserLogin().getUserid();
+        if(LocalDataManager.getInstance().getUserLogin() != null){
+            userid = LocalDataManager.getInstance().getUserLogin().getUserid();
+        }
         initUI();
         initData();
         eventHandler();

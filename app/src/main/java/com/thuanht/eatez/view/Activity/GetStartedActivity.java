@@ -18,8 +18,9 @@ public class GetStartedActivity extends AppCompatActivity {
         TextView btn_start = (TextView) findViewById(R.id.btn_start);
 
         btn_start.setOnClickListener(v -> {
-            Intent intent = new Intent(GetStartedActivity.this, LoginActivity.class);
+            Intent intent = new Intent(GetStartedActivity.this, HomeActivity.class);
             startActivity(intent);
+            finish();
         });
     }
 }

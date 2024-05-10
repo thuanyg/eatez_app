@@ -2,6 +2,7 @@ package com.thuanht.eatez.view.Fragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -53,6 +54,7 @@ import com.thuanht.eatez.model.Trending;
 import com.thuanht.eatez.permission.LocationPermission;
 import com.thuanht.eatez.utils.NetworkUtils;
 import com.thuanht.eatez.view.Activity.EditProfileActivity;
+import com.thuanht.eatez.view.Activity.LoginActivity;
 import com.thuanht.eatez.view.Activity.PostCategoryActivity;
 import com.thuanht.eatez.view.Activity.PostDetailActivity;
 import com.thuanht.eatez.view.Activity.SearchActivity;
@@ -94,9 +96,35 @@ public class HomeFragment extends Fragment {
                     .load(LocalDataManager.getInstance().getUserLogin().getAvatar_image())
                     .placeholder(R.drawable.onboarding_img_3)
                     .into(binding.avatarHome);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
+        // Get location
+        // GPS Location service
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext()
+                , Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationProviderClient.getLastLocation()
+                    .addOnSuccessListener(location -> {
+                        if (location != null) {
+                            Geocoder geocoder = new Geocoder(requireActivity(), Locale.getDefault());
+                            try {
+                                List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                                if (addresses != null && addresses.size() > 0) {
+                                    String city = addresses.get(0).getLocality(); // Lấy tên thành phố
+                                    String state = addresses.get(0).getAdminArea(); // Lấy tên tỉnh hoặc bang
+                                    binding.btnLocation.setText(state);
+                                }
+//                                binding.btnLocation.setText(addresses.get(0).getAddressLine(0));
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    });
+        } else binding.btnLocation.setText("TP. Hà Nội");
+
         initCategory();
         initTrending();
         initUIRecyclerViewPost();
@@ -153,7 +181,7 @@ public class HomeFragment extends Fragment {
             this.isLastPage = isLastPage;
         });
         homeViewModel.getIsNetworkDisconnect().observe(getViewLifecycleOwner(), isNetworkDisconnet -> {
-            if(isNetworkDisconnet){
+            if (isNetworkDisconnet) {
                 binding.swipeRefreshHome.setVisibility(View.GONE);
                 binding.layoutDisconnect.setVisibility(View.VISIBLE);
             }
@@ -254,8 +282,10 @@ public class HomeFragment extends Fragment {
     @SuppressLint("RestrictedApi")
     private void eventHandler() {
         binding.avatarHome.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
-            startActivity(intent);
+            if (DialogUtil.checkLoginAndRequired(requireActivity())) {
+                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+                startActivity(intent);
+            }
         });
 
         binding.btnToSearch.setOnClickListener(v -> {
@@ -275,25 +305,18 @@ public class HomeFragment extends Fragment {
         };
         binding.nestedScrollViewHome.getViewTreeObserver().addOnScrollChangedListener(onScrollChangedListener);
 
-        // GPS Location service
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
         binding.btnLocation.setOnClickListener(v -> {
-            if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) !=
-                    PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                LocationPermission.getInstance(requireContext()).requestPermission(requireActivity());
-            }
-            fusedLocationProviderClient.getLastLocation()
-                    .addOnSuccessListener(location -> {
-                        if (location != null) {
-                            Geocoder geocoder = new Geocoder(requireActivity(), Locale.getDefault());
-                            try {
-                                List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                                assert addresses != null;
-                                binding.btnLocation.setText(addresses.get(0).getAddressLine(0));
-//                                    Toast.makeText(requireContext(), "Address: " + addresses.get(0).getAddressLine(0), Toast.LENGTH_LONG).show();
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
+            DialogUtil.showStandardDialog(requireContext(), "Comming soon", "Ứng dụng hiện tại chỉ hỗ trợ khu vực TP. Hà Nội. "
+                            + "Hãy theo dõi những bản cập nhật mới nhất của chúng tôi để thực hiện tác vụ này!",
+                    "OK", "Hủy", new DialogUtil.DialogClickListener() {
+                        @Override
+                        public void onPositiveButtonClicked(Dialog dialog) {
+                            dialog.dismiss();
+                        }
+
+                        @Override
+                        public void onNegativeButtonClicked() {
+
                         }
                     });
         });

@@ -1,10 +1,15 @@
 package com.thuanht.eatez.view.Dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+
 import com.saadahmedev.popupdialog.PopupDialog;
 import com.saadahmedev.popupdialog.listener.StandardDialogActionListener;
+import com.thuanht.eatez.LocalData.LocalDataManager;
 import com.thuanht.eatez.R;
+import com.thuanht.eatez.view.Activity.LoginActivity;
 
 // Tried to cover up all properties
 // But because of in v 2.0.0 I've added a lot of functions so it is tough to to show all
@@ -83,7 +88,7 @@ public class DialogUtil {
                 .build(new StandardDialogActionListener() {
                     @Override
                     public void onPositiveButtonClicked(Dialog dialog) {
-                        if(listener != null)
+                        if (listener != null)
                             listener.onPositiveButtonClicked(dialog);
                     }
 
@@ -203,9 +208,29 @@ public class DialogUtil {
                 .build(Dialog::dismiss)
                 .show();
     }
+
     public interface DialogClickListener {
         void onPositiveButtonClicked(Dialog dialog);
+
         void onNegativeButtonClicked();
     }
 
+    public static boolean checkLoginAndRequired(Activity activity) {
+        if (LocalDataManager.getInstance().getUserLogin() == null) {
+            showStandardDialog(activity, "Login required", "Please login your account to do this function.",
+                    "OK", "Cancel", new DialogUtil.DialogClickListener() {
+                        @Override
+                        public void onPositiveButtonClicked(Dialog dialog) {
+                            activity.finish();
+                            activity.startActivity(new Intent(activity, LoginActivity.class));
+                        }
+
+                        @Override
+                        public void onNegativeButtonClicked() {
+
+                        }
+                    });
+            return false;
+        } else return true;
+    }
 }

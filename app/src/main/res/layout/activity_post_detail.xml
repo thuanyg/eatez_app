@@ -153,7 +153,7 @@
                     </LinearLayout>
 
                     <com.github.nikartm.button.FitButton
-                        android:id="@+id/fbtn"
+                        android:id="@+id/btnFollow"
                         android:layout_width="80dp"
                         android:layout_height="30dp"
                         android:layout_gravity="center_vertical"
@@ -372,7 +372,6 @@ Dad loves them, toddler loves them, Mom loves them AND loves that everyone loves
             fab:menu_buttonSpacing="0dp"
             fab:menu_colorNormal="#CE047C14"
             fab:menu_colorPressed="@color/button_color"
-            fab:menu_colorRipple="#99FFFFFF"
             fab:menu_fab_hide_animation="@anim/fab_scale_down"
             fab:menu_fab_label=""
             fab:menu_fab_show_animation="@anim/fab_scale_up"

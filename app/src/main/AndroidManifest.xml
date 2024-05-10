@@ -46,9 +46,10 @@
         <activity
             android:name=".view.Activity.LoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="fullSensor"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.EatEz.Fullscreen"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="LockedOrientationActivity" />
         <activity android:name=".view.Activity.GetStartedActivity" />
         <activity android:name=".view.Activity.EditProfileActivity" />
         <activity
