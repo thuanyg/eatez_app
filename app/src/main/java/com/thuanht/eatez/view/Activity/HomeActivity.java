@@ -43,7 +43,7 @@ public class HomeActivity extends AppCompatActivity {
         eventHandler();
         LocationPermission.getInstance(this).requestPermission(this);
         MobileAds.initialize(this, initializationStatus -> {});
-        loadBanner();
+//        loadBanner();
 //        requestPermissions();
     }
 

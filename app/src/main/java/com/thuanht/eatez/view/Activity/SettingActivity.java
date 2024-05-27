@@ -83,13 +83,6 @@ public class SettingActivity extends AppCompatActivity {
                         public void onPositiveButtonClicked(Dialog dialog) {
                             LocalDataManager.getInstance().clearUserLogin();
                             GoogleSignInClient gsc = GoogleSignInManager.getInstance().getGoogleSignInClient();
-                            gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(Task<Void> task) {
-                                    finish();
-                                    startActivity(new Intent(SettingActivity.this, LoginActivity.class));
-                                }
-                            });
                             // Log out facebook
                             boolean isLoggedIn = AccessToken.getCurrentAccessToken() != null && !AccessToken.getCurrentAccessToken().isExpired();
                             if (!isLoggedIn) {
@@ -97,6 +90,14 @@ public class SettingActivity extends AppCompatActivity {
                             } else {
                                 LoginManager.getInstance().logOut();
                             }
+                            if(gsc == null) return;
+                            gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(Task<Void> task) {
+                                    finish();
+                                    startActivity(new Intent(SettingActivity.this, LoginActivity.class));
+                                }
+                            });
                         }
                         @Override
                         public void onNegativeButtonClicked() {

@@ -6,9 +6,9 @@ plugins {
 android {
     signingConfigs {
         create("config_thuanht") {
-            storeFile = file("/home/thuanht/Desktop/eatez_keystore.jks")
+            storeFile = file("/home/thuanht/Desktop/eatez_keystore_v2.jks")
             storePassword = "123456"
-            keyAlias = "thuanht"
+            keyAlias = "key01"
             keyPassword = "123456"
         }
     }
@@ -19,8 +19,8 @@ android {
         applicationId = "com.thuanht.eatez"
         minSdk = 24
         targetSdk = 34
-        versionCode = 2
-        versionName = "1.0.2"
+        versionCode = 5
+        versionName = "1.0.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -89,12 +89,12 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-messaging")
-    implementation ("com.google.android.gms:play-services-auth:18.1.0")
+    implementation ("com.google.android.gms:play-services-auth:21.1.1")
     // Google Location Service
     implementation("com.google.android.gms:play-services-location:21.2.0")
     // Glide
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
-    implementation ("com.google.android.gms:play-services-ads:23.0.0")
-    implementation ("com.facebook.android:facebook-android-sdk:latest.release")
+    implementation ("com.google.android.gms:play-services-ads:23.1.0")
+    implementation ("com.facebook.android:facebook-android-sdk:17.0.0")
 }

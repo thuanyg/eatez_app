@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "71010235196-m4qigpjlpv9he52es6iuqgkihsm1qng0.apps.googleusercontent.com",
+          "client_id": "71010235196-st3325hes1eciavub09d8bo7u808rtop.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.thuanht.eatez",
-            "certificate_hash": "5ad291e0d762090814abbd349f5837afedececb4"
+            "certificate_hash": "2d77e9a21e432c6865c594f4b0ad2eab72786f01"
           }
         },
         {
