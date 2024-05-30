@@ -1,54 +1,49 @@
 package com.thuanht.eatez.view.Fragment;
 
-import android.content.Context;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.airbnb.lottie.L;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.github.leandroborgesferreira.loadingbutton.customViews.CircularProgressButton;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.thuanht.eatez.LocalData.LocalDataManager;
-import com.thuanht.eatez.LocalData.MySharedPreferences;
-import com.thuanht.eatez.database.database.AppDatabase;
-import com.thuanht.eatez.database.entity.Suggestion;
+import com.thuanht.eatez.R;
 import com.thuanht.eatez.databinding.FragmentLoginTabBinding;
 import com.thuanht.eatez.interfaceEvent.LoginCallback;
-import com.thuanht.eatez.jsonResponse.LoginResponse;
+import com.thuanht.eatez.jsonResponse.ForgetPasswordResponse;
+import com.thuanht.eatez.jsonResponse.SignupResponse;
 import com.thuanht.eatez.model.User;
-import com.thuanht.eatez.utils.KeyboardUtils;
+import com.thuanht.eatez.retrofit.ApiService;
 import com.thuanht.eatez.view.Activity.HomeActivity;
-import com.thuanht.eatez.view.Activity.LoginActivity;
 import com.thuanht.eatez.view.Dialog.DialogUtil;
 import com.thuanht.eatez.viewModel.LoginViewModel;
-import com.thuanht.eatez.R;
-import com.thuanht.eatez.viewModel.SuggestViewModel;
 import com.thuanht.eatez.viewModel.UserViewModel;
 
-import java.util.ArrayList;
-import java.util.List;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginTabFragment extends Fragment implements LoginCallback {
     private FragmentLoginTabBinding binding;
     private LoginViewModel viewModel;
     private FirebaseAuth mAuth;
     private boolean isLoginSuccess = false;
+    private CircularProgressButton btnGetPassword;
+    private Button btnCancel;
+    private AlertDialog alert;
 
     @Nullable
     @Override
@@ -78,6 +73,72 @@ public class LoginTabFragment extends Fragment implements LoginCallback {
             if (viewModel.validateData(email, password)) {
                 binding.progressBarLogin.setVisibility(View.VISIBLE);
                 viewModel.Login(email, password);
+            }
+        });
+
+        binding.btnForgotPassword.setOnClickListener(v -> {
+            showInputDialog();
+        });
+
+
+    }
+
+    protected void showInputDialog() {
+        // get prompts.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+        View promptView = layoutInflater.inflate(R.layout.dialog_input, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+        alertDialogBuilder.setOnCancelListener(dialog -> dialog.dismiss())
+                .setView(promptView)
+                .setCancelable(false);
+
+        // setup a dialog window
+        // create an alert dialog
+        alert = alertDialogBuilder.create();
+        alert.show();
+
+        final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
+        btnGetPassword = (CircularProgressButton) promptView.findViewById(R.id.btnGetPassword);
+        btnCancel = (Button) promptView.findViewById(R.id.btnCancelForgotPass);
+        btnGetPassword.setOnClickListener(v -> {
+            btnGetPassword.startAnimation();
+            btnCancel.setClickable(false);
+            getPassword(editText.getText().toString().trim());
+        });
+
+        btnCancel.setOnClickListener(v -> alert.dismiss());
+    }
+
+    private void getPassword(String email) {
+        Call<ForgetPasswordResponse> call = ApiService.ApiService.forgotPasswordAction(email);
+        call.enqueue(new Callback<ForgetPasswordResponse>() {
+            @Override
+            public void onResponse(Call<ForgetPasswordResponse> call, Response<ForgetPasswordResponse> response) {
+                if(response.isSuccessful()){
+                    if(response.body().getStatusCode() == 1){
+                        DialogUtil.showSuccessDialog(requireContext(), "Successfully", "New password sent to your email: "
+                                + email + ". Please check your email!", "Ok");
+                        alert.dismiss();
+                    }
+                    if(response.body().getStatusCode() == 0){
+                        DialogUtil.showErrorDalog(requireContext(), "Failed", "Something went wrong. Please try again!", "Ok");
+                        btnCancel.setClickable(true);
+                        btnGetPassword.stopAnimation();
+                    }
+                    if(response.body().getStatusCode() == -1){
+                        DialogUtil.showErrorDalog(requireContext(), "Failed", "Email: "
+                                + email + " don't match with any email in application. Please check and enter your email again!", "Ok");
+                        btnCancel.setClickable(true);
+                        btnGetPassword.revertAnimation();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ForgetPasswordResponse> call, Throwable throwable) {
+                    DialogUtil.showErrorDalog(requireContext(), "Failed", "Something went wrong. Please try again!", "Ok");
+                    btnCancel.setClickable(true);
+                    btnGetPassword.stopAnimation();
             }
         });
     }

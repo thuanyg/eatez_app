@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.thuanht.eatez.jsonResponse.CategoryResponse;
 import com.thuanht.eatez.jsonResponse.CommentResponse;
 import com.thuanht.eatez.jsonResponse.FavouriteResponse;
+import com.thuanht.eatez.jsonResponse.ForgetPasswordResponse;
 import com.thuanht.eatez.jsonResponse.ProfileResponse;
 import com.thuanht.eatez.jsonResponse.LoginResponse;
 import com.thuanht.eatez.jsonResponse.PostResponse;
@@ -123,4 +124,6 @@ public interface ApiService {
     Observable<SignupResponse> setToken(@Query("userid") int userid, @Query("token") String token);
     @GET("setToken.php")
     Call<SignupResponse> updateToken(@Query("userid") int userid, @Query("token") String token);
+    @GET("PHPMailer-master/ForgotPassword.php")
+    Call<ForgetPasswordResponse> forgotPasswordAction(@Query("email") String email);
 }

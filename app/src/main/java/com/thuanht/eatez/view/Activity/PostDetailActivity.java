@@ -120,7 +120,7 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
                         "Please check your favorites list to see all saved posts.", "Ok");
             } else {
                 isSaved = false;
-                DialogUtil.showErrorDalog(this, null, null, null);
+                DialogUtil.showErrorDalog(this, "Uh-Oh", "Unexpected error occurred." + " Try again later.", "Yes");
             }
         });
 

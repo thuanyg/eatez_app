@@ -202,9 +202,9 @@ public class DialogUtil {
         PopupDialog.getInstance(context)
                 .statusDialogBuilder()
                 .createErrorDialog()
-                .setHeading("Uh-Oh")
-                .setDescription("Unexpected error occurred." +
-                        " Try again later.")
+                .setHeading(heading)
+                .setDescription(description)
+                .setActionButtonText(button)
                 .build(Dialog::dismiss)
                 .show();
     }
