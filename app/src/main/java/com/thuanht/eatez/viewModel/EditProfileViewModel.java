@@ -2,6 +2,7 @@ package com.thuanht.eatez.viewModel;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
@@ -27,6 +28,17 @@ import okhttp3.RequestBody;
 public class EditProfileViewModel extends ViewModel {
     private static Disposable disposable;
     private static MutableLiveData<User> userDataLiveData = new MutableLiveData<>();
+    private static MutableLiveData<String> fullnameError = new MutableLiveData<>();
+    public MutableLiveData<String> getFullnameError() {return fullnameError;}
+
+    public static boolean validateData(String fullname){
+        fullnameError.setValue(null);
+        if(TextUtils.isEmpty(fullname)){
+            fullnameError.setValue("Fullname cannot be empty");
+            return false;
+        }
+        return true;
+    }
 
     public static MutableLiveData<User> getUserDataLiveData() {
         return userDataLiveData;

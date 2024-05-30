@@ -164,13 +164,17 @@ public class EditProfileActivity extends AppCompatActivity {
         RequestBody requestBodyAvta = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part mutilpartBodyAvata = MultipartBody.Part.createFormData("avatar_image", file.getName(), requestBodyAvta);
         Log.e("hehe", "userid: " + userid + ", fullname: " + requestBodyFullname + ", avatar: " + mutilpartBodyAvata);
-        EditProfileViewModel.updateProfileAfterImageSelection(userid, requestBodyFullname, mutilpartBodyAvata);
+        if (EditProfileViewModel.validateData(fullname)) {
+            EditProfileViewModel.updateProfileAfterImageSelection(userid, requestBodyFullname, mutilpartBodyAvata);
+        }
     }
 
     public void callApiUpdateProfileNoImage() {
         String fullname = binding.edNameEdit.getText().toString().trim();
         userid = LocalDataManager.getInstance().getUserLogin().getUserid();
         RequestBody requestBodyFullname = RequestBody.create(MediaType.parse("multipart/form-data"), fullname);
-        EditProfileViewModel.updateProfileUser(userid, requestBodyFullname, null);
+        if (EditProfileViewModel.validateData(fullname)) {
+            EditProfileViewModel.updateProfileUser(userid, requestBodyFullname, null);        }
+
     }
 }
