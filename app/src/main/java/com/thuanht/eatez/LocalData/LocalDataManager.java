@@ -50,6 +50,6 @@ public class LocalDataManager {
     }
 
     public void clearUserLogin(){
-        mySharedPreferences.clearValue(LOGIN_USER_INFORMATION);
+        if(getUserLogin() != null) mySharedPreferences.clearValue(LOGIN_USER_INFORMATION);
     }
 }

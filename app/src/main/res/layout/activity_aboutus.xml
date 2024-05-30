@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:fontFamily="@font/barlow_semibold"
+            android:fontFamily="@font/roboto_bold"
             android:text="About Us"
             android:textColor="@color/black"
             android:textSize="26sp" />

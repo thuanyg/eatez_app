@@ -1,6 +1,8 @@
 package com.thuanht.eatez.view.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -14,6 +16,7 @@ import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.thuanht.eatez.LocalData.LocalDataManager;
 import com.thuanht.eatez.R;
@@ -24,6 +27,7 @@ import com.thuanht.eatez.view.Dialog.DialogUtil;
 
 public class SettingActivity extends AppCompatActivity {
     private ActivitySettingBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +75,7 @@ public class SettingActivity extends AppCompatActivity {
         });
 
         binding.btnSignOut.setOnClickListener(v -> {
-            if(LocalDataManager.getInstance().getUserLogin() == null){
+            if (LocalDataManager.getInstance().getUserLogin() == null) {
                 finishAffinity();
                 System.exit(0);
                 return;
@@ -83,14 +87,18 @@ public class SettingActivity extends AppCompatActivity {
                         public void onPositiveButtonClicked(Dialog dialog) {
                             LocalDataManager.getInstance().clearUserLogin();
                             GoogleSignInClient gsc = GoogleSignInManager.getInstance().getGoogleSignInClient();
-                            // Log out facebook
-                            boolean isLoggedIn = AccessToken.getCurrentAccessToken() != null && !AccessToken.getCurrentAccessToken().isExpired();
-                            if (!isLoggedIn) {
-                                // Đã đăng xuất thành công
-                            } else {
-                                LoginManager.getInstance().logOut();
+                            if (gsc == null) {
+                                // Log out facebook
+                                boolean isLoggedIn = AccessToken.getCurrentAccessToken() != null && !AccessToken.getCurrentAccessToken().isExpired();
+                                if (!isLoggedIn) {
+
+                                } else {
+                                    LoginManager.getInstance().logOut();
+                                }
+                                finish();
+                                startActivity(new Intent(SettingActivity.this, LoginActivity.class));
+                                return;
                             }
-                            if(gsc == null) return;
                             gsc.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(Task<Void> task) {
@@ -99,6 +107,7 @@ public class SettingActivity extends AppCompatActivity {
                                 }
                             });
                         }
+
                         @Override
                         public void onNegativeButtonClicked() {
 
@@ -107,7 +116,7 @@ public class SettingActivity extends AppCompatActivity {
         });
 
         binding.btnEditProfile.setOnClickListener(view -> {
-            if(LocalDataManager.getInstance().getUserLogin() != null){
+            if (LocalDataManager.getInstance().getUserLogin() != null) {
                 startActivity(new Intent(SettingActivity.this, EditProfileActivity.class));
                 finish();
             } else {

@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,7 +48,7 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
     private List<Comment> comments;
     private int postid;
     private int userid = -1;
-    private String orderLink;
+    private String orderGrabLink, orderSpfLink;
     private Boolean isSaved = false;
     private boolean isUnSaved = false;
     private Menu mMenu;
@@ -170,7 +171,8 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
     // Render data
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void RenderDataPostDetailOnUI(@NonNull Post post) {
-        orderLink = post.getOrderGrab();
+        orderGrabLink = post.getOrderGrab();
+        orderSpfLink = post.getOrderShoppeFood();
         binding.titlePostDetail.setText(post.getTitle());
         CharSequence spanned = HtmlCompat.fromHtml(post.getContent(), HtmlCompat.FROM_HTML_MODE_LEGACY);
         binding.tvContentPostDetail.setText(spanned);
@@ -207,10 +209,17 @@ public class PostDetailActivity extends AppCompatActivity implements CommentCall
 
         // Redirect to Grab/Shoppefood
         binding.fabItemGrab.setOnClickListener(v -> {
-            if (orderLink.length() > 0) {
-                Uri uri = Uri.parse(orderLink);
+            if (orderGrabLink.length() > 0) {
+                Uri uri = Uri.parse(orderGrabLink);
                 startActivity(new Intent(Intent.ACTION_VIEW, uri));
-            }
+            } else Toast.makeText(this, "Món ăn này hiện chưa được cập nhật trên Grab!", Toast.LENGTH_SHORT).show();
+        });
+
+        binding.fabItemShoppefood.setOnClickListener(v -> {
+            if (!TextUtils.isEmpty(orderSpfLink)) {
+                Uri uri = Uri.parse(orderSpfLink);
+                startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            } else Toast.makeText(this, "Món ăn này hiện chưa được cập nhật trên ShoppeFood!", Toast.LENGTH_SHORT).show();
         });
 
         // Add comment

@@ -159,7 +159,7 @@ public class LoginActivity extends AppCompatActivity{
         binding.viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(binding.tabLayout));
 
         binding.tabLayout.setupWithViewPager(binding.viewPager);
-        binding.tabLayout.getTabAt(0).setText("Sign In");
+        binding.tabLayout.getTabAt(0).setText("Login");
         binding.tabLayout.getTabAt(1).setText("Sign Up");
     }
 

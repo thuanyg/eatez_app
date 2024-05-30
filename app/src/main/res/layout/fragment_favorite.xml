@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"
-                android:fontFamily="@font/barlow_semibold"
+                android:fontFamily="@font/roboto_bold"
                 android:text=" My Favourites"
                 android:textSize="20sp"
                 android:textStyle="bold" />

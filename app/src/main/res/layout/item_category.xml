@@ -5,7 +5,7 @@
     android:background="@drawable/edit_text_background"
     android:layout_width="wrap_content"
     android:clickable="true"
-    android:backgroundTint="@color/light_green"
+    android:backgroundTint="#A9ECECEC"
     android:layout_margin="5dp"
     android:layout_height="wrap_content"
     android:focusable="true">
@@ -40,7 +40,7 @@
         android:id="@+id/tvCategoryName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/barlow_semibold"
+        android:fontFamily="@font/roboto_bold"
         android:text="Title"
         android:paddingBottom="15dp"
         android:textColor="@color/black"

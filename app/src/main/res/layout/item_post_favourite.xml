@@ -91,7 +91,7 @@
                         android:drawablePadding="5dp"
                         android:drawableStart="@drawable/like_heart_svgrepo_com"
                         android:ellipsize="end"
-                        android:fontFamily="@font/barlow_semibold"/>
+                        android:fontFamily="@font/roboto_bold"/>
                     <TextView
                         android:id="@+id/tvLocationFavourite"
                         android:layout_width="match_parent"
@@ -103,7 +103,7 @@
                         android:textSize="12sp"
                         android:drawableStart="@drawable/location_svgrepo_com"
                         android:drawablePadding="5dp"
-                        android:fontFamily="@font/barlow"/>
+                        android:fontFamily="@font/roboto"/>
                     <TextView
                         android:id="@+id/tvDateFavourite"
                         android:layout_width="match_parent"
@@ -115,7 +115,7 @@
                         android:textSize="12sp"
                         android:drawablePadding="5dp"
                         android:drawableStart="@drawable/clock_time_svgrepo_com"
-                        android:fontFamily="@font/barlow"/>
+                        android:fontFamily="@font/roboto"/>
                 </LinearLayout>
             </LinearLayout>
 

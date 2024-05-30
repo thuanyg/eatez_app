@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.EatEz" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/black</item>
     </style>
 
     <style name="ThemeOverlay.EatEz.FullscreenContainer" parent="">

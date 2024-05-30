@@ -27,7 +27,7 @@
         app:itemIconTint="@color/color_navi"
         app:itemPaddingBottom="10dp"
         app:itemActiveIndicatorStyle="@color/shimmer_color"
-        app:itemRippleColor="#7FBAD5"
+        app:itemRippleColor="@color/button_color"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

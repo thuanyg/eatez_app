@@ -5,44 +5,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:id="@+id/main"
     android:fitsSystemWindows="true"
     tools:context=".view.Activity.OnboardingActivity">
 
     <androidx.viewpager.widget.ViewPager
-        android:layout_marginVertical="100dp"
         android:id="@+id/slideViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginVertical="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></androidx.viewpager.widget.ViewPager>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
         android:id="@+id/btn_next"
-        android:layout_width="95dp"
+        android:layout_width="100dp"
         android:layout_height="55dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="32dp"
         android:background="@drawable/button_background"
-        android:fontFamily="@font/barlow_semibold"
+        android:fontFamily="@font/roboto_bold"
         android:gravity="center"
+        android:padding="10dp"
         android:text="Next"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintHorizontal_bias="0.913"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/btn_skip"
         android:layout_width="wrap_content"
         android:layout_height="55dp"
-        android:layout_marginBottom="28dp"
-        android:fontFamily="@font/barlow_semibold"
+        android:layout_marginBottom="35dp"
+        android:fontFamily="@font/roboto_bold"
         android:gravity="center"
+        android:padding="10dp"
         android:text="Skip"
         android:textAlignment="center"
         android:textSize="18sp"
@@ -52,13 +55,13 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
+        android:id="@+id/dotIndicator"
         android:layout_width="wrap_content"
         android:layout_height="55dp"
-        android:id="@+id/dotIndicator"
+        android:layout_marginBottom="35dp"
         android:orientation="horizontal"
-        android:layout_marginBottom="28dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/slideViewPager"/>
+        app:layout_constraintStart_toStartOf="@+id/slideViewPager" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

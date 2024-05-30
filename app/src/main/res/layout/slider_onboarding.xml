@@ -26,7 +26,7 @@
             android:id="@+id/slider_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/barlow_semibold"
+            android:fontFamily="@font/roboto_bold"
             android:text="Welcome to EatEz"
             android:layout_marginTop="15dp"
             android:textAlignment="center"
@@ -37,7 +37,7 @@
             android:layout_width="276dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:fontFamily="@font/barlow"
+            android:fontFamily="@font/roboto"
             android:text="Find, rate, and share your favorite foods worldwide. Your culinary journey starts here!"
             android:textAlignment="center"
             android:textSize="16sp" />

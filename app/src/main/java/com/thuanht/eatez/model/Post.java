@@ -44,6 +44,11 @@ public class Post implements Serializable {
     @Expose
     private String orderGrab;
 
+    @ColumnInfo(name = "order_spf")
+    @SerializedName("order_spf")
+    @Expose
+    private String orderShoppeFood;
+
     @Ignore
     @SerializedName("date")
     @Expose
@@ -137,6 +142,14 @@ public class Post implements Serializable {
 
     public String getOrderGrab() {
         return orderGrab;
+    }
+
+    public String getOrderShoppeFood() {
+        return orderShoppeFood;
+    }
+
+    public void setOrderShoppeFood(String orderShoppeFood) {
+        this.orderShoppeFood = orderShoppeFood;
     }
 
     public String getDate_rb() {

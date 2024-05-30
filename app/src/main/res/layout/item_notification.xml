@@ -5,7 +5,7 @@
     android:layout_height="80dp"
     android:layout_marginHorizontal="10dp"
     android:layout_marginBottom="8dp"
-    app:cardCornerRadius="15dp">
+    app:cardCornerRadius="12dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -39,7 +39,7 @@
                     android:layout_marginEnd="5dp"
                     android:layout_weight="1"
                     android:ellipsize="end"
-                    android:fontFamily="@font/barlow_semibold"
+                    android:fontFamily="@font/roboto_bold"
                     android:paddingStart="10dp"
                     android:singleLine="true"
                     android:text="This is a title notification when you click at Notification"
@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="5dp"
-                    android:fontFamily="@font/barlow_semibold"
+                    android:fontFamily="@font/roboto_bold"
                     android:paddingStart="10dp"
                     android:text="Dec 16, 2024"
                     android:textSize="13sp" />
