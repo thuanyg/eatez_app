@@ -13,6 +13,8 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
     <string name="google_signin_client_id">71010235196-lk0tchk5kd1e4de4cjr1otdptn3blsjb.apps.googleusercontent.com</string>
+    <string name="google_api_key">AIzaSyA9Vwu4wmJDBjYgBBQNYVehHR23bXICwBY</string>
+
     <string name="facebook_app_id">1728925694306477</string>
     <string name="fb_login_protocol_scheme">fb1728925694306477</string>
     <string name="facebook_client_token">f11db79be7486dc5dc3c6045f9347d49</string>

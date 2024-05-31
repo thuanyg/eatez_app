@@ -6,6 +6,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.thuanht.eatez.R;
 
 public class GoogleSignInManager {
     private static GoogleSignInManager instance;
@@ -25,6 +26,7 @@ public class GoogleSignInManager {
 
     public void init(Activity activity) {
         googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(activity.getString(R.string.google_signin_client_id))
                 .requestEmail()
                 .build();
         googleSignInClient = GoogleSignIn.getClient(activity, googleSignInOptions);
