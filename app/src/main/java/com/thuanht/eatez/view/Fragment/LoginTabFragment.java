@@ -58,10 +58,6 @@ public class LoginTabFragment extends Fragment implements LoginCallback {
             binding.textInputLayout.setEndIconMode(TextInputLayout.END_ICON_NONE);
             binding.txtEmail.requestFocus();
         });
-
-        viewModel.getIsLoginSuccess().observe(requireActivity(), isLoginSuccess -> {
-            this.isLoginSuccess = isLoginSuccess;
-        });
         return binding.getRoot();
     }
 

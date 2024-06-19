@@ -19,8 +19,8 @@ android {
         applicationId = "com.thuanht.eatez"
         minSdk = 24
         targetSdk = 34
-        versionCode = 6
-        versionName = "1.0.6"
+        versionCode = 9
+        versionName = "Release v1.0.9"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -47,16 +47,16 @@ android {
 
 dependencies {
 
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.activity:activity:1.8.0")
+    implementation("androidx.activity:activity:1.9.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     // UI Library
-    implementation("com.airbnb.android:lottie:6.4.0")
-    implementation ("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.23")
+    implementation("com.airbnb.android:lottie:6.4.1")
+    implementation ("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.0")
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("com.etebarian:meow-bottom-navigation:1.0.2")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
@@ -73,7 +73,7 @@ dependencies {
     implementation("io.github.ParkSangGwon:tedpermission-normal:3.3.0")
     // API & Networking
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
-    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.google.code.gson:gson:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
@@ -86,15 +86,15 @@ dependencies {
     implementation("com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0")
     // Firebase
     implementation("com.google.firebase:firebase-analytics")
-    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-messaging")
-    implementation ("com.google.android.gms:play-services-auth:21.1.1")
+    implementation ("com.google.android.gms:play-services-auth:21.2.0")
     // Google Location Service
-    implementation("com.google.android.gms:play-services-location:21.2.0")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
     // Glide
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
     implementation ("com.google.android.gms:play-services-ads:23.1.0")
-    implementation ("com.facebook.android:facebook-android-sdk:17.0.0")
+    implementation ("com.facebook.android:facebook-android-sdk:latest.release")
 }
