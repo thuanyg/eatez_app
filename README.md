@@ -12,11 +12,11 @@ Eatez là một ứng dụng di động cho phép người dùng xem và đánh 
 ## Screenshots
 
 <p>
-  <img src="https://play-lh.googleusercontent.com/eexABcUM6Ugjj_AC2m2J5QmBJOuUkqOPtSzFFzgT3nN1QpoC4WVtqF58i_BP0BzYk9k=w526-h296-rw" width="250" />
-  <img src="https://play-lh.googleusercontent.com/AqWy45zxL5OZ3bOUVhKfZwvho06qGgYQWSHqC5TbxU5ba1Zmj535LvxWw-S9UqS71PwC=w526-h296-rw" width="250" />
-  <img src="https://play-lh.googleusercontent.com/6pFALCcqGIQGp3DHPZXjk22-QIkrzxKesf419ozEcefhmZX-Zdu3YqlegzNkJo4GyCg=w526-h296-rw" width="250" />
-  <img src="https://play-lh.googleusercontent.com/BsFGerfqowflzAJSXSkmv3mR9UJ6WEy0wGAheHTI6iW_Y79Vo251Oeo73sd54hEvi8Bb=w526-h296-rw" width="250" />
-  <img src="https://play-lh.googleusercontent.com/AFuIja8nP6YwVisMMSrtguSwv5_5IZKwu9BSya11YAOR3JhziP0MPUpH-rUCuQqhrr4=w526-h296-rw" width="250" />
+  <img src="https://play-lh.googleusercontent.com/eexABcUM6Ugjj_AC2m2J5QmBJOuUkqOPtSzFFzgT3nN1QpoC4WVtqF58i_BP0BzYk9k=w2560-h1440-rw" width="250" />
+  <img src="https://play-lh.googleusercontent.com/AqWy45zxL5OZ3bOUVhKfZwvho06qGgYQWSHqC5TbxU5ba1Zmj535LvxWw-S9UqS71PwC=w2560-h1440-rw" width="250" />
+  <img src="https://play-lh.googleusercontent.com/6pFALCcqGIQGp3DHPZXjk22-QIkrzxKesf419ozEcefhmZX-Zdu3YqlegzNkJo4GyCg=w2560-h1440-rw" width="250" />
+  <img src="https://play-lh.googleusercontent.com/BsFGerfqowflzAJSXSkmv3mR9UJ6WEy0wGAheHTI6iW_Y79Vo251Oeo73sd54hEvi8Bb=w2560-h1440-rw" width="250" />
+  <img src="https://play-lh.googleusercontent.com/AFuIja8nP6YwVisMMSrtguSwv5_5IZKwu9BSya11YAOR3JhziP0MPUpH-rUCuQqhrr4=w2560-h1440-rw" width="250" />
 </p>
 
 ## Cài đặt
